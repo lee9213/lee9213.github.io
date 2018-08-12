@@ -74,7 +74,7 @@
 
 
 
-  <meta name="keywords" content="Redis," />
+  <meta name="keywords" content="zookeeper," />
 
 
 
@@ -87,18 +87,18 @@
 
 
 
-<meta name="description" content="Redis本质上是一个Key-Value类型的内存数据库，很像Memcached，整个数据库统统加载在内存当中进行操作，定期通过异步操作把数据库数据flush到硬盘上进行保存。因为是纯内存操作，Redis的性能非常出色，每秒可以处理超过10万次读写操作，是已知性能最快的Key-Value DB。Redis的出色之处不仅仅是性能，Redis最大的魅力是支持保存多种数据结构，此外单个value的最大限">
-<meta name="keywords" content="Redis">
+<meta name="description" content="设计思想 防止单点故障 节点数据一致性 数据恢复 顺序访问 高性能  应用场景 分布式锁、负载均衡、注册中心、配置中心  zoo.cnf配置详解 tickTime 心跳时间间隔 initLimit 客户端初始化连接最长多少个tickTime syncLimit leader和follower之间发送消息，请求和应答时间最长多少个tickTime 端口 2181（客户端提供服务）、2888（集群通信">
+<meta name="keywords" content="zookeeper">
 <meta property="og:type" content="article">
-<meta property="og:title" content="缓存之Redis详解">
-<meta property="og:url" content="http://yoursite.com/2018/07/27/redis/index.html">
+<meta property="og:title" content="zookeeper（分布式协调服务）">
+<meta property="og:url" content="http://yoursite.com/2018/08/12/zookeeper/index.html">
 <meta property="og:site_name" content="李波的博客">
-<meta property="og:description" content="Redis本质上是一个Key-Value类型的内存数据库，很像Memcached，整个数据库统统加载在内存当中进行操作，定期通过异步操作把数据库数据flush到硬盘上进行保存。因为是纯内存操作，Redis的性能非常出色，每秒可以处理超过10万次读写操作，是已知性能最快的Key-Value DB。Redis的出色之处不仅仅是性能，Redis最大的魅力是支持保存多种数据结构，此外单个value的最大限">
+<meta property="og:description" content="设计思想 防止单点故障 节点数据一致性 数据恢复 顺序访问 高性能  应用场景 分布式锁、负载均衡、注册中心、配置中心  zoo.cnf配置详解 tickTime 心跳时间间隔 initLimit 客户端初始化连接最长多少个tickTime syncLimit leader和follower之间发送消息，请求和应答时间最长多少个tickTime 端口 2181（客户端提供服务）、2888（集群通信">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-12T08:11:36.415Z">
+<meta property="og:updated_time" content="2018-08-12T08:37:27.531Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="缓存之Redis详解">
-<meta name="twitter:description" content="Redis本质上是一个Key-Value类型的内存数据库，很像Memcached，整个数据库统统加载在内存当中进行操作，定期通过异步操作把数据库数据flush到硬盘上进行保存。因为是纯内存操作，Redis的性能非常出色，每秒可以处理超过10万次读写操作，是已知性能最快的Key-Value DB。Redis的出色之处不仅仅是性能，Redis最大的魅力是支持保存多种数据结构，此外单个value的最大限">
+<meta name="twitter:title" content="zookeeper（分布式协调服务）">
+<meta name="twitter:description" content="设计思想 防止单点故障 节点数据一致性 数据恢复 顺序访问 高性能  应用场景 分布式锁、负载均衡、注册中心、配置中心  zoo.cnf配置详解 tickTime 心跳时间间隔 initLimit 客户端初始化连接最长多少个tickTime syncLimit leader和follower之间发送消息，请求和应答时间最长多少个tickTime 端口 2181（客户端提供服务）、2888（集群通信">
 
 
 
@@ -128,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/07/27/redis/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/08/12/zookeeper/"/>
 
 
 
 
 
-  <title>缓存之Redis详解 | 李波的博客</title>
+  <title>zookeeper（分布式协调服务） | 李波的博客</title>
   
 
 
@@ -271,7 +271,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/27/redis/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/12/zookeeper/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="李波">
@@ -288,7 +288,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">缓存之Redis详解</h1>
+          <h1 class="post-title" itemprop="name headline">zookeeper（分布式协调服务）</h1>
         
 
         <div class="post-meta">
@@ -301,8 +301,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-27T15:23:52+08:00">
-                2018-07-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-12T16:06:30+08:00">
+                2018-08-12
               </time>
             
 
@@ -366,7 +366,126 @@
       
 
       
-        <p>Redis本质上是一个Key-Value类型的内存数据库，很像Memcached，整个数据库统统加载在内存当中进行操作，定期通过异步操作把数据库数据flush到硬盘上进行保存。因为是纯内存操作，Redis的性能非常出色，每秒可以处理超过10万次读写操作，是已知性能最快的Key-Value DB。Redis的出色之处不仅仅是性能，Redis最大的魅力是支持保存多种数据结构，此外单个value的最大限制是1GB，不行Memcached只能保存1MB的数据，因此Redis可以用来实现很多有用的功能，比如说用他的List来做FIFO双向链表，实现一个轻量级的高性能消息队列服务，用它的Set可以做高性能的tag系统等待。另外Redis也可以对存入的Key-Value设置expire时间，因此可以被当作一个功能加强版的Memcached来用。<br>Redis的主要缺点是数据库容量收到物理内存的限制，不能用作海量数据的高性能读写，因此Redis时候的场景主要局限在较小数据量的高性能操作和运算上。</p>
+        <h3 id="设计思想"><a href="#设计思想" class="headerlink" title="设计思想"></a>设计思想</h3><ul>
+<li>防止单点故障</li>
+<li>节点数据一致性</li>
+<li>数据恢复</li>
+<li>顺序访问</li>
+<li>高性能</li>
+</ul>
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><ul>
+<li>分布式锁、负载均衡、注册中心、配置中心</li>
+</ul>
+<h3 id="zoo-cnf配置详解"><a href="#zoo-cnf配置详解" class="headerlink" title="zoo.cnf配置详解"></a>zoo.cnf配置详解</h3><ul>
+<li>tickTime 心跳时间间隔</li>
+<li>initLimit 客户端初始化连接最长多少个tickTime</li>
+<li>syncLimit leader和follower之间发送消息，请求和应答时间最长多少个tickTime</li>
+<li>端口 2181（客户端提供服务）、2888（集群通信端口）:3888（leader选举端口）</li>
+</ul>
+<h3 id="节点特性"><a href="#节点特性" class="headerlink" title="节点特性"></a>节点特性</h3><ul>
+<li>持久节点、持久有序节点、临时节点、临时有序节点</li>
+<li>临时节点和临时有序节点不能有子节点</li>
+<li>同级节点唯一</li>
+</ul>
+<h3 id="集群角色"><a href="#集群角色" class="headerlink" title="集群角色"></a>集群角色</h3><ul>
+<li>leader<ul>
+<li>事务请求的唯一调度和处理者，保证集群事务处理的顺序性</li>
+<li>集群内部各服务器的调度者</li>
+</ul>
+</li>
+<li>follower<ul>
+<li>处理客户端非事务请求、转发事务请求给leader</li>
+<li>参与事务请求proposal（提案）的投票</li>
+<li>参与leader选举的投票</li>
+</ul>
+</li>
+<li>observer<ul>
+<li>提供非事务请求服务</li>
+</ul>
+</li>
+</ul>
+<h3 id="选举状态"><a href="#选举状态" class="headerlink" title="选举状态"></a>选举状态</h3><ul>
+<li>LOOKING（初始启动，默认都是LOOKING）</li>
+<li>LEADING</li>
+<li>FOLLOWING</li>
+<li>OBSERVING</li>
+</ul>
+<h3 id="Leader选举"><a href="#Leader选举" class="headerlink" title="Leader选举"></a>Leader选举</h3><h4 id="选举参数"><a href="#选举参数" class="headerlink" title="选举参数"></a>选举参数</h4><ul>
+<li>zxid（最大会设置成leader，事务ID越大，表示数据越新）64位<ul>
+<li>前32位是<strong>epoch</strong>编号，每一轮投票，epoch都会递增，每产生一个新的leader，那么新的leader的epoch会+1</li>
+<li>后32位消息计数器（自增），每接收一条消息+1，新leader选举后重置为0</li>
+</ul>
+</li>
+<li>myid（myid越大，在leader选举机制中权重越大）</li>
+</ul>
+<h4 id="选举时机"><a href="#选举时机" class="headerlink" title="选举时机"></a>选举时机</h4><ul>
+<li>启动时leader选举</li>
+<li>leader崩溃时选举</li>
+</ul>
+<h3 id="ZAB协议（基于paxos理论）"><a href="#ZAB协议（基于paxos理论）" class="headerlink" title="ZAB协议（基于paxos理论）"></a>ZAB协议（基于paxos理论）</h3><p>Zookeeper Atomic Broadcast</p>
+<p>支持崩溃恢复的原子广播协议、主要用于实现数据一致性</p>
+<h4 id="原子广播（事务提交，改进版本的2PC）"><a href="#原子广播（事务提交，改进版本的2PC）" class="headerlink" title="原子广播（事务提交，改进版本的2PC）"></a>原子广播（事务提交，改进版本的2PC）</h4><ol>
+<li>leader接收到消息请求后，将消息赋予一个全局唯一的64位自增ID，叫zxid</li>
+<li>leader为每个follower准备了一个FIFO队列，将带有zxid的消息作为一个proposal提案分发给所有的follower</li>
+<li>当follower接收到proposal，先把proposal写到磁盘，写入成功以后再向leader回复一个ack</li>
+<li>当leader接收到合法数量（超过半数节点）的ack后，leader就会向这些follower发送commit命令，同时会再本地执行该消息</li>
+<li>当follower收到消息的commit命令以后，会提交该消息</li>
+</ol>
+<h4 id="崩溃恢复"><a href="#崩溃恢复" class="headerlink" title="崩溃恢复"></a>崩溃恢复</h4><ol>
+<li>当leader失去了过半的follower节点的连续</li>
+<li>当leader服务挂了</li>
+</ol>
+<p>集群就会进入崩溃恢复阶段，对于数据恢复来说：</p>
+<ol>
+<li><p>已经被处理的消息不能丢失</p>
+<p>当leader收到合法数量的follower的ack之后，就会向各个follower广播消息（commit命令）同时自己也会commit这条事务消息，如果follower节点收到commit命令之前，leader挂了，会导致部分节点收到commit，部分节点没有收到，那么zab协议需要保证已经被处理的消息不能丢失。</p>
+</li>
+<li><p>被丢弃的消息不能再次出现</p>
+<p>当leader收到事务请求，并且还未发起事务投票之前，leader挂了，此次消息必须全部丢失</p>
+</li>
+</ol>
+<h3 id="数据安全"><a href="#数据安全" class="headerlink" title="数据安全"></a>数据安全</h3><h4 id="权限模式"><a href="#权限模式" class="headerlink" title="权限模式"></a>权限模式</h4><ul>
+<li>world（所有人都能访问）</li>
+<li>auth（不使用任何id，代表任何已认证的用户）</li>
+<li>digest（用户名和密码验证）</li>
+<li>ip（ip验证，格式addr/bits）</li>
+</ul>
+<h4 id="权限类型"><a href="#权限类型" class="headerlink" title="权限类型"></a>权限类型</h4><ul>
+<li>CREATE（创建权限，可以创建子节点，create，exists，getChildren，delete）</li>
+<li>DELETE （删除权限，可以删除子节点，create，exists，getChildren，delete）</li>
+<li>READ （读权限，可以获取节点和子节点列表，create，exists，getData，getChildren，delete）</li>
+<li>WRITE （写权限，create，exists，getChildren，setData，delete）</li>
+<li>ADMIN （管理权限，create，exists，getChildren，delete）</li>
+</ul>
+<h3 id="Watch机制"><a href="#Watch机制" class="headerlink" title="Watch机制"></a>Watch机制</h3><ul>
+<li>watcher特性<ul>
+<li>watcher是一次性的操作<ul>
+<li>当数据发生变化时，zookeeper会产生一个watcher事件，并且会发送到客户端，但是客户端只会收到一次通知。如果后续这个节点再次发生变化，那么之前设置watcher的客户端不会再次收到消息。</li>
+</ul>
+</li>
+<li>可以通过循环监听达到永久监听效果</li>
+</ul>
+</li>
+<li>如何注册事件机制<ul>
+<li>绑定事件<ul>
+<li>getData、Exists、getChildren</li>
+</ul>
+</li>
+<li>触发事件<ul>
+<li>create、delete、setData</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>事件类型<ul>
+<li>None 客户端连接状态发生变化的时候，会收到none的事件</li>
+<li>NodeCreated 创建节点事件</li>
+<li>NodeDeleted 删除节点事件</li>
+<li>NodeDataChanged 节点数据发生变更</li>
+<li>NodeChildrenChanged 子节点被创建、删除会发生</li>
+</ul>
+</li>
+</ul>
 
       
     </div>
@@ -421,7 +540,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Redis/" rel="tag"># Redis</a>
+            <a href="/tags/zookeeper/" rel="tag"># zookeeper</a>
           
         </div>
       
@@ -434,8 +553,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/26/classloader/" rel="next" title="JVM之类加载器">
-                <i class="fa fa-chevron-left"></i> JVM之类加载器
+              <a href="/2018/07/27/redis/" rel="next" title="缓存之Redis详解">
+                <i class="fa fa-chevron-left"></i> 缓存之Redis详解
               </a>
             
           </div>
@@ -443,10 +562,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/08/12/zookeeper/" rel="prev" title="zookeeper（分布式协调服务）">
-                zookeeper（分布式协调服务） <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -498,8 +613,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -582,6 +706,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#设计思想"><span class="nav-number">1.</span> <span class="nav-text">设计思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用场景"><span class="nav-number">2.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zoo-cnf配置详解"><span class="nav-number">3.</span> <span class="nav-text">zoo.cnf配置详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#节点特性"><span class="nav-number">4.</span> <span class="nav-text">节点特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集群角色"><span class="nav-number">5.</span> <span class="nav-text">集群角色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选举状态"><span class="nav-number">6.</span> <span class="nav-text">选举状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Leader选举"><span class="nav-number">7.</span> <span class="nav-text">Leader选举</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#选举参数"><span class="nav-number">7.1.</span> <span class="nav-text">选举参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#选举时机"><span class="nav-number">7.2.</span> <span class="nav-text">选举时机</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ZAB协议（基于paxos理论）"><span class="nav-number">8.</span> <span class="nav-text">ZAB协议（基于paxos理论）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#原子广播（事务提交，改进版本的2PC）"><span class="nav-number">8.1.</span> <span class="nav-text">原子广播（事务提交，改进版本的2PC）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#崩溃恢复"><span class="nav-number">8.2.</span> <span class="nav-text">崩溃恢复</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据安全"><span class="nav-number">9.</span> <span class="nav-text">数据安全</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#权限模式"><span class="nav-number">9.1.</span> <span class="nav-text">权限模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#权限类型"><span class="nav-number">9.2.</span> <span class="nav-text">权限类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Watch机制"><span class="nav-number">10.</span> <span class="nav-text">Watch机制</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

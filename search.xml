@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[zookeeper（分布式协调服务）]]></title>
+    <url>%2F2018%2F08%2F12%2Fzookeeper%2F</url>
+    <content type="text"><![CDATA[设计思想 防止单点故障 节点数据一致性 数据恢复 顺序访问 高性能 应用场景 分布式锁、负载均衡、注册中心、配置中心 zoo.cnf配置详解 tickTime 心跳时间间隔 initLimit 客户端初始化连接最长多少个tickTime syncLimit leader和follower之间发送消息，请求和应答时间最长多少个tickTime 端口 2181（客户端提供服务）、2888（集群通信端口）:3888（leader选举端口） 节点特性 持久节点、持久有序节点、临时节点、临时有序节点 临时节点和临时有序节点不能有子节点 同级节点唯一 集群角色 leader 事务请求的唯一调度和处理者，保证集群事务处理的顺序性 集群内部各服务器的调度者 follower 处理客户端非事务请求、转发事务请求给leader 参与事务请求proposal（提案）的投票 参与leader选举的投票 observer 提供非事务请求服务 选举状态 LOOKING（初始启动，默认都是LOOKING） LEADING FOLLOWING OBSERVING Leader选举选举参数 zxid（最大会设置成leader，事务ID越大，表示数据越新）64位 前32位是epoch编号，每一轮投票，epoch都会递增，每产生一个新的leader，那么新的leader的epoch会+1 后32位消息计数器（自增），每接收一条消息+1，新leader选举后重置为0 myid（myid越大，在leader选举机制中权重越大） 选举时机 启动时leader选举 leader崩溃时选举 ZAB协议（基于paxos理论）Zookeeper Atomic Broadcast 支持崩溃恢复的原子广播协议、主要用于实现数据一致性 原子广播（事务提交，改进版本的2PC） leader接收到消息请求后，将消息赋予一个全局唯一的64位自增ID，叫zxid leader为每个follower准备了一个FIFO队列，将带有zxid的消息作为一个proposal提案分发给所有的follower 当follower接收到proposal，先把proposal写到磁盘，写入成功以后再向leader回复一个ack 当leader接收到合法数量（超过半数节点）的ack后，leader就会向这些follower发送commit命令，同时会再本地执行该消息 当follower收到消息的commit命令以后，会提交该消息 崩溃恢复 当leader失去了过半的follower节点的连续 当leader服务挂了 集群就会进入崩溃恢复阶段，对于数据恢复来说： 已经被处理的消息不能丢失 当leader收到合法数量的follower的ack之后，就会向各个follower广播消息（commit命令）同时自己也会commit这条事务消息，如果follower节点收到commit命令之前，leader挂了，会导致部分节点收到commit，部分节点没有收到，那么zab协议需要保证已经被处理的消息不能丢失。 被丢弃的消息不能再次出现 当leader收到事务请求，并且还未发起事务投票之前，leader挂了，此次消息必须全部丢失 数据安全权限模式 world（所有人都能访问） auth（不使用任何id，代表任何已认证的用户） digest（用户名和密码验证） ip（ip验证，格式addr/bits） 权限类型 CREATE（创建权限，可以创建子节点，create，exists，getChildren，delete） DELETE （删除权限，可以删除子节点，create，exists，getChildren，delete） READ （读权限，可以获取节点和子节点列表，create，exists，getData，getChildren，delete） WRITE （写权限，create，exists，getChildren，setData，delete） ADMIN （管理权限，create，exists，getChildren，delete） Watch机制 watcher特性 watcher是一次性的操作 当数据发生变化时，zookeeper会产生一个watcher事件，并且会发送到客户端，但是客户端只会收到一次通知。如果后续这个节点再次发生变化，那么之前设置watcher的客户端不会再次收到消息。 可以通过循环监听达到永久监听效果 如何注册事件机制 绑定事件 getData、Exists、getChildren 触发事件 create、delete、setData 事件类型 None 客户端连接状态发生变化的时候，会收到none的事件 NodeCreated 创建节点事件 NodeDeleted 删除节点事件 NodeDataChanged 节点数据发生变更 NodeChildrenChanged 子节点被创建、删除会发生]]></content>
+      <categories>
+        <category>分布式</category>
+      </categories>
+      <tags>
+        <tag>zookeeper</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[缓存之Redis详解]]></title>
     <url>%2F2018%2F07%2F27%2Fredis%2F</url>
     <content type="text"><![CDATA[Redis本质上是一个Key-Value类型的内存数据库，很像Memcached，整个数据库统统加载在内存当中进行操作，定期通过异步操作把数据库数据flush到硬盘上进行保存。因为是纯内存操作，Redis的性能非常出色，每秒可以处理超过10万次读写操作，是已知性能最快的Key-Value DB。Redis的出色之处不仅仅是性能，Redis最大的魅力是支持保存多种数据结构，此外单个value的最大限制是1GB，不行Memcached只能保存1MB的数据，因此Redis可以用来实现很多有用的功能，比如说用他的List来做FIFO双向链表，实现一个轻量级的高性能消息队列服务，用它的Set可以做高性能的tag系统等待。另外Redis也可以对存入的Key-Value设置expire时间，因此可以被当作一个功能加强版的Memcached来用。Redis的主要缺点是数据库容量收到物理内存的限制，不能用作海量数据的高性能读写，因此Redis时候的场景主要局限在较小数据量的高性能操作和运算上。]]></content>
+      <categories>
+        <category>分布式</category>
+      </categories>
       <tags>
         <tag>Redis</tag>
       </tags>
@@ -12,9 +26,11 @@
     <title><![CDATA[JVM之类加载器]]></title>
     <url>%2F2018%2F07%2F26%2Fclassloader%2F</url>
     <content type="text"><![CDATA[Java类加载器是Java运行时环境（Java Runtime Environment）的一部分，负责动态加载Java类到Java虚拟机的内存空间中。 类加载器BootStrap ClassLoader（启动类加载器） 负责加载&lt;JAVA_HOME&gt;/jre/lib目录下的jar包和Class文件。可以通过System.getProperty(“sun.boot.class.path”)获取加载的路径。 Extension ClassLoader（扩展类加载器） 负责加载&lt;JAVA_HOME&gt;/jre/lib/ext或java.ext.dirs指定目录下的jar包。 App ClassLoader（系统类加载器或应用类加载器） 负责加载ClassPath或java.class.path目录下的jar包和Class文件。可通过ClassLoader.getSystemClassLoader()来获取。 可以通过指定java.system.class.loader来自定义系统类加载器。 自定义ClassLoader 继承自ClassLoader类，重写findClass()方法 类加载器关系 类加载器直接的关系并非继承关系，而是包含关系。 启动类加载器没有父类。 扩展类加载器的父类为null。 系统类加载器的父类为sun.misc.Launcher$ExtClassLoader 自定义类加载器的父类默认为sun.misc.Launcher$AppClassLoader 类加载模式双亲委派模型 如果一个类加载器接收到类加载请求，首先把这个请求委派给父类加载器去完成，每一层类加载器都是如此；只有当父类加载器无法完成这个加载请求时，子加载器才会尝试自己去加载。 双亲委派模型的好处 可以确保Java核心库的类型安全。 可以确保Java核心库所提供的类不会被自定义的类所代替。 不同的类加载器可以为相同的名称的类创建额外的命名空间。 双亲委派模型的规则 父类加载器加载的类不能访问自类加载器加载的类。 子类加载器加载的类可以访问父类加载器加载的类 线程上下文类加载器（破坏了双亲委派模型） 在双亲委托模型下，类加载是由下向上的，即下层的类加载器委托上层进行加载。但是对于SPI来说，有些接口是JAVA核心库所提供的，而Java和核心库是由启动类加载器来加载的，而这些接口的实现却来自不同的jar包（厂商提供），Java的启动类是不会加载其他来源的jar包，这样传统的双亲委托模型就无法满足SPI的要求。而通过给当前线程设置上下文类加载器，就可以由设置的上下文类加载器来实现对于接口实现类的加载。1234567ClassLoader classLoader = Thread.currentThread().getContextClassLoader();try&#123; Thread.currentThread().setContextClassLoader(appClassLoader); //具体业务逻辑实现&#125;finally&#123; Thread.currentThread().setContextClassLoader(classLoader);&#125; 类加载器加载过程加载 查找并加载类的二进制数据，并放入内存中。 链接 验证：确保被加载的类的正确性。（类文件结构检查；语义检查；字节码检查；二进制兼容性的验证） 准备：为类的静态变量分配内存，并将初始化默认值。 解析：把类中的符号引用转化为直接引用。 符号引用：在编译时，Java类并不知道所引用的类的实际地址，因此只能使用符号来代替。 直接引用：直接执向目标的指针。 初始化 为类的静态变量赋予正确的初始值。 使用卸载 JVM自带的类加载器加载的类，在JVM的生命周期中，始终不会被卸载。 用户自定义的类加载器所加载的类是可以被卸载的。 类加载器时机 JVM虚拟机必须在每个类或接口被Java程序首次主动使用时才初始化。 主动使用 通过new创建一个类的实例 反射Class.forName() 访问类的静态变量或静态方法 为一个类的静态变量赋值 初始化一个类时，父类未初始化时，先初始化父类 虚拟机启动时，定义了main方法的类]]></content>
+      <categories>
+        <category>JVM</category>
+      </categories>
       <tags>
-        <tag>Java</tag>
-        <tag>JVM</tag>
+        <tag>类加载器</tag>
       </tags>
   </entry>
 </search>
