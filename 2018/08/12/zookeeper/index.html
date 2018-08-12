@@ -95,7 +95,7 @@
 <meta property="og:site_name" content="李波的博客">
 <meta property="og:description" content="设计思想 防止单点故障 节点数据一致性 数据恢复 顺序访问 高性能  应用场景 分布式锁、负载均衡、注册中心、配置中心  zoo.cnf配置详解 tickTime 心跳时间间隔 initLimit 客户端初始化连接最长多少个tickTime syncLimit leader和follower之间发送消息，请求和应答时间最长多少个tickTime 端口 2181（客户端提供服务）、2888（集群通信">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-12T08:37:27.531Z">
+<meta property="og:updated_time" content="2018-08-12T08:46:56.264Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="zookeeper（分布式协调服务）">
 <meta name="twitter:description" content="设计思想 防止单点故障 节点数据一致性 数据恢复 顺序访问 高性能  应用场景 分布式锁、负载均衡、注册中心、配置中心  zoo.cnf配置详解 tickTime 心跳时间间隔 initLimit 客户端初始化连接最长多少个tickTime syncLimit leader和follower之间发送消息，请求和应答时间最长多少个tickTime 端口 2181（客户端提供服务）、2888（集群通信">
@@ -387,30 +387,25 @@
 <li>临时节点和临时有序节点不能有子节点</li>
 <li>同级节点唯一</li>
 </ul>
-<h3 id="集群角色"><a href="#集群角色" class="headerlink" title="集群角色"></a>集群角色</h3><ul>
-<li>leader<ul>
+<h3 id="集群角色"><a href="#集群角色" class="headerlink" title="集群角色"></a>集群角色</h3><h4 id="leader"><a href="#leader" class="headerlink" title="leader"></a>leader</h4><ul>
 <li>事务请求的唯一调度和处理者，保证集群事务处理的顺序性</li>
 <li>集群内部各服务器的调度者</li>
 </ul>
-</li>
-<li>follower<ul>
+<h4 id="follower"><a href="#follower" class="headerlink" title="follower"></a>follower</h4><ul>
 <li>处理客户端非事务请求、转发事务请求给leader</li>
 <li>参与事务请求proposal（提案）的投票</li>
 <li>参与leader选举的投票</li>
 </ul>
-</li>
-<li>observer<ul>
+<h4 id="observer"><a href="#observer" class="headerlink" title="observer"></a>observer</h4><ul>
 <li>提供非事务请求服务</li>
 </ul>
-</li>
-</ul>
-<h3 id="选举状态"><a href="#选举状态" class="headerlink" title="选举状态"></a>选举状态</h3><ul>
+<h3 id="Leader选举"><a href="#Leader选举" class="headerlink" title="Leader选举"></a>Leader选举</h3><h4 id="选举状态"><a href="#选举状态" class="headerlink" title="选举状态"></a>选举状态</h4><ul>
 <li>LOOKING（初始启动，默认都是LOOKING）</li>
 <li>LEADING</li>
 <li>FOLLOWING</li>
 <li>OBSERVING</li>
 </ul>
-<h3 id="Leader选举"><a href="#Leader选举" class="headerlink" title="Leader选举"></a>Leader选举</h3><h4 id="选举参数"><a href="#选举参数" class="headerlink" title="选举参数"></a>选举参数</h4><ul>
+<h4 id="选举参数"><a href="#选举参数" class="headerlink" title="选举参数"></a>选举参数</h4><ul>
 <li>zxid（最大会设置成leader，事务ID越大，表示数据越新）64位<ul>
 <li>前32位是<strong>epoch</strong>编号，每一轮投票，epoch都会递增，每产生一个新的leader，那么新的leader的epoch会+1</li>
 <li>后32位消息计数器（自增），每接收一条消息+1，新leader选举后重置为0</li>
@@ -457,32 +452,27 @@
 <li>WRITE （写权限，create，exists，getChildren，setData，delete）</li>
 <li>ADMIN （管理权限，create，exists，getChildren，delete）</li>
 </ul>
-<h3 id="Watch机制"><a href="#Watch机制" class="headerlink" title="Watch机制"></a>Watch机制</h3><ul>
-<li>watcher特性<ul>
+<h3 id="Watch机制"><a href="#Watch机制" class="headerlink" title="Watch机制"></a>Watch机制</h3><h4 id="watcher特性"><a href="#watcher特性" class="headerlink" title="watcher特性"></a>watcher特性</h4><ul>
 <li>watcher是一次性的操作<ul>
 <li>当数据发生变化时，zookeeper会产生一个watcher事件，并且会发送到客户端，但是客户端只会收到一次通知。如果后续这个节点再次发生变化，那么之前设置watcher的客户端不会再次收到消息。</li>
 </ul>
 </li>
 <li>可以通过循环监听达到永久监听效果</li>
 </ul>
-</li>
-<li>如何注册事件机制<ul>
+<h4 id="事件类型"><a href="#事件类型" class="headerlink" title="事件类型"></a>事件类型</h4><ul>
+<li>None 客户端连接状态发生变化的时候，会收到none的事件</li>
+<li>NodeCreated 创建节点事件</li>
+<li>NodeDeleted 删除节点事件</li>
+<li>NodeDataChanged 节点数据发生变更</li>
+<li>NodeChildrenChanged 子节点被创建、删除会发生</li>
+</ul>
+<h4 id="如何注册事件机制"><a href="#如何注册事件机制" class="headerlink" title="如何注册事件机制"></a>如何注册事件机制</h4><ul>
 <li>绑定事件<ul>
 <li>getData、Exists、getChildren</li>
 </ul>
 </li>
 <li>触发事件<ul>
 <li>create、delete、setData</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>事件类型<ul>
-<li>None 客户端连接状态发生变化的时候，会收到none的事件</li>
-<li>NodeCreated 创建节点事件</li>
-<li>NodeDeleted 删除节点事件</li>
-<li>NodeDataChanged 节点数据发生变更</li>
-<li>NodeChildrenChanged 子节点被创建、删除会发生</li>
 </ul>
 </li>
 </ul>
@@ -716,7 +706,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#设计思想"><span class="nav-number">1.</span> <span class="nav-text">设计思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用场景"><span class="nav-number">2.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zoo-cnf配置详解"><span class="nav-number">3.</span> <span class="nav-text">zoo.cnf配置详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#节点特性"><span class="nav-number">4.</span> <span class="nav-text">节点特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集群角色"><span class="nav-number">5.</span> <span class="nav-text">集群角色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选举状态"><span class="nav-number">6.</span> <span class="nav-text">选举状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Leader选举"><span class="nav-number">7.</span> <span class="nav-text">Leader选举</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#选举参数"><span class="nav-number">7.1.</span> <span class="nav-text">选举参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#选举时机"><span class="nav-number">7.2.</span> <span class="nav-text">选举时机</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ZAB协议（基于paxos理论）"><span class="nav-number">8.</span> <span class="nav-text">ZAB协议（基于paxos理论）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#原子广播（事务提交，改进版本的2PC）"><span class="nav-number">8.1.</span> <span class="nav-text">原子广播（事务提交，改进版本的2PC）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#崩溃恢复"><span class="nav-number">8.2.</span> <span class="nav-text">崩溃恢复</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据安全"><span class="nav-number">9.</span> <span class="nav-text">数据安全</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#权限模式"><span class="nav-number">9.1.</span> <span class="nav-text">权限模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#权限类型"><span class="nav-number">9.2.</span> <span class="nav-text">权限类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Watch机制"><span class="nav-number">10.</span> <span class="nav-text">Watch机制</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#设计思想"><span class="nav-number">1.</span> <span class="nav-text">设计思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用场景"><span class="nav-number">2.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zoo-cnf配置详解"><span class="nav-number">3.</span> <span class="nav-text">zoo.cnf配置详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#节点特性"><span class="nav-number">4.</span> <span class="nav-text">节点特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集群角色"><span class="nav-number">5.</span> <span class="nav-text">集群角色</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#leader"><span class="nav-number">5.1.</span> <span class="nav-text">leader</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#follower"><span class="nav-number">5.2.</span> <span class="nav-text">follower</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#observer"><span class="nav-number">5.3.</span> <span class="nav-text">observer</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Leader选举"><span class="nav-number">6.</span> <span class="nav-text">Leader选举</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#选举状态"><span class="nav-number">6.1.</span> <span class="nav-text">选举状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#选举参数"><span class="nav-number">6.2.</span> <span class="nav-text">选举参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#选举时机"><span class="nav-number">6.3.</span> <span class="nav-text">选举时机</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ZAB协议（基于paxos理论）"><span class="nav-number">7.</span> <span class="nav-text">ZAB协议（基于paxos理论）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#原子广播（事务提交，改进版本的2PC）"><span class="nav-number">7.1.</span> <span class="nav-text">原子广播（事务提交，改进版本的2PC）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#崩溃恢复"><span class="nav-number">7.2.</span> <span class="nav-text">崩溃恢复</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据安全"><span class="nav-number">8.</span> <span class="nav-text">数据安全</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#权限模式"><span class="nav-number">8.1.</span> <span class="nav-text">权限模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#权限类型"><span class="nav-number">8.2.</span> <span class="nav-text">权限类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Watch机制"><span class="nav-number">9.</span> <span class="nav-text">Watch机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#watcher特性"><span class="nav-number">9.1.</span> <span class="nav-text">watcher特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事件类型"><span class="nav-number">9.2.</span> <span class="nav-text">事件类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何注册事件机制"><span class="nav-number">9.3.</span> <span class="nav-text">如何注册事件机制</span></a></li></ol></li></ol></div>
             
 
           </div>
