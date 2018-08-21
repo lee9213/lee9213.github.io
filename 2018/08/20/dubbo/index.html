@@ -97,7 +97,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/dubbo-provider.jpg">
 <meta property="og:image" content="http://yoursite.com/images/dubbo-consumer.jpg">
-<meta property="og:updated_time" content="2018-08-20T15:35:20.700Z">
+<meta property="og:updated_time" content="2018-08-20T15:48:31.639Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Dubbo">
 <meta name="twitter:description" content="高性能RPC框架，主要用于服务治理。包括功能：  负载均衡（默认加权随机） 集群容错（默认failover） 服务降级 监控（Monitor） 提供者和消费者定时每分钟发送一次统计数据到监控中心   服务注册与发现特点：连通性、健壮性、伸缩性  启动检查机制 关闭某个服务的启动时检查xml：&amp;lt;dubbo:reference interface=&amp;quot;com.lee9213.servic">
@@ -519,7 +519,7 @@
 <h3 id="配置优先级"><a href="#配置优先级" class="headerlink" title="配置优先级"></a>配置优先级</h3><ul>
 <li>XML配置<br>以timeout为例，显示了配置的查找顺序，其他retries、loadbalance等类似。<ul>
 <li>方法级优先，接口级次之，全局配置再次之。</li>
-<li>如果级别一样，则消费者优先，提供方次之。<br>其中，服务提供方配置，通过URL经由注册中心传递给消费方。建议由服务提供方设置超时。</li>
+<li>如果级别一样，则消费者优先，提供者次之。<br>其中，服务提供方配置，通过URL经由注册中心传递给消费方。建议由服务提供方设置超时。</li>
 </ul>
 </li>
 <li>属性配置参数优先级<ul>
