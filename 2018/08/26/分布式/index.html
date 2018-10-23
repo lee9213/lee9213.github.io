@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="QzC4gqNx1vAo_VxH0sQdkAvL5X7d_WsC8VNpcpEBfIE" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+  
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="分布式," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="李波的博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="分布式理论CAP Consistency（一致性） 所有节点同一时间的数据完全一致  Availability（可用性） 每次请求都能获取到非错的响应  Partition Tolerance（分区容错） 当某节点或网络分区故障的时候，系统仍能够对外提供满足一致性和可用性的服务   BASE Basically Consistency（基本可用） 系统发生不可预知的故障，运行损失部分可用性  响应">
+<meta name="keywords" content="分布式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式">
+<meta property="og:url" content="http://yoursite.com/2018/08/26/分布式/index.html">
+<meta property="og:site_name" content="李波的博客">
+<meta property="og:description" content="分布式理论CAP Consistency（一致性） 所有节点同一时间的数据完全一致  Availability（可用性） 每次请求都能获取到非错的响应  Partition Tolerance（分区容错） 当某节点或网络分区故障的时候，系统仍能够对外提供满足一致性和可用性的服务   BASE Basically Consistency（基本可用） 系统发生不可预知的故障，运行损失部分可用性  响应">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-10-23T13:14:37.316Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="分布式">
+<meta name="twitter:description" content="分布式理论CAP Consistency（一致性） 所有节点同一时间的数据完全一致  Availability（可用性） 每次请求都能获取到非错的响应  Partition Tolerance（分区容错） 当某节点或网络分区故障的时候，系统仍能够对外提供满足一致性和可用性的服务   BASE Basically Consistency（基本可用） 系统发生不可预知的故障，运行损失部分可用性  响应">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/26/分布式/"/>
+
+
+
+
+
+  <title>分布式 | 李波的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李波的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/26/分布式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李波">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李波的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">分布式</h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-26T21:01:56+08:00">
+                2018-08-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/分布式/" itemprop="url" rel="index">
+                    <span itemprop="name">分布式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/26/分布式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/26/分布式/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i> 阅读次数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="分布式理论"><a href="#分布式理论" class="headerlink" title="分布式理论"></a>分布式理论</h2><h3 id="CAP"><a href="#CAP" class="headerlink" title="CAP"></a>CAP</h3><ul>
+<li><p>Consistency（一致性）</p>
+<p>所有节点同一时间的数据完全一致</p>
+</li>
+<li><p>Availability（可用性）</p>
+<p>每次请求都能获取到非错的响应</p>
+</li>
+<li><p>Partition Tolerance（分区容错）</p>
+<p>当某节点或网络分区故障的时候，系统仍能够对外提供满足一致性和可用性的服务</p>
+</li>
+</ul>
+<h3 id="BASE"><a href="#BASE" class="headerlink" title="BASE"></a>BASE</h3><ul>
+<li><p>Basically Consistency（基本可用）</p>
+<p>系统发生不可预知的故障，运行损失部分可用性</p>
+<ul>
+<li>响应时间损失，延长响应时间</li>
+<li>功能损失，降级页面</li>
+</ul>
+</li>
+<li><p>Soft State（软状态）</p>
+<p>数据副本在整个运行期间，允许某一时刻存在中间状态，但是最终数据的状态保持一致</p>
+</li>
+<li><p>Eventually Consistent（最终一致性）</p>
+<p>在经过一定时间后，所有数据副本的状态都已经保持一致</p>
+</li>
+</ul>
+<h3 id="一致性算法"><a href="#一致性算法" class="headerlink" title="一致性算法"></a>一致性算法</h3><ul>
+<li>paxos<ul>
+<li>基于消息传递且具有高度容错性的一致性算法</li>
+</ul>
+</li>
+<li>raft</li>
+</ul>
+<h3 id="限流"><a href="#限流" class="headerlink" title="限流"></a>限流</h3><ul>
+<li>算法<ul>
+<li>令牌桶<ul>
+<li>按照固定的速率往桶中添加令牌，请求是否被处理需要看桶中令牌是否足够，当令牌数减为0时则拒绝新的请求</li>
+<li>限制的是平均流入速率，并允许一定程度突发流量</li>
+</ul>
+</li>
+<li>漏桶<ul>
+<li>按照常量固定速率流出请求，流入请求速率任意，当流入的请求数累积到漏桶容量时，则新入的请求被拒绝</li>
+<li>限制的是常量流出速率，从而平滑突发流入速率</li>
+</ul>
+</li>
+<li>计数器<ul>
+<li>滑动窗口算法</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>实现方案<ul>
+<li>Nginx<ul>
+<li><code>ngx_http_limit_conn_module</code>连接数限流模块</li>
+<li><code>ngx_http_limit_req_module</code>请求限流模块（漏桶算法）</li>
+</ul>
+</li>
+<li>Guava<ul>
+<li><code>RateLimiter</code>令牌桶算法<ul>
+<li><code>SmoothBursty</code>平滑突发限流</li>
+<li><code>SmoothWarmingUp</code>平滑预热限流</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Tomcat<ul>
+<li><code>maxConnections</code>最大连接数</li>
+<li><code>maxThreads</code>最大线程数</li>
+<li><code>acceptCount</code>当tomgcat线程数达到最大时，接受排队的请求个数</li>
+</ul>
+</li>
+<li>redis+lua</li>
+<li>nginx+lua</li>
+</ul>
+</li>
+</ul>
+<h3 id="削峰"><a href="#削峰" class="headerlink" title="削峰"></a>削峰</h3><ul>
+<li><p>缓存</p>
+</li>
+<li><p>消息队列，推模式改成拉模式</p>
+</li>
+</ul>
+<h3 id="熔断"><a href="#熔断" class="headerlink" title="熔断"></a>熔断</h3><ul>
+<li>当某个异常条件被触发，直接熔断整个服务，而不是一直等到此服务超时</li>
+<li>HyStrix</li>
+</ul>
+<h3 id="降级"><a href="#降级" class="headerlink" title="降级"></a>降级</h3><ul>
+<li>当某个服务熔断之后，服务器将不再被调用，此时客户端返回一个缺省值</li>
+</ul>
+<h2 id="分布式Session"><a href="#分布式Session" class="headerlink" title="分布式Session"></a>分布式Session</h2><ul>
+<li><p>session replication（session复制）</p>
+</li>
+<li><p>session sticky（固定同一台请求）</p>
+</li>
+<li><p>缓存集中式（Redis存session）</p>
+</li>
+</ul>
+<h2 id="分布式缓存"><a href="#分布式缓存" class="headerlink" title="分布式缓存"></a>分布式缓存</h2><h3 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h3><h4 id="数据结构类型"><a href="#数据结构类型" class="headerlink" title="数据结构类型"></a>数据结构类型</h4><h5 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h5><ul>
+<li>sds（simple dynamic string）简单动态字符串</li>
+<li>dict 维护key-value映射关系</li>
+<li>quicklist</li>
+<li>ziplist</li>
+<li>skiplist</li>
+<li>robj</li>
+<li>intset</li>
+</ul>
+<h5 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h5><ul>
+<li>String<ul>
+<li>set/get/decr/incr</li>
+</ul>
+</li>
+<li>Hash<ul>
+<li>hset/hget/hexists</li>
+</ul>
+</li>
+<li>List<ul>
+<li>lpush/rpush/lpop/rpop/llen</li>
+</ul>
+</li>
+<li>Set<ul>
+<li>sadd/srem/scard/sismember</li>
+</ul>
+</li>
+<li>Sort Set<ul>
+<li>zadd/zcard/zcount/zrange/zrem/zscore</li>
+</ul>
+</li>
+<li>transaction<ul>
+<li>multi/exec/discard/watch</li>
+<li>Redis Cluster不支持</li>
+</ul>
+</li>
+<li>pipeline<ul>
+<li>JedisClusterConnection不支持</li>
+<li>LettuceClusterConnection支持</li>
+<li>openPipeline/closePipeline</li>
+<li>需注意批量命令大小，防止返回值超出内存</li>
+<li>节省网络延迟的时间，非线程安全</li>
+</ul>
+</li>
+</ul>
+<h4 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h4><ul>
+<li>RDB<ul>
+<li>快照，Redis支持将当前数据的快照存成一个数据文件的持久化机制</li>
+</ul>
+</li>
+<li>AOF<ul>
+<li>日志，append only file，追加写入的日志文件，可识别的纯文本，它的内容就是一个redis标准命令</li>
+</ul>
+</li>
+</ul>
+<h4 id="过期回收策略"><a href="#过期回收策略" class="headerlink" title="过期回收策略"></a>过期回收策略</h4><ul>
+<li><code>noeviction</code>不回收</li>
+<li><code>allkeys-lru</code>从所有键中删除最近最少使用的键</li>
+<li><code>allkeys-random</code>从所有键中随机删除</li>
+<li><code>volatile-lru</code>从设置了过期时间的键中删除最近最少使用的键</li>
+<li><code>volatile-random</code>从设置了过期时间的键中随机删除</li>
+<li><code>volatile-ttl</code>从设置了过期时间的键中选中存活时间最短的键删除</li>
+</ul>
+<h4 id="集群方案"><a href="#集群方案" class="headerlink" title="集群方案"></a>集群方案</h4><ul>
+<li>Redis Cluster（官方）<ul>
+<li>客户端直连Redis，免去了proxy代理的损耗</li>
+<li>去中心化，最大可增加1000个节点，性能随节点增加而线性扩展</li>
+<li>使用hash slot方式 将16384个hash slot 覆盖到所有节点上</li>
+<li>简单易上手，管理方便，可自行增加或摘除节点，移动分槽等</li>
+<li>一致性hash思想</li>
+<li>不支持事务，不支持数据库切换，不支持mget，单个数据库</li>
+</ul>
+</li>
+<li>codis（豌豆荚）<ul>
+<li>多了一层代理</li>
+<li>支持透明的扩/缩容</li>
+<li>具有图形化管理和监控工具，运维方便</li>
+<li>数据根据key分布到1024个slot内</li>
+</ul>
+</li>
+</ul>
+<h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><ul>
+<li>缓存雪崩<ul>
+<li>数据未加载到缓存中，同一时间缓存全部失效，导致所有请求到查数据库</li>
+<li>解决方法<ul>
+<li>通过加锁控制缓存失效对数据库造成的压力</li>
+<li>尽量让失效时间点均匀分布</li>
+<li>二级缓存</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>缓存击穿<ul>
+<li>类似缓存雪崩，缓存雪崩针对多个key，缓存击穿针对单个key过期，恰好在这个点有大并发的请求过滤，导致所有请求都到数据库</li>
+<li>解决方法<ul>
+<li>分布式锁</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>缓存穿透<ul>
+<li>查询一个一定不存在的数据，导致每次都需要从数据库区查</li>
+<li>解决方法<ul>
+<li>对查询结果为空的情况也进行缓存，过期时间设置短一点</li>
+<li>对一定不存在的key进行过滤</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>缓存预热<ul>
+<li>系统上线前，将数据加载到缓存中</li>
+<li>解决方法<ul>
+<li>定时刷新缓存</li>
+<li>单个缓存预热框架</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>缓存更新<ul>
+<li>定时清理过期缓存，先判断缓存是否过期，过期再冲数据库查</li>
+</ul>
+</li>
+<li>缓存降级<ul>
+<li>对于不重要的数据，Redis故障，不查数据库，直接返回默认值</li>
+</ul>
+</li>
+</ul>
+<h2 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h2><h3 id="Redis-1"><a href="#Redis-1" class="headerlink" title="Redis"></a>Redis</h3><ul>
+<li>实现方案<ul>
+<li>框架：redisson（内部lua脚本）</li>
+<li>redlock算法<ul>
+<li>尝试从N个相互独立的Redis实例获取锁，如果一个实例不可用，应该尽快尝试下一个</li>
+<li>计算获取锁消耗时间，只有当这个时间小于锁的过期时间，并且从大多数（N/2+1）实例上获取了锁，那么就认为锁获取成功了</li>
+<li>如果获锁获取失败，会到每个实例上释放锁</li>
+</ul>
+</li>
+<li>lua脚本实现</li>
+</ul>
+</li>
+<li>优缺点<ul>
+<li>性能高，可靠性没有zookeeper的高</li>
+</ul>
+</li>
+</ul>
+<h3 id="Zookeeper"><a href="#Zookeeper" class="headerlink" title="Zookeeper"></a>Zookeeper</h3><ul>
+<li>实现方案<ul>
+<li>Curator</li>
+</ul>
+</li>
+<li>优缺点<ul>
+<li>性能没有Redis高，可靠性高</li>
+</ul>
+</li>
+</ul>
+<h2 id="分布式消息队列"><a href="#分布式消息队列" class="headerlink" title="分布式消息队列"></a>分布式消息队列</h2><h3 id="Redis-2"><a href="#Redis-2" class="headerlink" title="Redis"></a>Redis</h3><ul>
+<li>轻量级，用于实时性较高的消息推送，不保证可靠性</li>
+<li>没有相应的机制保证消息的消费，消费者消费失败，消息丢失</li>
+<li>可靠发布/队列监控/流量控制都需要自行实现</li>
+</ul>
+<h3 id="ActiveMQ"><a href="#ActiveMQ" class="headerlink" title="ActiveMQ"></a>ActiveMQ</h3><ul>
+<li>支持持久化（内存/文件/数据库）</li>
+<li>支持事务</li>
+<li>支持协议（OpenWire/STOMP/REST/XMPP/AMQP）</li>
+<li>可能出现消息丢失，不适合上千个队列的应用场景</li>
+<li>社区不够活跃，5.x维护较少</li>
+</ul>
+<h3 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h3><ul>
+<li>性能好，具有持久化（内存/文件）和消息确认机制，可靠性高</li>
+<li>支持事务</li>
+<li>支持协议（STOMP/SMPP/XMPP/AMQP）</li>
+<li>集群不支持动态扩展</li>
+</ul>
+<h3 id="RocketMQ"><a href="#RocketMQ" class="headerlink" title="RocketMQ"></a>RocketMQ</h3><ul>
+<li>高吞吐量，高可用性，严格保证消息顺序</li>
+<li>支持持久化（磁盘文件）</li>
+<li>支持事务</li>
+<li>自已定义的一套协议</li>
+<li>支持单机1万以上的持久化队列</li>
+</ul>
+<h3 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h3><ul>
+<li>吞吐量高</li>
+<li>基于pull模式来处理消息消费，主要用于日志收集和传输</li>
+<li>不支持事务</li>
+</ul>
+<h3 id="ZeroMQ"><a href="#ZeroMQ" class="headerlink" title="ZeroMQ"></a>ZeroMQ</h3><ul>
+<li>扩展性号，开发必须灵活，socket库的重新封装</li>
+<li>不能持久化</li>
+<li>不支持事务</li>
+<li>不支持负载均衡</li>
+</ul>
+<h3 id="知识点-1"><a href="#知识点-1" class="headerlink" title="知识点"></a>知识点</h3><ul>
+<li>消息队列使用场景<ul>
+<li>异步处理，比如注册发送短信或邮件</li>
+<li>应用解耦，比如用户下单，订单系统通知库存系统</li>
+<li>流量削峰，比如控制流量暴增</li>
+<li>消息通讯，比如点对点消息队列/聊天室</li>
+</ul>
+</li>
+<li>消息幂等<ul>
+<li>全局ID，业务ID</li>
+</ul>
+</li>
+<li>消息重发补偿<ul>
+<li>指数退避策略，先隔x秒重发，2x秒重发，4x秒重发，以此类推</li>
+</ul>
+</li>
+<li>消息堆积<ul>
+<li>增加消费者的处理能力或减少发布频率；给消息设置年龄，超时就丢弃</li>
+</ul>
+</li>
+<li>消息有序<ul>
+<li>通过hash分配到一个队列里，每个队列只有一个消费者</li>
+</ul>
+</li>
+</ul>
+<h2 id="分布式事务"><a href="#分布式事务" class="headerlink" title="分布式事务"></a>分布式事务</h2><h3 id="两阶段提交协议"><a href="#两阶段提交协议" class="headerlink" title="两阶段提交协议"></a>两阶段提交协议</h3><ul>
+<li>步骤<ul>
+<li>准备阶段<ul>
+<li>协调者询问所有的参与者是否可以提交事务</li>
+<li>参与者执行询问发起为止的所有事务操作，并将Undo和Redo信息记录到事务日志中</li>
+<li>各参与者响应协调者发起的询问，如果参与者阶段事务执行成功，返回同意，否则返回中止</li>
+</ul>
+</li>
+<li>提交阶段<ul>
+<li>协调者收到同意，则向参与者发起正式提交事务的请求，否则向参与者发起回滚事务的请求</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>实现案例<ul>
+<li>TCC补偿模式<ul>
+<li>Try 预留业务资源</li>
+<li>Confirm 确认执行业务操作</li>
+<li>Cancel 取消执行业务操作</li>
+</ul>
+</li>
+<li>DTS</li>
+<li>JTA</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>同步阻塞</li>
+<li>数据不一致<ul>
+<li>在阶段二中，如果协调者发送commit之后，网络故障，导致部分参与者收到了commit请求，这时收到了commit请求的参与者执行了事务提交，其他参与者无法进行提交</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="三阶段提交协议"><a href="#三阶段提交协议" class="headerlink" title="三阶段提交协议"></a>三阶段提交协议</h3><ul>
+<li>步骤<ul>
+<li>CanCommit<ul>
+<li>协调者询问所有参与者是否可以执行事务</li>
+</ul>
+</li>
+<li>PreCommit<ul>
+<li>协调者向所有参与者发送preCommit请求，并进入Prepared阶段</li>
+<li>参与者收到preCommit请求后，会执行事务，并将Undo和Redo信息记录到事务日志中</li>
+<li>参与者反馈给协调者</li>
+</ul>
+</li>
+<li>doCommit<ul>
+<li>向所有参与者发送commit请求</li>
+<li>参与者收到doCommit请求后，执行事务提交操作</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>数据不一致<ul>
+<li>在阶段三中，如果参与者收到commit消息后，网络故障，这种情况，参与者仍会提交事务</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="李波 wechat" style="width: 200px; max-width: 100%;"/>
+    <div>订阅我的公众号，获取更新内容！</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="李波 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="李波 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/分布式/" rel="tag"># 分布式</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/23/jvm/" rel="next" title="jvm">
+                <i class="fa fa-chevron-left"></i> jvm
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/28/分布式架构设计/" rel="prev" title="分布式架构设计">
+                分布式架构设计 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">李波</p>
+              <p class="site-description motion-element" itemprop="description">读万卷书，更要行万里路！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lee9213" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:lee9213@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式理论"><span class="nav-number">1.</span> <span class="nav-text">分布式理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CAP"><span class="nav-number">1.1.</span> <span class="nav-text">CAP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BASE"><span class="nav-number">1.2.</span> <span class="nav-text">BASE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一致性算法"><span class="nav-number">1.3.</span> <span class="nav-text">一致性算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#限流"><span class="nav-number">1.4.</span> <span class="nav-text">限流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#削峰"><span class="nav-number">1.5.</span> <span class="nav-text">削峰</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#熔断"><span class="nav-number">1.6.</span> <span class="nav-text">熔断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#降级"><span class="nav-number">1.7.</span> <span class="nav-text">降级</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式Session"><span class="nav-number">2.</span> <span class="nav-text">分布式Session</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式缓存"><span class="nav-number">3.</span> <span class="nav-text">分布式缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis"><span class="nav-number">3.1.</span> <span class="nav-text">Redis</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据结构类型"><span class="nav-number">3.1.1.</span> <span class="nav-text">数据结构类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#数据结构"><span class="nav-number">3.1.1.1.</span> <span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数据类型"><span class="nav-number">3.1.1.2.</span> <span class="nav-text">数据类型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#持久化"><span class="nav-number">3.1.2.</span> <span class="nav-text">持久化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#过期回收策略"><span class="nav-number">3.1.3.</span> <span class="nav-text">过期回收策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集群方案"><span class="nav-number">3.1.4.</span> <span class="nav-text">集群方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#知识点"><span class="nav-number">3.1.5.</span> <span class="nav-text">知识点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式锁"><span class="nav-number">4.</span> <span class="nav-text">分布式锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-1"><span class="nav-number">4.1.</span> <span class="nav-text">Redis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Zookeeper"><span class="nav-number">4.2.</span> <span class="nav-text">Zookeeper</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式消息队列"><span class="nav-number">5.</span> <span class="nav-text">分布式消息队列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-2"><span class="nav-number">5.1.</span> <span class="nav-text">Redis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ActiveMQ"><span class="nav-number">5.2.</span> <span class="nav-text">ActiveMQ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RabbitMQ"><span class="nav-number">5.3.</span> <span class="nav-text">RabbitMQ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RocketMQ"><span class="nav-number">5.4.</span> <span class="nav-text">RocketMQ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kafka"><span class="nav-number">5.5.</span> <span class="nav-text">Kafka</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ZeroMQ"><span class="nav-number">5.6.</span> <span class="nav-text">ZeroMQ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#知识点-1"><span class="nav-number">5.7.</span> <span class="nav-text">知识点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式事务"><span class="nav-number">6.</span> <span class="nav-text">分布式事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#两阶段提交协议"><span class="nav-number">6.1.</span> <span class="nav-text">两阶段提交协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三阶段提交协议"><span class="nav-number">6.2.</span> <span class="nav-text">三阶段提交协议</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李波</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 访问总量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/2.1.3/jquery.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/fastclick/1.0.6/fastclick.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazyload/1.9.3/jquery.lazyload.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.ui.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'VVTmNASklzcajxSnegpltILP-gzGzoHsz',
+        appKey: 'sttDYywjzt3OR9IyVjaTagUN',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

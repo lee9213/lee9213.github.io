@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="QzC4gqNx1vAo_VxH0sQdkAvL5X7d_WsC8VNpcpEBfIE" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+  
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="juc," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="李波的博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="锁ReentrantLock 基于AQS实现 乐观锁 可中断 支持公平锁和非公平锁 可以判断锁状态  ReentrantReadWriteLock 类似ReentrantLock readLock，读锁，共享锁 没有其他线程的写锁 没有写请求 有写请求，但调用线程和持有锁的线程是同一个   writeLock，写锁，独占锁 没有其他线程的读锁 没有其他线程的写锁    同步设备AbstractQu">
+<meta name="keywords" content="juc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="juc并发包">
+<meta property="og:url" content="http://yoursite.com/2018/08/16/juc/index.html">
+<meta property="og:site_name" content="李波的博客">
+<meta property="og:description" content="锁ReentrantLock 基于AQS实现 乐观锁 可中断 支持公平锁和非公平锁 可以判断锁状态  ReentrantReadWriteLock 类似ReentrantLock readLock，读锁，共享锁 没有其他线程的写锁 没有写请求 有写请求，但调用线程和持有锁的线程是同一个   writeLock，写锁，独占锁 没有其他线程的读锁 没有其他线程的写锁    同步设备AbstractQu">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-10-23T13:13:39.563Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="juc并发包">
+<meta name="twitter:description" content="锁ReentrantLock 基于AQS实现 乐观锁 可中断 支持公平锁和非公平锁 可以判断锁状态  ReentrantReadWriteLock 类似ReentrantLock readLock，读锁，共享锁 没有其他线程的写锁 没有写请求 有写请求，但调用线程和持有锁的线程是同一个   writeLock，写锁，独占锁 没有其他线程的读锁 没有其他线程的写锁    同步设备AbstractQu">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/16/juc/"/>
+
+
+
+
+
+  <title>juc并发包 | 李波的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李波的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/16/juc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李波">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李波的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">juc并发包</h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-16T20:52:41+08:00">
+                2018-08-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/16/juc/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/16/juc/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i> 阅读次数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h3><h4 id="ReentrantLock"><a href="#ReentrantLock" class="headerlink" title="ReentrantLock"></a>ReentrantLock</h4><ul>
+<li>基于AQS实现</li>
+<li>乐观锁</li>
+<li>可中断</li>
+<li>支持公平锁和非公平锁</li>
+<li>可以判断锁状态</li>
+</ul>
+<h4 id="ReentrantReadWriteLock"><a href="#ReentrantReadWriteLock" class="headerlink" title="ReentrantReadWriteLock"></a>ReentrantReadWriteLock</h4><ul>
+<li>类似ReentrantLock</li>
+<li>readLock，读锁，共享锁<ul>
+<li>没有其他线程的写锁</li>
+<li>没有写请求</li>
+<li>有写请求，但调用线程和持有锁的线程是同一个</li>
+</ul>
+</li>
+<li>writeLock，写锁，独占锁<ul>
+<li>没有其他线程的读锁</li>
+<li>没有其他线程的写锁</li>
+</ul>
+</li>
+</ul>
+<h3 id="同步设备"><a href="#同步设备" class="headerlink" title="同步设备"></a>同步设备</h3><h4 id="AbstractQueuedSynchronizer"><a href="#AbstractQueuedSynchronizer" class="headerlink" title="AbstractQueuedSynchronizer"></a>AbstractQueuedSynchronizer</h4><ul>
+<li>同步队列器</li>
+<li>提供了一个FIFO双向队列</li>
+<li>通过UnSafe操作</li>
+</ul>
+<h4 id="CountDownLatch"><a href="#CountDownLatch" class="headerlink" title="CountDownLatch"></a>CountDownLatch</h4><ul>
+<li>允许一个或多个线程等待其他线程完成操作</li>
+<li>内部采用AbstractQueuedSynchronizer的共享锁</li>
+<li>采用减计数方式，计数为0时是否所有等待的线程，当计数为0时，计数无法重置，每次调用countDown计数减1，调用await值进行阻塞对计数无影响</li>
+</ul>
+<h4 id="CyclicBarrier"><a href="#CyclicBarrier" class="headerlink" title="CyclicBarrier"></a>CyclicBarrier</h4><ul>
+<li>可循环使用的屏障</li>
+<li>让一组线程到达一个屏障时阻塞，直到最后一个线程到达屏障时，所有被屏障拦截的线程才会继续执行</li>
+<li>内部采用ReentrantLock实现</li>
+<li>采用加计数方式，计数达到指定值时释放所有等待的线程，计数重置为0重新开始，每次调用await计数加1，若计数不等于指定值，则线程阻塞</li>
+</ul>
+<h4 id="Semphore"><a href="#Semphore" class="headerlink" title="Semphore"></a>Semphore</h4><ul>
+<li>信号量，控制同时访问特定资源的线程数量</li>
+<li>内部实现AbstractQueuedSynchronizer的共享锁</li>
+<li>通过acquire获取一个许可，如果没有就阻塞等待，通过release释放一个许可</li>
+</ul>
+<h4 id="Exchange"><a href="#Exchange" class="headerlink" title="Exchange"></a>Exchange</h4><ul>
+<li>交换者，用于线程间的数据交换，它提供一个同步点，在这个同步点，两个线程可以交换彼此的数据</li>
+</ul>
+<h3 id="并发容器"><a href="#并发容器" class="headerlink" title="并发容器"></a>并发容器</h3><h4 id="CopyOnWriteArrayList"><a href="#CopyOnWriteArrayList" class="headerlink" title="CopyOnWriteArrayList"></a>CopyOnWriteArrayList</h4><h4 id="ConcurrentLinkedQueue"><a href="#ConcurrentLinkedQueue" class="headerlink" title="ConcurrentLinkedQueue"></a>ConcurrentLinkedQueue</h4><h4 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h4><ul>
+<li>默认容量为16，默认并发度16，按照2的幂次方扩容，不能插入key为null和value为null的元素</li>
+<li>JDK1.7<ul>
+<li>分段锁Segment+HashEntry</li>
+<li>size方法<ul>
+<li>先采用不加锁的方式，连续计算元素的个数，最多计算3次，如果前两次计算结果相同，则说明计算出来的元素个数准确；如果不相同，则给每个Segment进行加锁，再计算一次元素的个数</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>JDK1.8<ul>
+<li>Node+CAS+synchronized</li>
+<li>size方法<ul>
+<li>使用volatile类型的变量baseCount记录元素个数，通过addCount()更新baseCount；baseCount+counterCells遍历的value</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="原子操作类"><a href="#原子操作类" class="headerlink" title="原子操作类"></a>原子操作类</h3><h4 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h4><ul>
+<li>AtomicInteger</li>
+<li>AtomicLong</li>
+<li>AtomicBoolean</li>
+</ul>
+<h4 id="数组类型"><a href="#数组类型" class="headerlink" title="数组类型"></a>数组类型</h4><ul>
+<li>AtomicIntegerArray</li>
+<li>AtomicLongArray</li>
+</ul>
+<h4 id="引用类型"><a href="#引用类型" class="headerlink" title="引用类型"></a>引用类型</h4><ul>
+<li>AtomicReference</li>
+<li>AtomicReferenceArray</li>
+<li>AtomicReferenceFieldUpdater</li>
+<li>AtomicMarkableReference</li>
+</ul>
+<h4 id="字段类"><a href="#字段类" class="headerlink" title="字段类"></a>字段类</h4><ul>
+<li>AtomicIntegerFieldUpdater</li>
+<li>AtomicLongFieldUpdater</li>
+<li>AtomicStampedReference</li>
+</ul>
+<h3 id="Fork-Join框架"><a href="#Fork-Join框架" class="headerlink" title="Fork/Join框架"></a>Fork/Join框架</h3><p>用于并行执行任务的框架，Fork把一个大任务切分若干个子任务并行的执行，Join合并这些子任务的执行结果，最后得到这个大任务的结果</p>
+<ul>
+<li><p>ForkJoinPool</p>
+<p>ForkJoin框架的任务池，ExecuteService的实现类</p>
+</li>
+<li><p>ForkJoinTask</p>
+<ul>
+<li>Future的子类，框架任务的抽象</li>
+<li><code>RecursiveAction</code> ForkJoinTask的子类，用于没有返回结果的任务</li>
+<li><code>RecursiveTask</code> ForkJoinTask的子类，用于有返回结果的任务</li>
+</ul>
+</li>
+<li><p><code>ForkJoinWorkerThread</code>工作线程</p>
+</li>
+</ul>
+<h3 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h3><h4 id="Executors"><a href="#Executors" class="headerlink" title="Executors"></a>Executors</h4><ul>
+<li>newFixedThreadPool<ul>
+<li>初始化一个核心线程数和最大线程数相同的线程池</li>
+<li>内部使用LinkedBlockingQueue作为阻塞队列</li>
+</ul>
+</li>
+<li>newSingleThreadExecutor<ul>
+<li>初始化只有一个线程的线程池，如果该线程异常结束，会重新开始一个新的线程继续执行任务，可以保证任务提交的顺序</li>
+<li>内部使用LinkedBlockingQueue作为阻塞队列</li>
+</ul>
+</li>
+<li>newCachedThreadPool<ul>
+<li>初始化一个可缓存线程的线程池，默认60s</li>
+<li>内部使用SynchronousQueue作为阻塞队列</li>
+</ul>
+</li>
+<li>newScheduledThreadPool<ul>
+<li>初始化可以在指定时间内周期性的执行所提交的任务</li>
+<li>内部使用DelayedWorkQueue作为阻塞队列</li>
+</ul>
+</li>
+</ul>
+<h4 id="ThreadPoolExecutor"><a href="#ThreadPoolExecutor" class="headerlink" title="ThreadPoolExecutor"></a>ThreadPoolExecutor</h4><ul>
+<li><code>corePoolSize</code>核心线程池大小</li>
+<li><code>maximumPoolSize</code>最大线程池大小</li>
+<li><code>keepAliveTime</code>线程池中超过corePoolSize数目的空闲线程最大存活时间</li>
+<li><code>TimeUnit</code>keepAliveTime的时间单位</li>
+<li><code>workQueue</code>阻塞任务队列<ul>
+<li><code>ArrayBlockingQueue</code>基于数组的有界阻塞队列，FIFO</li>
+<li><code>LinkedBlockingQueue</code>基于链表的有界阻塞队列，FIFO，吞吐量高于ArrayBlockingQueue</li>
+<li><code>SynchronousQueue</code>不存储元素的阻塞队列，每个插入操作必须等另一个线程调用移除操作，否则一直阻塞，吞吐量通常高于LinkedBlockingQueue</li>
+<li><code>PriorityBlockQueue</code>具有优先级的无界阻塞队列</li>
+<li><code>DelayQueue</code>支持延时获取元素的无界阻塞队列</li>
+</ul>
+</li>
+<li><code>RejectedExecutionHandler</code>任务丢弃策略<ul>
+<li>AbortPolicy（丢弃任务，抛运行时异常）</li>
+<li>CallerRunsPolicy（执行任务）</li>
+<li>DiscardPolicy（忽略）</li>
+<li>DiscardOldestPolicy（从队列中踢出最先进入队列的任务）</li>
+</ul>
+</li>
+<li>threadFactory</li>
+</ul>
+<h4 id="线程池状态"><a href="#线程池状态" class="headerlink" title="线程池状态"></a>线程池状态</h4><ul>
+<li><code>Running</code>线程创建后，初始时，处于Running状态</li>
+<li><code>Shutdown</code>调用了shtudown方法，处于shutdown状态，线程池不能接收新的任务，等待所有任务执行完成</li>
+<li><code>Stop</code>调用了shotdownNow方法，处于stop状态，线程池不能接收新的任务，并且尝试终止正在执行的任务</li>
+<li><code>Terminated</code>当线程池处于shutdown和stop状态，并且所有工作线程已经销毁，任务缓存队列已经清空和执行结束后，线程池被置为Terminated状态</li>
+</ul>
+<h4 id="线程数"><a href="#线程数" class="headerlink" title="线程数"></a>线程数</h4><ul>
+<li>通用配置<ul>
+<li>CPU密集型（CPU数目 + 1）</li>
+<li>IO密集型（2 * CPU数目 + 1）</li>
+</ul>
+</li>
+<li>最佳配置<ul>
+<li>((线程等待时间 + 线程CPU时间) / 线程CPU时间）* CPU数目</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="李波 wechat" style="width: 200px; max-width: 100%;"/>
+    <div>订阅我的公众号，获取更新内容！</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="李波 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="李波 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/juc/" rel="tag"># juc</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/12/zookeeper/" rel="next" title="zookeeper（分布式协调服务）">
+                <i class="fa fa-chevron-left"></i> zookeeper（分布式协调服务）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/20/dubbo/" rel="prev" title="Dubbo">
+                Dubbo <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">李波</p>
+              <p class="site-description motion-element" itemprop="description">读万卷书，更要行万里路！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lee9213" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:lee9213@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#锁"><span class="nav-number">1.</span> <span class="nav-text">锁</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ReentrantLock"><span class="nav-number">1.1.</span> <span class="nav-text">ReentrantLock</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ReentrantReadWriteLock"><span class="nav-number">1.2.</span> <span class="nav-text">ReentrantReadWriteLock</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同步设备"><span class="nav-number">2.</span> <span class="nav-text">同步设备</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#AbstractQueuedSynchronizer"><span class="nav-number">2.1.</span> <span class="nav-text">AbstractQueuedSynchronizer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CountDownLatch"><span class="nav-number">2.2.</span> <span class="nav-text">CountDownLatch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CyclicBarrier"><span class="nav-number">2.3.</span> <span class="nav-text">CyclicBarrier</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Semphore"><span class="nav-number">2.4.</span> <span class="nav-text">Semphore</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exchange"><span class="nav-number">2.5.</span> <span class="nav-text">Exchange</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发容器"><span class="nav-number">3.</span> <span class="nav-text">并发容器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CopyOnWriteArrayList"><span class="nav-number">3.1.</span> <span class="nav-text">CopyOnWriteArrayList</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ConcurrentLinkedQueue"><span class="nav-number">3.2.</span> <span class="nav-text">ConcurrentLinkedQueue</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ConcurrentHashMap"><span class="nav-number">3.3.</span> <span class="nav-text">ConcurrentHashMap</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原子操作类"><span class="nav-number">4.</span> <span class="nav-text">原子操作类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本类型"><span class="nav-number">4.1.</span> <span class="nav-text">基本类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数组类型"><span class="nav-number">4.2.</span> <span class="nav-text">数组类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#引用类型"><span class="nav-number">4.3.</span> <span class="nav-text">引用类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字段类"><span class="nav-number">4.4.</span> <span class="nav-text">字段类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fork-Join框架"><span class="nav-number">5.</span> <span class="nav-text">Fork/Join框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程池"><span class="nav-number">6.</span> <span class="nav-text">线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Executors"><span class="nav-number">6.1.</span> <span class="nav-text">Executors</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ThreadPoolExecutor"><span class="nav-number">6.2.</span> <span class="nav-text">ThreadPoolExecutor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程池状态"><span class="nav-number">6.3.</span> <span class="nav-text">线程池状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程数"><span class="nav-number">6.4.</span> <span class="nav-text">线程数</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李波</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 访问总量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/2.1.3/jquery.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/fastclick/1.0.6/fastclick.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazyload/1.9.3/jquery.lazyload.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.ui.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'VVTmNASklzcajxSnegpltILP-gzGzoHsz',
+        appKey: 'sttDYywjzt3OR9IyVjaTagUN',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

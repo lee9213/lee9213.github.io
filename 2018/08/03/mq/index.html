@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="QzC4gqNx1vAo_VxH0sQdkAvL5X7d_WsC8VNpcpEBfIE" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+  
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="mq," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="李波的博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="JMSJava消息服务（Java Message Service）是Java平台中关于面向消息中间件的API。JMS是一个与平台无关的API，绝大多数MOM提供商都对JMS提供了支持。 消息组成 消息头 消息的识别信息和路由信息 JMS Destination 消息发送的目的地，queue或topic JMS DeliveryMode 传送模式，持久模式或非持久模式 JMS Priority 消息">
+<meta name="keywords" content="mq">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mq">
+<meta property="og:url" content="http://yoursite.com/2018/08/03/mq/index.html">
+<meta property="og:site_name" content="李波的博客">
+<meta property="og:description" content="JMSJava消息服务（Java Message Service）是Java平台中关于面向消息中间件的API。JMS是一个与平台无关的API，绝大多数MOM提供商都对JMS提供了支持。 消息组成 消息头 消息的识别信息和路由信息 JMS Destination 消息发送的目的地，queue或topic JMS DeliveryMode 传送模式，持久模式或非持久模式 JMS Priority 消息">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-10-23T13:13:47.387Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mq">
+<meta name="twitter:description" content="JMSJava消息服务（Java Message Service）是Java平台中关于面向消息中间件的API。JMS是一个与平台无关的API，绝大多数MOM提供商都对JMS提供了支持。 消息组成 消息头 消息的识别信息和路由信息 JMS Destination 消息发送的目的地，queue或topic JMS DeliveryMode 传送模式，持久模式或非持久模式 JMS Priority 消息">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/03/mq/"/>
+
+
+
+
+
+  <title>mq | 李波的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李波的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/03/mq/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李波">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李波的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">mq</h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-03T20:23:52+08:00">
+                2018-08-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/分布式/" itemprop="url" rel="index">
+                    <span itemprop="name">分布式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/03/mq/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/03/mq/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i> 阅读次数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="JMS"><a href="#JMS" class="headerlink" title="JMS"></a>JMS</h2><p>Java消息服务（Java Message Service）是Java平台中关于面向消息中间件的API。JMS是一个与平台无关的API，绝大多数<strong>MOM</strong>提供商都对JMS提供了支持。</p>
+<h3 id="消息组成"><a href="#消息组成" class="headerlink" title="消息组成"></a>消息组成</h3><ul>
+<li>消息头<ul>
+<li>消息的识别信息和路由信息<ul>
+<li>JMS Destination 消息发送的目的地，queue或topic</li>
+<li>JMS DeliveryMode 传送模式，持久模式或非持久模式</li>
+<li>JMS Priority 消息优先级，分为10个级别，从0（最低）到9（最高），默认级别是4，不保证一定按照优先级的顺序提交消息</li>
+<li>JMS MessageID 唯一识别每个消息的标识</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>属性<ul>
+<li>应用程序自定义的属性，<code>Message.setStringProperty(key,value)</code></li>
+<li>JMS定义的属性，使用JMSX作为前缀</li>
+</ul>
+</li>
+<li>消息体<ul>
+<li>TextMessage    <code>Java.lang.String</code>对象</li>
+<li>MapMessage 键/值对的集合，键是<code>Java.lang.String</code>对象，值可以是Java任何基本类型</li>
+<li>BytesMessage 字节流</li>
+<li>StreamMessage Java中的输入/输出流</li>
+<li>ObjectMessage Java中的可序列化对象</li>
+<li>Message 没有消息体，只有消息头和属性</li>
+</ul>
+</li>
+</ul>
+<h3 id="消息传递域"><a href="#消息传递域" class="headerlink" title="消息传递域"></a>消息传递域</h3><ul>
+<li>点对点（point-to-point）消息传递域<ul>
+<li>每个消息只能有一个消费者</li>
+<li>生产者和消费者之间<strong>没有</strong>时间上的相关性</li>
+</ul>
+</li>
+<li>发布/订阅（publish/subscribe）消息传递域<ul>
+<li>每个消息可以有多个消费者</li>
+<li>生产者和消费者之间<strong>有</strong>时间上的相关性</li>
+</ul>
+</li>
+</ul>
+<h3 id="消息应答模式"><a href="#消息应答模式" class="headerlink" title="消息应答模式"></a>消息应答模式</h3><h4 id="ACK-MODE"><a href="#ACK-MODE" class="headerlink" title="ACK_MODE"></a>ACK_MODE</h4><ul>
+<li>AUTO_ACKNOWLEDGE=1  自动确认</li>
+<li>CLIENT_ACKNOWLEDGE=2  客户端收到确认，客户端调用消息的acknowledge方法确认消息</li>
+<li>DUPS_OF_ACKNOWLEDGE=3  自动批量确认</li>
+<li>SESSION_TRANSACTED=0  事务提交并确认</li>
+</ul>
+<h4 id="ACK-TYPE"><a href="#ACK-TYPE" class="headerlink" title="ACK_TYPE"></a>ACK_TYPE</h4><ul>
+<li>DELIVERED_ACK_TYPE = 0 消息”已接收”，但尚未处理结束</li>
+<li>POSION_ACK_TYPE = 1 消息”错误”,通常表示”抛弃”此消息，比如消息重发多次后，都无法正确处理时，消息将会被删除或者 DLQ(死信队列) </li>
+<li>STANDARD_ACK_TYPE = 2 “标准”类型,通常表示为消息”处理成功”，broker 端 可以删除消息</li>
+<li>REDELIVERED_ACK_TYPE = 3 消息需”重发”，比如 consumer 处理消息时抛出了异常，broker 稍后会重新发送此消息 </li>
+<li>INDIVIDUAL_ACK_TYPE = 4 表示只确认”单条消息”,无论在任何 ACK_MODE 下</li>
+<li>UNMATCHED_ACK_TYPE = 5 在 Topic 中，如果一条消息在转发给“订阅者”时，发现此消息不符合 Selector 过滤条件，那么此消息将不会转发给订阅者，消息将会被存储引擎删除(相当于在 Broker 上确认了消息)</li>
+</ul>
+<h3 id="MOM"><a href="#MOM" class="headerlink" title="MOM"></a>MOM</h3><p>面向消息中间件（Message Oriente Middleware）</p>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ol>
+<li>消息异步接收，发送者不需要等待消息接收者响应</li>
+<li>消息可靠接收，确保消息在中间件可靠保存。只有接收者收到后才删除消息。</li>
+</ol>
+<h2 id="ActiveMQ"><a href="#ActiveMQ" class="headerlink" title="ActiveMQ"></a>ActiveMQ</h2><p>完全基于JMS规范实现的一个消息中间件，主要应用在分布式系统架构中，帮助构建高可用、高性能、可伸缩的企业级面向消息服务的系统</p>
+<p>特性</p>
+<ul>
+<li>支持多语言和协议<ul>
+<li>OpenWire</li>
+<li>Stomp</li>
+<li>AMQP</li>
+<li>MQTT</li>
+</ul>
+</li>
+<li>完全支持jms1.1和J2ee1.4规范</li>
+<li>对spring的支持</li>
+</ul>
+<h3 id="Broker"><a href="#Broker" class="headerlink" title="Broker"></a>Broker</h3><p>提供消息服务的组件</p>
+<h3 id="发布订阅"><a href="#发布订阅" class="headerlink" title="发布订阅"></a>发布订阅</h3><ul>
+<li>当broker发送消息给订阅者时，如果订阅者处于未激活状态，<ul>
+<li>持久订阅者可以收到消息</li>
+<li>非持久订阅则收不到消息</li>
+</ul>
+</li>
+</ul>
+<h3 id="消息发送策略"><a href="#消息发送策略" class="headerlink" title="消息发送策略"></a>消息发送策略</h3><ul>
+<li>同步发送<ul>
+<li>发送者发送一条消息会阻塞直到broker反馈一个确认消息，表示消息已经被broker处理</li>
+</ul>
+</li>
+<li>异步发送<ul>
+<li>发送者不需要等待broker提供反馈</li>
+</ul>
+</li>
+</ul>
+<p>默认情况下，非持久化消息是异步发送的，持久化消息并且在非事务模式下是同步发送的，开启事务的情况下，消息都是异步发送</p>
+<h3 id="持久化策略"><a href="#持久化策略" class="headerlink" title="持久化策略"></a>持久化策略</h3><h5 id="KahaDB（默认存储策略）"><a href="#KahaDB（默认存储策略）" class="headerlink" title="KahaDB（默认存储策略）"></a>KahaDB（默认存储策略）</h5><ul>
+<li><p>配置方式</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">persistenceAdapter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">kahaDB</span> <span class="attr">directory</span>=<span class="string">"$&#123;activemq.data&#125;/kahadb"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">persistenceAdapter</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>存储文件</p>
+<ul>
+<li>db.data 消息的索引文件</li>
+<li>db.redo 用来进行消息恢复</li>
+<li>db-*.log 存储消息内容</li>
+<li>lock文件 锁，表示当前获得kahadb读写权限的broker</li>
+</ul>
+</li>
+</ul>
+<h5 id="JDBC"><a href="#JDBC" class="headerlink" title="JDBC"></a>JDBC</h5><ul>
+<li><p>配置方式</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">persistenceAdapter</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">jdbcPersistenceAdapter</span> <span class="attr">dataSource</span>=<span class="string">"#MySQL-DS"</span> <span class="attr">createTablesOnStartup</span>=<span class="string">"true"</span> /&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">persistenceAdapter</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"Mysql-DS"</span> <span class="attr">class</span>=<span class="string">"org.apache.commons.dbcp.BasicDataSource"</span> <span class="attr">destroy-method</span>=<span class="string">"close"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"driverClassName"</span> <span class="attr">value</span>=<span class="string">"com.mysql.jdbc.Driver"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"url"</span> <span class="attr">value</span>=<span class="string">"jdbc:mysql://localhost:3306/activemq? relaxAutoCommit=true"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">value</span>=<span class="string">"root"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">value</span>=<span class="string">"root"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用JDBC持久化方式，数据库会创建3个表：activemq_msgs，activemq_acks和activemq_lock</p>
+<ul>
+<li>ACTIVEMQ_MSGS 消息表，queue和topic都存在这个表</li>
+<li>ACTIVEMQ_ACKS 存储持久订阅的信息和最后一个持久订阅接收的消息ID</li>
+<li>ACTIVEMQ_LOCKS 锁表，用来确保某一时刻，只能有一个ActiveMQ broker实例来访问数据库 </li>
+</ul>
+</li>
+</ul>
+<h5 id="Memory"><a href="#Memory" class="headerlink" title="Memory"></a>Memory</h5><ul>
+<li><p>基于内存的消息存储，内存消息存储主要是存储所有的持久化的消息在内存中，<code>persistent=&quot;false&quot;</code>表示不设置持久化存储，直接存储到内存中</p>
+</li>
+<li><p>配置方式</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">beans</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">broker</span> <span class="attr">brokerName</span>=<span class="string">"test-broker"</span> <span class="attr">persistent</span>=<span class="string">"false"</span> <span class="attr">xmlns</span>=<span class="string">"http://activemq.apache.org/schema/core"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">transportConnectors</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">transportConnector</span> <span class="attr">uri</span>=<span class="string">"tcp://localhost:61635"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">transportConnectors</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">broker</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="LevelDB"><a href="#LevelDB" class="headerlink" title="LevelDB"></a>LevelDB</h5><ul>
+<li><p>配置方式</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">persistenceAdapter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">levelDBdirectory="activemq-data"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">persistenceAdapter</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="JDBC-With-ActiveMQ-Journal"><a href="#JDBC-With-ActiveMQ-Journal" class="headerlink" title="JDBC With ActiveMQ Journal"></a>JDBC With ActiveMQ Journal</h5><ul>
+<li><p>这种方式克服了JDBC Store的不足，JDBC每次消息过来，都需要写库和读库，而Journal使用了高速缓存写入技术，大大提高了性能。</p>
+</li>
+<li><p>配置方式</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">persistenceFactory</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">journalPersistenceAdapterFactory</span>  <span class="attr">dataSource</span>=<span class="string">"#Mysql-DS"</span> <span class="attr">dataDirectory</span>=<span class="string">"activemqdata"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">persistenceFactory</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><ul>
+<li>prefetchSzie<ul>
+<li>持久化queue和非持久化queue的默认值为1000</li>
+<li>持久化topic默认值100</li>
+<li>非持久化topic默认值Short.MAX_VALUE</li>
+</ul>
+</li>
+</ul>
+<p>消费者会根据prefetchSize的大小批量获取数据，比如默认值1000，那么消费者会预先加载1000条数据到本地内存中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Destination destination=session.createQueue(<span class="string">"myQueue?consumer.prefetchSize=10"</span>);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>optimizeAcknowledge<ul>
+<li>优化确认，表示是否开启“优化ACK”，只有在true情况下，prefetchSize和optimizeAcknowledgeTimeOut才有意义</li>
+<li>减轻客户端负担，不需要频繁的确认消息</li>
+<li>减少通信开销</li>
+<li>由于延迟了确认（默认ack 0.65*prefetchSize个消息才确认），broker再次发送消息时又可以批量发送</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ConnectionFactory connectionFactory = </span><br><span class="line">    <span class="keyword">new</span> ActiveMQConnectionFactory(<span class="string">"tcp://192.168.0.18:61616?jms.optimizeAcknowledge=true&amp;jms.optimizeAcknowledgeTimeOut=10000"</span>);</span><br></pre></td></tr></table></figure>
+<p>如果optimizeAcknowledge为true，那么prefetchSize必须大于0。当prefetchSize=0的时候，表示consumer 通过PULL方式从broker获取消息。</p>
+<h3 id="消息重发"><a href="#消息重发" class="headerlink" title="消息重发"></a>消息重发</h3><h4 id="重发时机"><a href="#重发时机" class="headerlink" title="重发时机"></a>重发时机</h4><ul>
+<li>在事务性会话中，没有调用 session.commit 确认消息或者调用session.rollback 方法回滚消息</li>
+<li>在非事务性会话中，ACK 模式为 CLIENT_ACKNOWLEDGE 的情况下，没有调用 acknowledge 或者调用了 recover 方法；</li>
+</ul>
+<p>一个消息被redelivedred超过默认的最大重发次数（默认 6 次）时，消费端会给 broker 发送一个poisonack，表示这个消息有毒，告诉 broker 不要再发了。这个时候 broker 会把这个消息放到 DLQ（<strong>死信队列</strong>）。 </p>
+<h4 id="死信队列"><a href="#死信队列" class="headerlink" title="死信队列"></a>死信队列</h4><p>死信队列可以再次消费</p>
+<p>配置策略</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">destinationPolicy</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">policyMap</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">policyEntries</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">policyEntry</span> <span class="attr">topic</span>=<span class="string">"&gt;"</span> &gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">pendingMessageLimitStrategy</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">constantPendingMessageLimitStrategy</span> <span class="attr">limit</span>=<span class="string">"1000"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">pendingMessageLimitStrategy</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">policyEntry</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- “&gt;”表示对所有队列生效，如果需要设置指定队列，则直接写队列名称  --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">policyEntry</span> <span class="attr">queue</span>=<span class="string">"&gt;"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">deadLetterStrategy</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!-- </span></span><br><span class="line"><span class="comment">						queuePrefix:设置死信队列前缀</span></span><br><span class="line"><span class="comment">						useQueueForQueueMessage 设置队列保存到死信。  </span></span><br><span class="line"><span class="comment">					--&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">individualDeadLetterStrategy</span> <span class="attr">queuePrefix</span>=<span class="string">"DLQ."</span> <span class="attr">useQueueForQueueMessages</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">deadLetterStrategy</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">policyEntry</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">policyEntries</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">policyMap</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">destinationPolicy</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="自动丢弃过期消息"><a href="#自动丢弃过期消息" class="headerlink" title="自动丢弃过期消息"></a>自动丢弃过期消息</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">deadLetterStrategy</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">sharedDeadLetterStrategy</span> <span class="attr">processExpired</span>=<span class="string">"false"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">deadLetterStrategy</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="集群配置"><a href="#集群配置" class="headerlink" title="集群配置"></a>集群配置</h3><h4 id="静态网络"><a href="#静态网络" class="headerlink" title="静态网络"></a>静态网络</h4><p>两个 Brokers 通过一个 static 的协议来进行网络连接。一个 Consumer 连接到BrokerB 的一个地址上，当 Producer 在 BrokerA 上以相同的地址发送消息是，此时消息会被转移到 BrokerB 上，也就是说 BrokerA 会转发消息到BrokerB 上 </p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 设置activemq地址 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">networkConnectors</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">networkConnector</span> <span class="attr">uri</span>=<span class="string">"static://(tcp://192.168.11.153:61616,tcp://192.168.11.154:61616)"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">networkConnectors</span>&gt;</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 消息回流 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- enableAudit=false,防止消息回流后被当作重复消息而不被分发  --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">policyEntry</span> <span class="attr">queue</span>=<span class="string">"&gt;"</span> <span class="attr">enableAudit</span>=<span class="string">"false"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">networkBridgeFilterFactory</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- replayWhenNoConsumers=true, 当broker1上有需要转发的消息但是没有消费者时，把消息回流到它原始的broke  --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">conditionalNetworkBridgeFilterFactory</span> <span class="attr">replayWhenNoConsumers</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">networkBridgeFilterFactory</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">policyEntry</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="动态网络"><a href="#动态网络" class="headerlink" title="动态网络"></a>动态网络</h4><p>ActiveMQ 使用 Multicast 协议将一个 Service 和其他的 Broker 的 Service 连接起来。Multicast 能够自动的发现其他 broker，从而替代了使用 static 功能列表 broker。</p>
+<h3 id="ActiveMQ优缺点"><a href="#ActiveMQ优缺点" class="headerlink" title="ActiveMQ优缺点"></a>ActiveMQ优缺点</h3><p>ActiveMQ 采用消息推送方式，所以最适合的场景是默认消息都可在短时间内被消费。数据量越大，查找和消费消息就越慢，消息积压程度与消息速度成反 比。 </p>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ol>
+<li><strong>吞吐量低</strong>，由于 ActiveMQ 需要建立索引，导致吞吐量下降。这是无法克服的缺点，只要使用完全符合 JMS 规范的消息中间件，就要接受这个级别的TPS</li>
+<li><strong>无分片功能</strong>，这是一个功能缺失，JMS 并没有规定消息中间件的集群、分片机制。而由于 ActiveMQ 是伟企业级开发设计的消息中间件，初衷并不是为了处理海量消息和高并发请求。如果一台服务器不能承受更多消息，则需要横向拆分。ActiveMQ 官方不提供分片机制，需要自己实现</li>
+</ol>
+<h4 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h4><p>对 TPS 要求比较低的系统，可以使用 ActiveMQ 来实现，一方面比较简单，能够快速上手开发，另一方面可控性也比较好，还有比较好的监控机制和界面 </p>
+<h4 id="不适应场景"><a href="#不适应场景" class="headerlink" title="不适应场景"></a>不适应场景</h4><p>消息量巨大的场景。ActiveMQ 不支持消息自动分片机制，如果消息量巨大， 导致一台服务器不能处理全部消息，就需要自己开发消息分片功能</p>
+<h2 id="Kafka（未完待续）"><a href="#Kafka（未完待续）" class="headerlink" title="Kafka（未完待续）"></a>Kafka（未完待续）</h2><p>分布式消息和订阅系统，高性能、高吞吐量</p>
+<h3 id="适用场景-1"><a href="#适用场景-1" class="headerlink" title="适用场景"></a>适用场景</h3><ul>
+<li>行为跟踪</li>
+<li>日志收集</li>
+</ul>
+<h3 id="Topic"><a href="#Topic" class="headerlink" title="Topic"></a>Topic</h3><p>topic是一个存储消息的逻辑概念，可以认为是一个消息集合。每条消息发送到 kafka 集群的消息都有一个类别。物理上来说，不同的 topic 的消息是分开存储的。</p>
+<h3 id="Partition（分区）"><a href="#Partition（分区）" class="headerlink" title="Partition（分区）"></a>Partition（分区）</h3><p>每个 topic 可以划分多个分区（每个 Topic 至少有一个分区），同一topic下的不同分区包含的消息是不同的。每个消息在被添加到分区时，都会被分配一个offset（称之为偏移量），它是消息在此分区中的唯一编号，kafka通过offset保证消息在分区内的顺序，offset的顺序不跨分区，即<strong>kafka只保证在同一个分区内的消息是有序的</strong>。</p>
+<ul>
+<li><p>消费者比Partition多，会造成资源浪费</p>
+</li>
+<li><p>Partition比消费者多，消费者会消费多个Partition</p>
+</li>
+<li><p>只能保证单个Partition的消息顺序，不能保证多个Partition的顺序</p>
+</li>
+</ul>
+<h4 id="分发机制"><a href="#分发机制" class="headerlink" title="分发机制"></a>分发机制</h4><p>默认情况，kafka采用的是hash取模的分区算法。如果key为null，则会在<code>metadata.max.age.ms</code>时间范围内随机分配一个分区。<code>”metadata.max.age.ms</code>默认情况下10分钟更新一次。也可以自定义key的分区分配。</p>
+<h4 id="好处"><a href="#好处" class="headerlink" title="好处"></a>好处</h4><ul>
+<li>对broker上的数据进行分片有效的减少了消息的容量，从而提升了io性能</li>
+<li>提高消费端的消费能力（消费端可以采用负载均衡的方式消费不同分区消息）</li>
+</ul>
+<h4 id="分配策略"><a href="#分配策略" class="headerlink" title="分配策略"></a>分配策略</h4><ul>
+<li>Range（范围分区，默认）<ul>
+<li>首先按照分区序号进行排序，并对消费者按照字典顺序进行排序。</li>
+<li>按照消费者总数和分区总数进行整除运算来获得一个跨度，然后将分区按照跨度进行平均分配，以保证分区尽可能均匀地分配给所有的消费者。如果不够平均分配，那么字典序靠前的消费者会被多分配一个分区。</li>
+</ul>
+</li>
+<li>RoundRobin（轮询）<ul>
+<li>轮询分区策略是把所有partition和所有consumer线程都列出来，然后按照 hashcode 进行排序。最后通过轮询算法分配partition给消费线程。如果所有consumer实例的订阅是相同的，那么partition会均匀分布。 </li>
+</ul>
+</li>
+<li>自定义策略<ul>
+<li>继承AbstractPartitionAssignor，实现对应的方法即可。</li>
+</ul>
+</li>
+</ul>
+<h4 id="分配策略触发时机"><a href="#分配策略触发时机" class="headerlink" title="分配策略触发时机"></a>分配策略触发时机</h4><ol>
+<li>同一个consumer group内新增了消费者 </li>
+<li>消费者离开当前所属的 consumer group，比如主动停机或者宕机</li>
+<li>topic新增了分区（也就是分区数量发生了变化）</li>
+</ol>
+<h4 id="高可用副本机制"><a href="#高可用副本机制" class="headerlink" title="高可用副本机制"></a>高可用副本机制</h4><p>为了提高partition的可靠性而提供了副本的概念（Replica） ,通过副本机制来实现冗余备份。每个分区可以有多个副本，并且在副本集合中会存在一个 leader的副本，所有的读写请求都是由leader副本来进行 处理。剩余的其他副本都做为 follower 副本，follower 副 本会从 leader 副本同步消息日志。一般情况下，同一个分区的多个副本会被均匀分配到集群中的不同broker上，当leader副本所在的broker出现故障后，可以重新选举新的 leader 副本继续对外提供服务。 通过这样的副本机制来提高kafka集群的可用性</p>
+<h5 id="副本分配算法"><a href="#副本分配算法" class="headerlink" title="副本分配算法"></a>副本分配算法</h5><ol>
+<li><p>将所有N Broker和待分配的i个Partition排序。</p>
+</li>
+<li><p>将第i个Partition分配到第(i mod n)个Broker上。</p>
+</li>
+<li>将第i个Partition的第j个副本分配到第((i + j) mod n)个 Broker上。</li>
+</ol>
+<h5 id="副本角色"><a href="#副本角色" class="headerlink" title="副本角色"></a>副本角色</h5><ul>
+<li><p>leader副本：响应clients端读写请求的副本 </p>
+</li>
+<li><p>follower副本：被动地备份leader副本中的数据，不能响 应clients端读写请求。 </p>
+</li>
+<li><p>ISR副本：包含了leader副本和所有与leader副本保持同步的 follower 副本。表示目前“可用且消息量与 leader 相差不多的副本集合， 这是整个副本集合的一个子集”。ISR集合中的副本必须满足两个条件：</p>
+<ol>
+<li><p>副本所在节点必须维持着与zookeeper的连接 </p>
+</li>
+<li><p>副本最后一条消息的 offset 与 leader 副本的最后一条消息的 offset 之间的差值不能超过指定的阈值 (replica.lag.time.max.ms) 。如果该 follower 在此时间间隔内一直没有追上过leader的所有消息，则该follower就会被剔除isr列表 </p>
+</li>
+</ol>
+</li>
+</ul>
+<p>——如何判定是否与 leader 同步后面会提到每个 Kafka 副本对象都有两个重要的属性：LEO 和 HW。注意是所有的副本，而不只是leader副本。 </p>
+<h6 id="副本对象属性"><a href="#副本对象属性" class="headerlink" title="副本对象属性"></a>副本对象属性</h6><ul>
+<li>LEO：日志末端位移（log end offset），记录了该副本底层日志(log)中下一条消息的位移值。</li>
+<li>HW：水位值（HighWatermark），HW标记了一个特殊的offset，当消费者处理消息的时候，只能拉取到HW之前的消息，HW之后的消息对消费者来说是不可见的。对于同一个副本对象而言，其HW值不会大于LEO值。小于等于HW值的所有消息都被认为是“已备份”的（replicated）</li>
+</ul>
+<p>Kafka 提供了数据复制算法保证，如果 leader 发生故障或挂掉，一个新leader被选举并被接受客户端的消息成功写 入。Kafka确保从同步副本列表中选举一个副本为leader； leader 负责维护和跟踪 ISR(in-Sync replicas ， 副本同步 队列)中所有 follower 滞后的状态。当 producer 发送一条 消息到broker后，leader写入消息并复制到所有follower。 消息提交之后才被成功复制到所有的同步副本。 </p>
+<h4 id="多个分区在集群的中的分配"><a href="#多个分区在集群的中的分配" class="headerlink" title="多个分区在集群的中的分配"></a>多个分区在集群的中的分配</h4><ol>
+<li><p>将所有N Broker和待分配的i个Partition排序</p>
+</li>
+<li><p>将第i个Partition分配到第(i mod n)个Broker上</p>
+</li>
+</ol>
+<h3 id="消息写入性能"><a href="#消息写入性能" class="headerlink" title="消息写入性能"></a>消息写入性能</h3><h4 id="零拷贝"><a href="#零拷贝" class="headerlink" title="零拷贝"></a>零拷贝</h4><h3 id="常用配置解析"><a href="#常用配置解析" class="headerlink" title="常用配置解析"></a>常用配置解析</h3><h4 id="提供者端"><a href="#提供者端" class="headerlink" title="提供者端"></a>提供者端</h4><ul>
+<li><code>acks</code> 表示producer发送消息到broker的确认机制<ul>
+<li>0：表示producer不需要等待broker的消息确认，时延最小但风险最大（server宕机时，数据会丢失）</li>
+<li>1：表示producer只需要获得kafka集群中的leader节点确认即可，时延较小同时保证了leader节点确认接收成功</li>
+<li>-1：需要ISR中所有的Replica给予接收确认，速度最慢，安全性最高，不能避免数据丢失</li>
+</ul>
+</li>
+<li><code>batch.size</code> 控制批量提交的字节数大小，默认16384byte，也就是16kb，可以减少网络请求带来的性能开销</li>
+<li><code>linger.ms</code> producer发送消息到broker的时间间隔，producer会把两次发送时间间隔内收集到的request进行一次聚合 然后再发送，以此提高吞吐量。<ul>
+<li>batch.size和linger.ms这个两个参数是kafka性能优化的关键参数，当两者都配置时，只有满足一个条件，就会发送请求到broker</li>
+</ul>
+</li>
+<li><code>max.request.size</code> 设置请求的数据最大字节数，默认值为1MB</li>
+</ul>
+<h4 id="消费者端"><a href="#消费者端" class="headerlink" title="消费者端"></a>消费者端</h4><ul>
+<li><code>group.id</code> consumer group是kafka提供的可扩展且具有容错性的消费者机制。一个gourp中可以又多个consumer，它们共享一个groupd.id。每个分区只能由同一个消费组内的一个 consumer 来消费。<ul>
+<li>同一个topic<ul>
+<li>相同分区<ul>
+<li>相同group，只能有一个consumer消费消息</li>
+<li>不同group，每个group只能有一个consumer消费消息</li>
+</ul>
+</li>
+<li>不同分区<ul>
+<li>相同gorup，每个consumer根据<strong>策略</strong>消费不同分区的消息</li>
+<li>不同group，每个group都可以消费不同分区所有的消息</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>enable.auto.commit</code> 消费者消费消息后是否自动提交，可以配合 auto.commit.interval.ms 控制自动提交的频率<ul>
+<li><code>true</code> 自动提交</li>
+<li><code>false</code> 手动提交，需调用consumer的commitSync()方法来提交</li>
+</ul>
+</li>
+<li><code>auto.offset.rest</code> <ul>
+<li><code>latest</code> 新的消费者将会从其他消费者最后消费的offset 处开始消费 Topic 下的消息 </li>
+<li><code>earliest</code> 新的消费者会从该 topic 最早的消息开始 </li>
+<li><code>none</code> 新的消费者加入以后，由于之前不存在offset，则会直接抛出异常。 </li>
+</ul>
+</li>
+<li><code>max.poll.records</code> 设置限制每次调用 poll 返回的消息数，这样可以更容易的预测每次 poll 间隔要处理的最大值，通过调整此值，可以减少 poll 间隔</li>
+<li><code>partition.assignment.strategy</code> 分区分配策略，客户端使用该配置策略在消费者之间分配分区使用权</li>
+</ul>
+<h3 id="AMQP"><a href="#AMQP" class="headerlink" title="AMQP"></a>AMQP</h3><p>Advanced Message Queuing Protocol</p>
+<p>跨语言</p>
+<h3 id="MQTT"><a href="#MQTT" class="headerlink" title="MQTT"></a>MQTT</h3><p>Message Queuing Telemetry Transport</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="李波 wechat" style="width: 200px; max-width: 100%;"/>
+    <div>订阅我的公众号，获取更新内容！</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="李波 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="李波 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mq/" rel="tag"># mq</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/27/redis/" rel="next" title="缓存之Redis详解">
+                <i class="fa fa-chevron-left"></i> 缓存之Redis详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/10/mysql/" rel="prev" title="mysql">
+                mysql <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">李波</p>
+              <p class="site-description motion-element" itemprop="description">读万卷书，更要行万里路！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lee9213" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:lee9213@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#JMS"><span class="nav-number">1.</span> <span class="nav-text">JMS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#消息组成"><span class="nav-number">1.1.</span> <span class="nav-text">消息组成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息传递域"><span class="nav-number">1.2.</span> <span class="nav-text">消息传递域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息应答模式"><span class="nav-number">1.3.</span> <span class="nav-text">消息应答模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ACK-MODE"><span class="nav-number">1.3.1.</span> <span class="nav-text">ACK_MODE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ACK-TYPE"><span class="nav-number">1.3.2.</span> <span class="nav-text">ACK_TYPE</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MOM"><span class="nav-number">1.4.</span> <span class="nav-text">MOM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特点"><span class="nav-number">1.5.</span> <span class="nav-text">特点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ActiveMQ"><span class="nav-number">2.</span> <span class="nav-text">ActiveMQ</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Broker"><span class="nav-number">2.1.</span> <span class="nav-text">Broker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发布订阅"><span class="nav-number">2.2.</span> <span class="nav-text">发布订阅</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息发送策略"><span class="nav-number">2.3.</span> <span class="nav-text">消息发送策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#持久化策略"><span class="nav-number">2.4.</span> <span class="nav-text">持久化策略</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#KahaDB（默认存储策略）"><span class="nav-number">2.4.0.1.</span> <span class="nav-text">KahaDB（默认存储策略）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#JDBC"><span class="nav-number">2.4.0.2.</span> <span class="nav-text">JDBC</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Memory"><span class="nav-number">2.4.0.3.</span> <span class="nav-text">Memory</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#LevelDB"><span class="nav-number">2.4.0.4.</span> <span class="nav-text">LevelDB</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#JDBC-With-ActiveMQ-Journal"><span class="nav-number">2.4.0.5.</span> <span class="nav-text">JDBC With ActiveMQ Journal</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化"><span class="nav-number">2.5.</span> <span class="nav-text">优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息重发"><span class="nav-number">2.6.</span> <span class="nav-text">消息重发</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#重发时机"><span class="nav-number">2.6.1.</span> <span class="nav-text">重发时机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#死信队列"><span class="nav-number">2.6.2.</span> <span class="nav-text">死信队列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自动丢弃过期消息"><span class="nav-number">2.6.3.</span> <span class="nav-text">自动丢弃过期消息</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集群配置"><span class="nav-number">2.7.</span> <span class="nav-text">集群配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#静态网络"><span class="nav-number">2.7.1.</span> <span class="nav-text">静态网络</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动态网络"><span class="nav-number">2.7.2.</span> <span class="nav-text">动态网络</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ActiveMQ优缺点"><span class="nav-number">2.8.</span> <span class="nav-text">ActiveMQ优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#缺点"><span class="nav-number">2.8.1.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#适用场景"><span class="nav-number">2.8.2.</span> <span class="nav-text">适用场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#不适应场景"><span class="nav-number">2.8.3.</span> <span class="nav-text">不适应场景</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kafka（未完待续）"><span class="nav-number">3.</span> <span class="nav-text">Kafka（未完待续）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#适用场景-1"><span class="nav-number">3.1.</span> <span class="nav-text">适用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Topic"><span class="nav-number">3.2.</span> <span class="nav-text">Topic</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Partition（分区）"><span class="nav-number">3.3.</span> <span class="nav-text">Partition（分区）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分发机制"><span class="nav-number">3.3.1.</span> <span class="nav-text">分发机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#好处"><span class="nav-number">3.3.2.</span> <span class="nav-text">好处</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分配策略"><span class="nav-number">3.3.3.</span> <span class="nav-text">分配策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分配策略触发时机"><span class="nav-number">3.3.4.</span> <span class="nav-text">分配策略触发时机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#高可用副本机制"><span class="nav-number">3.3.5.</span> <span class="nav-text">高可用副本机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#副本分配算法"><span class="nav-number">3.3.5.1.</span> <span class="nav-text">副本分配算法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#副本角色"><span class="nav-number">3.3.5.2.</span> <span class="nav-text">副本角色</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#副本对象属性"><span class="nav-number">3.3.5.2.1.</span> <span class="nav-text">副本对象属性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多个分区在集群的中的分配"><span class="nav-number">3.3.6.</span> <span class="nav-text">多个分区在集群的中的分配</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息写入性能"><span class="nav-number">3.4.</span> <span class="nav-text">消息写入性能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#零拷贝"><span class="nav-number">3.4.1.</span> <span class="nav-text">零拷贝</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用配置解析"><span class="nav-number">3.5.</span> <span class="nav-text">常用配置解析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#提供者端"><span class="nav-number">3.5.1.</span> <span class="nav-text">提供者端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#消费者端"><span class="nav-number">3.5.2.</span> <span class="nav-text">消费者端</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AMQP"><span class="nav-number">3.6.</span> <span class="nav-text">AMQP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MQTT"><span class="nav-number">3.7.</span> <span class="nav-text">MQTT</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李波</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 访问总量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/2.1.3/jquery.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/fastclick/1.0.6/fastclick.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazyload/1.9.3/jquery.lazyload.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.ui.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'VVTmNASklzcajxSnegpltILP-gzGzoHsz',
+        appKey: 'sttDYywjzt3OR9IyVjaTagUN',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

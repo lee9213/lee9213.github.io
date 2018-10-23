@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="QzC4gqNx1vAo_VxH0sQdkAvL5X7d_WsC8VNpcpEBfIE" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+  
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="tomcat," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="李波的博客" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Tomcat 架构目录结构conf 目录catalina.policy :  Tomcat 安全策略文件，控制 JVM 相关权限，具体可以参考java.security.Permission catalina.properties : Tomcat Catalina 行为控制配置文件，比如 Common ClassLoader logging.properties  : Tomcat 日志配置文件">
+<meta name="keywords" content="tomcat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tomcat">
+<meta property="og:url" content="http://yoursite.com/2018/01/23/tomcat/index.html">
+<meta property="og:site_name" content="李波的博客">
+<meta property="og:description" content="Tomcat 架构目录结构conf 目录catalina.policy :  Tomcat 安全策略文件，控制 JVM 相关权限，具体可以参考java.security.Permission catalina.properties : Tomcat Catalina 行为控制配置文件，比如 Common ClassLoader logging.properties  : Tomcat 日志配置文件">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-10-23T13:14:27.667Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tomcat">
+<meta name="twitter:description" content="Tomcat 架构目录结构conf 目录catalina.policy :  Tomcat 安全策略文件，控制 JVM 相关权限，具体可以参考java.security.Permission catalina.properties : Tomcat Catalina 行为控制配置文件，比如 Common ClassLoader logging.properties  : Tomcat 日志配置文件">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/23/tomcat/"/>
+
+
+
+
+
+  <title>tomcat | 李波的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李波的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/23/tomcat/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李波">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李波的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">tomcat</h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-23T21:01:03+08:00">
+                2018-01-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/23/tomcat/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/01/23/tomcat/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i> 阅读次数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Tomcat-架构"><a href="#Tomcat-架构" class="headerlink" title="Tomcat 架构"></a>Tomcat 架构</h1><h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><h3 id="conf-目录"><a href="#conf-目录" class="headerlink" title="conf 目录"></a>conf 目录</h3><p><code>catalina.policy</code> :  Tomcat 安全策略文件，控制 JVM 相关权限，具体可以参考<code>java.security.Permission</code></p>
+<p><code>catalina.properties</code> : Tomcat Catalina 行为控制配置文件，比如 Common ClassLoader</p>
+<p><code>logging.properties</code>  : Tomcat 日志配置文件，JDK Logging</p>
+<p><code>server.xml</code>  :  Tomcat Server 配置文件</p>
+<ul>
+<li><code>GlobalNamingResources</code> : 全局 JNDI 资源</li>
+</ul>
+<p><code>context.xml</code> : 全局 Context 配置文件</p>
+<p><code>tomcat-users.xml</code> : Tomcat 角色配置文件，（Realm 文件实现方式）、</p>
+<p><code>web.xml</code> : Servlet 标准的 web.xml 部署文件，Tomcat 默认实现部分配置入内：</p>
+<ul>
+<li><code>org.apache.catalina.servlets.DefaultServlet</code></li>
+<li><code>org.apache.jasper.servlet.JspServlet</code></li>
+</ul>
+<h3 id="lib-目录"><a href="#lib-目录" class="headerlink" title="lib 目录"></a>lib 目录</h3><p>Tomcat 存放公用类库</p>
+<p><code>ecj-*.jar</code>  : Eclipse Java 编译器</p>
+<p><code>jasper.jar</code> : JSP 编译器</p>
+<h3 id="logs-目录"><a href="#logs-目录" class="headerlink" title="logs 目录"></a>logs 目录</h3><p><code>localhost.${date}.log</code> :  当 Tomcat 应用起不来的时候，多看该文件，比如：类冲突</p>
+<ul>
+<li><code>NoClassDefFoundError</code></li>
+<li><code>ClassNotFoundException</code></li>
+</ul>
+<p><code>catalina.${date}.log</code> : 控制台输出，<code>System.out</code> 外置</p>
+<h2 id="webapps-目录"><a href="#webapps-目录" class="headerlink" title="webapps 目录"></a>webapps 目录</h2><p>简化 web 应用部署的方式</p>
+<h2 id="部署-Web-应用"><a href="#部署-Web-应用" class="headerlink" title="部署 Web 应用"></a>部署 Web 应用</h2><h3 id="方法一：放置在-webapps目录"><a href="#方法一：放置在-webapps目录" class="headerlink" title="方法一：放置在 webapps目录"></a>方法一：放置在 <code>webapps</code>目录</h3><p>直接拖过去</p>
+<h3 id="方法二：-修改-confi-server-xml"><a href="#方法二：-修改-confi-server-xml" class="headerlink" title="方法二： 修改 confi/server.xml"></a>方法二： 修改 <code>confi/server.xml</code></h3><p>添加<code>Context</code> 元素：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Context</span> <span class="attr">docBase</span>=<span class="string">"$&#123;webAppAbsolutePath&#125;"</span> <span class="attr">path</span>=<span class="string">"/"</span> <span class="attr">reloadable</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Context</span> <span class="attr">docBase</span>=<span class="string">"$&#123;webAppAbsolutePath&#125;"</span> <span class="attr">path</span>=<span class="string">"/tomcat"</span> <span class="attr">reloadable</span>=<span class="string">"true"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>熟悉配置元素可以参考<code>org.apache.catalina.core.StandardContext</code> setter 方法</p>
+<p><code>Container</code></p>
+<ul>
+<li><code>Context</code></li>
+</ul>
+<p>该方式不支持动态部署，建议考虑在生产环境使用。</p>
+<h3 id="方法三：独立-context-xml-配置文件"><a href="#方法三：独立-context-xml-配置文件" class="headerlink" title="方法三：独立 context xml 配置文件"></a>方法三：独立 <code>context</code> xml 配置文件</h3><p>首先注意 <code>conf\Catalina\localhost</code></p>
+<p>独立 context XML 配置文件路径：<code>${TOMCAT_HOME}/conf/Catalina/localhost</code> + <code>${ContextPath}</code> .xml</p>
+<p>注意：该方式可以实现热部署，因此建议在开发环境使用。</p>
+<h3 id="I-O-连接器"><a href="#I-O-连接器" class="headerlink" title="I/O 连接器"></a>I/O 连接器</h3><p>参考文件：<a href="https://tomcat.apache.org/tomcat-7.0-doc/config/http.html" target="_blank" rel="noopener">https://tomcat.apache.org/tomcat-7.0-doc/config/http.html</a></p>
+<p>实现类：<code>org.apache.catalina.connector.Connector</code></p>
+<p>注意实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setProtocol</span><span class="params">(String protocol)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (AprLifecycleListener.isAprAvailable()) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">"HTTP/1.1"</span>.equals(protocol)) &#123;</span><br><span class="line">            setProtocolHandlerClassName</span><br><span class="line">                (<span class="string">"org.apache.coyote.http11.Http11AprProtocol"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">"AJP/1.3"</span>.equals(protocol)) &#123;</span><br><span class="line">            setProtocolHandlerClassName</span><br><span class="line">                (<span class="string">"org.apache.coyote.ajp.AjpAprProtocol"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (protocol != <span class="keyword">null</span>) &#123;</span><br><span class="line">            setProtocolHandlerClassName(protocol);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            setProtocolHandlerClassName</span><br><span class="line">                (<span class="string">"org.apache.coyote.http11.Http11AprProtocol"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">"HTTP/1.1"</span>.equals(protocol)) &#123;</span><br><span class="line">            setProtocolHandlerClassName</span><br><span class="line">                (<span class="string">"org.apache.coyote.http11.Http11Protocol"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">"AJP/1.3"</span>.equals(protocol)) &#123;</span><br><span class="line">            setProtocolHandlerClassName</span><br><span class="line">                (<span class="string">"org.apache.coyote.ajp.AjpProtocol"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (protocol != <span class="keyword">null</span>) &#123;</span><br><span class="line">            setProtocolHandlerClassName(protocol);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="问答互动"><a href="#问答互动" class="headerlink" title="问答互动"></a>问答互动</h2><h3 id="问题一：如果配置path的话-是以文件名为主-还是-以配置的为主"><a href="#问题一：如果配置path的话-是以文件名为主-还是-以配置的为主" class="headerlink" title="问题一：如果配置path的话 是以文件名为主 还是 以配置的为主"></a>问题一：如果配置path的话 是以文件名为主 还是 以配置的为主</h3><p>独立 context XML 配置文件时，设置 <code>path</code> 属性是无效的。</p>
+<h3 id="问题二：根独立-context-XML-配置文件路径"><a href="#问题二：根独立-context-XML-配置文件路径" class="headerlink" title="问题二：根独立 context XML 配置文件路径"></a>问题二：根独立 context XML 配置文件路径</h3><p><code>${TOMCAT_HOME}/conf/${Engine.name}/${HOST.name}/ROOT.xml</code></p>
+<h3 id="问题三：如果实现热部署"><a href="#问题三：如果实现热部署" class="headerlink" title="问题三：如果实现热部署"></a>问题三：如果实现热部署</h3><p>调整 <code>&lt;context&gt;</code> 元素中的属性<code>reloadable=&quot;true&quot;</code></p>
+<h3 id="问题四：连接器里面的线程池-是用的哪个线程池"><a href="#问题四：连接器里面的线程池-是用的哪个线程池" class="headerlink" title="问题四：连接器里面的线程池 是用的哪个线程池"></a>问题四：连接器里面的线程池 是用的哪个线程池</h3><p>注意<code>conf/server.xml</code> 文件中的一段注释：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Connector</span> <span class="attr">executor</span>=<span class="string">"tomcatThreadPool"</span></span></span><br><span class="line"><span class="tag">               <span class="attr">port</span>=<span class="string">"8080"</span> <span class="attr">protocol</span>=<span class="string">"HTTP/1.1"</span></span></span><br><span class="line"><span class="tag">               <span class="attr">connectionTimeout</span>=<span class="string">"20000"</span></span></span><br><span class="line"><span class="tag">               <span class="attr">redirectPort</span>=<span class="string">"8443"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>org.apache.catalina.Executor</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Executor</span> <span class="keyword">extends</span> <span class="title">java</span>.<span class="title">util</span>.<span class="title">concurrent</span>.<span class="title">Executor</span>, <span class="title">Lifecycle</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Executes the given command at some time in the future.  The command</span></span><br><span class="line"><span class="comment">     * may execute in a new thread, in a pooled thread, or in the calling</span></span><br><span class="line"><span class="comment">     * thread, at the discretion of the &lt;tt&gt;Executor&lt;/tt&gt; implementation.</span></span><br><span class="line"><span class="comment">     * If no threads are available, it will be added to the work queue.</span></span><br><span class="line"><span class="comment">     * If the work queue is full, the system will wait for the specified</span></span><br><span class="line"><span class="comment">     * time until it throws a RejectedExecutionException</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> command the runnable task</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> java.util.concurrent.RejectedExecutionException if this task</span></span><br><span class="line"><span class="comment">     * cannot be accepted for execution - the queue is full</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> NullPointerException if command or unit is null</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable command, <span class="keyword">long</span> timeout, TimeUnit unit)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>标准实现：<code>org.apache.catalina.core.StandardThreadExecutor</code> 将连接处理交付给 Java 标准线程池：</p>
+<p><code>org.apache.tomcat.util.threads.ThreadPoolExecutor</code>。</p>
+<h3 id="问题五：JNDI-能不能稍微说下-之前只是在数据源的时候用过，但是不是太理解"><a href="#问题五：JNDI-能不能稍微说下-之前只是在数据源的时候用过，但是不是太理解" class="headerlink" title="问题五：JNDI 能不能稍微说下 之前只是在数据源的时候用过，但是不是太理解"></a>问题五：JNDI 能不能稍微说下 之前只是在数据源的时候用过，但是不是太理解</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Context</span> <span class="attr">...</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">Resource</span> <span class="attr">name</span>=<span class="string">"mail/Session"</span> <span class="attr">auth</span>=<span class="string">"Container"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">type</span>=<span class="string">"javax.mail.Session"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">mail.smtp.host</span>=<span class="string">"localhost"</span>/&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">Context</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Context initCtx = <span class="keyword">new</span> InitialContext();</span><br><span class="line">Context envCtx = (Context) initCtx.lookup(<span class="string">"java:comp/env"</span>);</span><br><span class="line">Session session = (Session) envCtx.lookup(<span class="string">"mail/Session"</span>);</span><br><span class="line"></span><br><span class="line">Message message = <span class="keyword">new</span> MimeMessage(session);</span><br><span class="line">message.setFrom(<span class="keyword">new</span> InternetAddress(request.getParameter(<span class="string">"from"</span>)));</span><br><span class="line">InternetAddress to[] = <span class="keyword">new</span> InternetAddress[<span class="number">1</span>];</span><br><span class="line">to[<span class="number">0</span>] = <span class="keyword">new</span> InternetAddress(request.getParameter(<span class="string">"to"</span>));</span><br><span class="line">message.setRecipients(Message.RecipientType.TO, to);</span><br><span class="line">message.setSubject(request.getParameter(<span class="string">"subject"</span>));</span><br><span class="line">message.setContent(request.getParameter(<span class="string">"content"</span>), <span class="string">"text/plain"</span>);</span><br><span class="line">Transport.send(message);</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="李波 wechat" style="width: 200px; max-width: 100%;"/>
+    <div>订阅我的公众号，获取更新内容！</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="李波 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="李波 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/tomcat/" rel="tag"># tomcat</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/13/序列化/" rel="next" title="序列化">
+                <i class="fa fa-chevron-left"></i> 序列化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/23/orm/" rel="prev" title="orm">
+                orm <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">李波</p>
+              <p class="site-description motion-element" itemprop="description">读万卷书，更要行万里路！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lee9213" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:lee9213@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Tomcat-架构"><span class="nav-number">1.</span> <span class="nav-text">Tomcat 架构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#目录结构"><span class="nav-number">1.1.</span> <span class="nav-text">目录结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#conf-目录"><span class="nav-number">1.1.1.</span> <span class="nav-text">conf 目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lib-目录"><span class="nav-number">1.1.2.</span> <span class="nav-text">lib 目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#logs-目录"><span class="nav-number">1.1.3.</span> <span class="nav-text">logs 目录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#webapps-目录"><span class="nav-number">1.2.</span> <span class="nav-text">webapps 目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署-Web-应用"><span class="nav-number">1.3.</span> <span class="nav-text">部署 Web 应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#方法一：放置在-webapps目录"><span class="nav-number">1.3.1.</span> <span class="nav-text">方法一：放置在 webapps目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法二：-修改-confi-server-xml"><span class="nav-number">1.3.2.</span> <span class="nav-text">方法二： 修改 confi/server.xml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法三：独立-context-xml-配置文件"><span class="nav-number">1.3.3.</span> <span class="nav-text">方法三：独立 context xml 配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#I-O-连接器"><span class="nav-number">1.3.4.</span> <span class="nav-text">I/O 连接器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问答互动"><span class="nav-number">1.4.</span> <span class="nav-text">问答互动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题一：如果配置path的话-是以文件名为主-还是-以配置的为主"><span class="nav-number">1.4.1.</span> <span class="nav-text">问题一：如果配置path的话 是以文件名为主 还是 以配置的为主</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题二：根独立-context-XML-配置文件路径"><span class="nav-number">1.4.2.</span> <span class="nav-text">问题二：根独立 context XML 配置文件路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题三：如果实现热部署"><span class="nav-number">1.4.3.</span> <span class="nav-text">问题三：如果实现热部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题四：连接器里面的线程池-是用的哪个线程池"><span class="nav-number">1.4.4.</span> <span class="nav-text">问题四：连接器里面的线程池 是用的哪个线程池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题五：JNDI-能不能稍微说下-之前只是在数据源的时候用过，但是不是太理解"><span class="nav-number">1.4.5.</span> <span class="nav-text">问题五：JNDI 能不能稍微说下 之前只是在数据源的时候用过，但是不是太理解</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李波</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 访问总量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/2.1.3/jquery.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/fastclick/1.0.6/fastclick.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.lazyload/1.9.3/jquery.lazyload.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.ui.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'VVTmNASklzcajxSnegpltILP-gzGzoHsz',
+        appKey: 'sttDYywjzt3OR9IyVjaTagUN',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

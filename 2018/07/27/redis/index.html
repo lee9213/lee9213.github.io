@@ -95,7 +95,7 @@
 <meta property="og:site_name" content="李波的博客">
 <meta property="og:description" content="Redis本质上是一个Key-Value类型的内存数据库，很像Memcached，整个数据库统统加载在内存当中进行操作，定期通过异步操作把数据库数据flush到硬盘上进行保存。因为是纯内存操作，Redis的性能非常出色，每秒可以处理超过10万次读写操作，是已知性能最快的Key-Value DB。Redis的出色之处不仅仅是性能，Redis最大的魅力是支持保存多种数据结构，此外单个value的最大限">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-12T08:11:36.415Z">
+<meta property="og:updated_time" content="2018-10-23T12:40:17.864Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="缓存之Redis详解">
 <meta name="twitter:description" content="Redis本质上是一个Key-Value类型的内存数据库，很像Memcached，整个数据库统统加载在内存当中进行操作，定期通过异步操作把数据库数据flush到硬盘上进行保存。因为是纯内存操作，Redis的性能非常出色，每秒可以处理超过10万次读写操作，是已知性能最快的Key-Value DB。Redis的出色之处不仅仅是性能，Redis最大的魅力是支持保存多种数据结构，此外单个value的最大限">
@@ -377,6 +377,161 @@
 
       
         <p>Redis本质上是一个Key-Value类型的内存数据库，很像Memcached，整个数据库统统加载在内存当中进行操作，定期通过异步操作把数据库数据flush到硬盘上进行保存。因为是纯内存操作，Redis的性能非常出色，每秒可以处理超过10万次读写操作，是已知性能最快的Key-Value DB。Redis的出色之处不仅仅是性能，Redis最大的魅力是支持保存多种数据结构，此外单个value的最大限制是1GB，不行Memcached只能保存1MB的数据，因此Redis可以用来实现很多有用的功能，比如说用他的List来做FIFO双向链表，实现一个轻量级的高性能消息队列服务，用它的Set可以做高性能的tag系统等待。另外Redis也可以对存入的Key-Value设置expire时间，因此可以被当作一个功能加强版的Memcached来用。<br>Redis的主要缺点是数据库容量收到物理内存的限制，不能用作海量数据的高性能读写，因此Redis时候的场景主要局限在较小数据量的高性能操作和运算上。</p>
+<h3 id="Redis单线程为什么性能很高"><a href="#Redis单线程为什么性能很高" class="headerlink" title="Redis单线程为什么性能很高"></a>Redis单线程为什么性能很高</h3><p>性能瓶颈不在CPU，在内存和网络带宽</p>
+<p>IO多路复用</p>
+<h3 id="数据结构类型"><a href="#数据结构类型" class="headerlink" title="数据结构类型"></a>数据结构类型</h3><h4 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h4><ul>
+<li>sds（simple dynamic string）简单动态字符串</li>
+<li>dict 维护key-value映射关系</li>
+<li>quicklist</li>
+<li>ziplist</li>
+<li>skiplist</li>
+<li>robj</li>
+<li>intset</li>
+</ul>
+<h4 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h4><ul>
+<li><code>String</code>最大支持512M<ul>
+<li>字符串、浮点（set/get）<ul>
+<li>数据结构sds</li>
+</ul>
+</li>
+<li>整数（incr/decr）<ul>
+<li>数据结构int</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Hash<ul>
+<li>hset/hget/hexists</li>
+<li>数据结构<ul>
+<li><code>ziplist</code>个数少或单个元素长度小</li>
+<li>hash</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>List<ul>
+<li>lpush/rpush/lpop/rpop/llen</li>
+<li>数据结构，在3.2版本<ul>
+<li>之前<ul>
+<li><code>linkedlist</code>双向链表，个数多或单个元素长度长</li>
+<li><code>ziplist</code> 压缩列表，个数少或单个元素长度小</li>
+</ul>
+</li>
+<li>之后<ul>
+<li><code>quicklist</code>基于<code>ziplist</code>的双向链表</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>场景<ul>
+<li>栈：后进先出 lpush lpop</li>
+<li>队列：先进先出 lpush rpop</li>
+<li>消息队列：lpush brpop</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Set<ul>
+<li>sadd/srem/scard/sismember<ul>
+<li>数据结构<ul>
+<li><code>intset</code>当set中只包含整数型的元素时，采用intset来存储</li>
+<li>hash</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Sort Set<ul>
+<li>zadd/zcard/zcount/zrange/zrem/zscore</li>
+<li>数据结构<ul>
+<li>ziplist</li>
+<li>skiplist+hash</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>transaction<ul>
+<li>multi/exec/discard/watch</li>
+<li>Redis Cluster不支持</li>
+</ul>
+</li>
+<li>pipeline<ul>
+<li>JedisClusterConnection不支持</li>
+<li>LettuceClusterConnection支持</li>
+<li>openPipeline/closePipeline</li>
+<li>需注意批量命令大小，防止返回值超出内存</li>
+<li>节省网络延迟的时间，非线程安全</li>
+</ul>
+</li>
+</ul>
+<h3 id="过期时间清除key原理"><a href="#过期时间清除key原理" class="headerlink" title="过期时间清除key原理"></a>过期时间清除key原理</h3><ul>
+<li>消极方法<ul>
+<li>每次访问的时候删除</li>
+</ul>
+</li>
+<li>积极方法<ul>
+<li>周期性的从设置了过期时间的key中选择一部分key进行删除<ul>
+<li>随机测试20个带有timeout信息的key</li>
+<li>如果超过了25%的key被删除，则重复执行整个流程</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><ul>
+<li>持久化类型<ul>
+<li>RDB<ul>
+<li>快照，Redis支持将当前数据的快照存成一个数据文件的持久化机制</li>
+<li>在第一次快照完成之后，第二次快照之前的数据会丢失</li>
+<li>全量</li>
+</ul>
+</li>
+<li>AOF<ul>
+<li>日志，append only file，追加写入的日志文件，可识别的纯文本，它的内容就是一个redis标准命令</li>
+<li>aof记录增删改的命令</li>
+<li>当操作多了之后，日志文件会越来越大，可设置重写aof文件</li>
+<li>重写aof文件，不是修改之前的aof文件，是从内存中读取数据重新生成一份aof文件</li>
+<li>重写aof文件时，新增命令会存储在重写缓存中，然后拼接在新的aof文件中</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>开启持久化性能会有一定的损失，可同时支持两种方式，如果两种同时存在，默认以aof的数据为准。</li>
+<li>比较<ul>
+<li>RDB恢复速度和备份速度比AOF快</li>
+<li>AOF数据安全性比RDB高</li>
+</ul>
+</li>
+<li><code>save</code>阻塞所有客户端请求</li>
+<li><code>bgsave</code>backgroudsave</li>
+</ul>
+<h3 id="过期回收策略"><a href="#过期回收策略" class="headerlink" title="过期回收策略"></a>过期回收策略</h3><ul>
+<li><code>noeviction</code>不回收（默认）</li>
+<li><code>allkeys-lru</code>从所有键中删除最近最少使用的键</li>
+<li><code>allkeys-random</code>从所有键中随机删除</li>
+<li><code>volatile-lru</code>从设置了过期时间的键中删除最近最少使用的键</li>
+<li><code>volatile-random</code>从设置了过期时间的键中随机删除</li>
+<li><code>volatile-ttl</code>从设置了过期时间的键中选中存活时间最短的键删除</li>
+</ul>
+<h3 id="集群方案"><a href="#集群方案" class="headerlink" title="集群方案"></a>集群方案</h3><ul>
+<li>Redis Cluster（官方）<ul>
+<li>客户端直连Redis，免去了proxy代理的损耗</li>
+<li>去中心化，最大可增加1000个节点，性能随节点增加而线性扩展</li>
+<li>使用hash slot方式 将16384个hash slot 覆盖到所有节点上</li>
+<li>简单易上手，管理方便，可自行增加或摘除节点，移动分槽等</li>
+<li>一致性hash思想</li>
+<li>不支持事务，不支持数据库切换，不支持mget，单个数据库</li>
+</ul>
+</li>
+<li>codis（豌豆荚）<ul>
+<li>多了一层代理</li>
+<li>支持透明的扩/缩容</li>
+<li>具有图形化管理和监控工具，运维方便</li>
+<li>数据根据key分布到1024个slot内</li>
+</ul>
+</li>
+</ul>
 
       
     </div>
@@ -454,8 +609,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/08/12/zookeeper/" rel="prev" title="zookeeper（分布式协调服务）">
-                zookeeper（分布式协调服务） <i class="fa fa-chevron-right"></i>
+              <a href="/2018/08/03/mq/" rel="prev" title="mq">
+                mq <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -511,8 +666,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -527,7 +691,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -538,7 +702,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -549,7 +713,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -595,6 +759,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis单线程为什么性能很高"><span class="nav-number">1.</span> <span class="nav-text">Redis单线程为什么性能很高</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据结构类型"><span class="nav-number">2.</span> <span class="nav-text">数据结构类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据结构"><span class="nav-number">2.1.</span> <span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据类型"><span class="nav-number">2.2.</span> <span class="nav-text">数据类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#过期时间清除key原理"><span class="nav-number">3.</span> <span class="nav-text">过期时间清除key原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#持久化"><span class="nav-number">4.</span> <span class="nav-text">持久化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#过期回收策略"><span class="nav-number">5.</span> <span class="nav-text">过期回收策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集群方案"><span class="nav-number">6.</span> <span class="nav-text">集群方案</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
