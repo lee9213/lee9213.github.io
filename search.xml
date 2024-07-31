@@ -2993,8 +2993,8 @@
       </categories>
       <tags>
         <tag>Spring</tag>
-        <tag>SpringMVC</tag>
         <tag>SpringBoot</tag>
+        <tag>SpringMVC</tag>
       </tags>
   </entry>
   <entry>
@@ -3086,7 +3086,7 @@
 <li>shell.auth.simple.user.password &#x3D; 123456</li>
 </ul>
 </li>
-<li>ssh -p 2000 <span class="exturl" data-url="bWFpbHRvOiYjeDYxOyYjeDY0OyYjMTA5OyYjMTA1OyYjeDZlOyYjeDQwOyYjeDMxOyYjNTA7JiM1NTsmIzQ2OyYjeDMwOyYjeDJlOyYjeDMwOyYjeDJlOyYjeDMxOw==">&#x61;&#x64;&#109;&#105;&#x6e;&#x40;&#x31;&#50;&#55;&#46;&#x30;&#x2e;&#x30;&#x2e;&#x31;<i class="fa fa-external-link-alt"></i></span></li>
+<li>ssh -p 2000 <span class="exturl" data-url="bWFpbHRvOiYjOTc7JiN4NjQ7JiMxMDk7JiMxMDU7JiMxMTA7JiM2NDsmI3gzMTsmIzUwOyYjNTU7JiN4MmU7JiN4MzA7JiN4MmU7JiN4MzA7JiN4MmU7JiN4MzE7">&#97;&#x64;&#109;&#105;&#110;&#64;&#x31;&#50;&#55;&#x2e;&#x30;&#x2e;&#x30;&#x2e;&#x31;<i class="fa fa-external-link-alt"></i></span></li>
 </ul>
 </li>
 <li>telnet方式<ul>
