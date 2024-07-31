@@ -21,15 +21,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"always","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="存储引擎InnoDB三大特性 插入缓冲（提高写性能） 对于非聚集类所有的插入和更新操作，不是每一次都直接插入到索引页中，而是先插入到内存中  自适应哈希索引（提高查询效率） 监控对表上各索引页的查询，如果观察到建立哈希索引可以带来速度提升，则会建立哈希索引，称为自适应哈希索引（Adaptive Hash Index，AHI）  两次写（提高可靠性） 当属性缓冲池脏页时，并不直接写道数据库文件中，而">
+    <meta name="description" content="存储引擎InnoDB三大特性 插入缓冲（提高写性能）对于非聚集类所有的插入和更新操作，不是每一次都直接插入到索引页中，而是先插入到内存中 自适应哈希索引（提高查询效率）监控对表上各索引页的查询，如果观察到建立哈希索引可以带来速度提升，则会建立哈希索引，称为自适应哈希索引（Adaptive Hash Index，AHI） 两次写（提高可靠性）当属性缓冲池脏页时，并不直接写道数据库文件中，而是先拷贝至">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="mysql">
 <meta property="og:url" content="http://yoursite.com/2018/08/10/mysql/index.html">
 <meta property="og:site_name" content="李波的博客">
-<meta property="og:description" content="存储引擎InnoDB三大特性 插入缓冲（提高写性能） 对于非聚集类所有的插入和更新操作，不是每一次都直接插入到索引页中，而是先插入到内存中  自适应哈希索引（提高查询效率） 监控对表上各索引页的查询，如果观察到建立哈希索引可以带来速度提升，则会建立哈希索引，称为自适应哈希索引（Adaptive Hash Index，AHI）  两次写（提高可靠性） 当属性缓冲池脏页时，并不直接写道数据库文件中，而">
+<meta property="og:description" content="存储引擎InnoDB三大特性 插入缓冲（提高写性能）对于非聚集类所有的插入和更新操作，不是每一次都直接插入到索引页中，而是先插入到内存中 自适应哈希索引（提高查询效率）监控对表上各索引页的查询，如果观察到建立哈希索引可以带来速度提升，则会建立哈希索引，称为自适应哈希索引（Adaptive Hash Index，AHI） 两次写（提高可靠性）当属性缓冲池脏页时，并不直接写道数据库文件中，而是先拷贝至">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-08-10T12:50:34.000Z">
-<meta property="article:modified_time" content="2024-07-31T03:16:37.260Z">
+<meta property="article:modified_time" content="2024-07-31T11:05:13.348Z">
 <meta property="article:author" content="李波">
 <meta property="article:tag" content="Mysql">
 <meta name="twitter:card" content="summary">
@@ -240,7 +240,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-07-31 11:16:37" itemprop="dateModified" datetime="2024-07-31T11:16:37+08:00">2024-07-31</time>
+      <time title="修改时间：2024-07-31 19:05:13" itemprop="dateModified" datetime="2024-07-31T19:05:13+08:00">2024-07-31</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -269,15 +269,9 @@
     
     
     <div class="post-body" itemprop="articleBody"><h2 id="存储引擎"><a href="#存储引擎" class="headerlink" title="存储引擎"></a>存储引擎</h2><h3 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h3><h4 id="三大特性"><a href="#三大特性" class="headerlink" title="三大特性"></a>三大特性</h4><ul>
-<li><p>插入缓冲（提高写性能）</p>
-<p>对于非聚集类所有的插入和更新操作，不是每一次都直接插入到索引页中，而是先插入到内存中</p>
-</li>
-<li><p>自适应哈希索引（提高查询效率）</p>
-<p>监控对表上各索引页的查询，如果观察到建立哈希索引可以带来速度提升，则会建立哈希索引，称为自适应哈希索引（Adaptive Hash Index，AHI）</p>
-</li>
-<li><p>两次写（提高可靠性）</p>
-<p>当属性缓冲池脏页时，并不直接写道数据库文件中，而是先拷贝至内存中的两次写缓冲区，接着从两次写缓冲区分两次写入磁盘共享表空间中，每次写入1M，再将两次写缓冲区写入数据文件</p>
-</li>
+<li>插入缓冲（提高写性能）<br>对于非聚集类所有的插入和更新操作，不是每一次都直接插入到索引页中，而是先插入到内存中</li>
+<li>自适应哈希索引（提高查询效率）<br>监控对表上各索引页的查询，如果观察到建立哈希索引可以带来速度提升，则会建立哈希索引，称为自适应哈希索引（Adaptive Hash Index，AHI）</li>
+<li>两次写（提高可靠性）<br>当属性缓冲池脏页时，并不直接写道数据库文件中，而是先拷贝至内存中的两次写缓冲区，接着从两次写缓冲区分两次写入磁盘共享表空间中，每次写入1M，再将两次写缓冲区写入数据文件<span id="more"></span></li>
 </ul>
 <h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
 <li>支持事务处理，ACID事务特性</li>

@@ -236,7 +236,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-07-31 11:16:37" itemprop="dateModified" datetime="2024-07-31T11:16:37+08:00">2024-07-31</time>
+      <time title="修改时间：2024-07-31 19:05:13" itemprop="dateModified" datetime="2024-07-31T19:05:13+08:00">2024-07-31</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -266,217 +266,17 @@
     
     <div class="post-body" itemprop="articleBody">
           <h2 id="存储引擎"><a href="#存储引擎" class="headerlink" title="存储引擎"></a>存储引擎</h2><h3 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h3><h4 id="三大特性"><a href="#三大特性" class="headerlink" title="三大特性"></a>三大特性</h4><ul>
-<li><p>插入缓冲（提高写性能）</p>
-<p>对于非聚集类所有的插入和更新操作，不是每一次都直接插入到索引页中，而是先插入到内存中</p>
-</li>
-<li><p>自适应哈希索引（提高查询效率）</p>
-<p>监控对表上各索引页的查询，如果观察到建立哈希索引可以带来速度提升，则会建立哈希索引，称为自适应哈希索引（Adaptive Hash Index，AHI）</p>
-</li>
-<li><p>两次写（提高可靠性）</p>
-<p>当属性缓冲池脏页时，并不直接写道数据库文件中，而是先拷贝至内存中的两次写缓冲区，接着从两次写缓冲区分两次写入磁盘共享表空间中，每次写入1M，再将两次写缓冲区写入数据文件</p>
-</li>
-</ul>
-<h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
-<li>支持事务处理，ACID事务特性</li>
-<li>实现了SQL标准的四种隔离级别</li>
-<li>支持行锁和外键约束</li>
-<li>可以利用事务日志进行数据恢复</li>
-</ul>
-<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ul>
-<li>不支持FULLTEXT类型的索引，因为它没有保存表的行数</li>
-<li>当使用count统计时会扫描全表</li>
-</ul>
-<h3 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h3><h4 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h4><ul>
-<li>高性能读取</li>
-<li>保存了表的行数，当使用count统计时不会扫描全表</li>
-</ul>
-<h4 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h4><ul>
-<li>不支持事务</li>
-<li>不支持行锁和外键</li>
-<li>Insert和Update操作需要锁定整个表</li>
-<li>不支持故障恢复</li>
-</ul>
-<h2 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h2><h3 id="索引类型"><a href="#索引类型" class="headerlink" title="索引类型"></a>索引类型</h3><h4 id="B-tree"><a href="#B-tree" class="headerlink" title="B-tree"></a>B-tree</h4><ul>
-<li>每个节点包含了键值和键值对应的数据对象存放地址指针</li>
-<li>根节点常驻内存</li>
-<li>同一键值不会出现多次，并且它有可能出现在叶节点，也有可能出现在非叶节点中</li>
-<li>最小时间复杂度为1</li>
-<li>适合内存</li>
-</ul>
-<h4 id="B-tree-1"><a href="#B-tree-1" class="headerlink" title="B+tree"></a>B+tree</h4><ul>
-<li>非叶节点中存放的关键码并不指向数据对象的地址指针，非叶节点只是索引部分</li>
-<li>键一定会出现在叶节点中，并且有可能在非叶节点中，也有可能重复出现，以维持B+树的平衡</li>
-<li>时间复杂度固定</li>
-<li>适合硬盘</li>
-</ul>
-<h4 id="Hash"><a href="#Hash" class="headerlink" title="Hash"></a>Hash</h4><ul>
-<li>仅能满足&#x3D;、in、&lt;&#x3D;、&gt;查询，不能使用范围查询</li>
-<li>无法被用来避免数据的排序操作</li>
-<li>索引在任何时候都不能避免表扫描</li>
-<li>Hash冲突时性能低</li>
-</ul>
-<h4 id="FullText"><a href="#FullText" class="headerlink" title="FullText"></a>FullText</h4><ul>
-<li>全文搜索的索引<ul>
-<li>倒排索引<ul>
-<li>以字或词为关键字索引，关键字记录了所有存在关键字的文档</li>
-</ul>
-</li>
-<li>正排索引<ul>
-<li>以文档的ID为关键字，表中记录文档中的每个字的位置信息，查找每个文档中字的信息知道找出所有包含关键字的文档</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ul>
-<li>索引不会包含有null值的列</li>
-<li>使用短索引</li>
-<li>索引列like语句前面不要加%</li>
-<li>不要再列上进行运算</li>
-<li>索引要建再经常select操作的字段上</li>
-<li>索引要建在值比较唯一的字段上，text、image、bit数据类型的列不应该增加索引</li>
-<li>不能使用not in、&lt;&gt;、!&#x3D;等负向条件</li>
-<li>如果明确知道只有一条结果返回，limit 1能够提高效率</li>
-<li>强制类型转换会全表扫描</li>
-<li>遵循最左前缀原则</li>
-</ul>
-<h2 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h2><h3 id="锁粒度"><a href="#锁粒度" class="headerlink" title="锁粒度"></a>锁粒度</h3><ul>
-<li>MyISAM<ul>
-<li>表锁</li>
-</ul>
-</li>
-<li>InnoDB<ul>
-<li>表锁</li>
-<li>行锁<ul>
-<li>只有通过索引条件检索数据，才能使用行锁，否则将使用表锁</li>
-<li>只有执行计划真正使用了索引，才能使用行锁；即便在条件中使用了索引字段，但是如果Mysql认为全表扫描效率更高，那么就不会使用索引，这种情况下将使用表锁</li>
-</ul>
-</li>
-<li>意向锁</li>
-<li>间隙锁</li>
-</ul>
-</li>
-<li>BDB<ul>
-<li>表锁</li>
-<li>页锁</li>
-</ul>
-</li>
-</ul>
-<h3 id="锁机制"><a href="#锁机制" class="headerlink" title="锁机制"></a>锁机制</h3><ul>
-<li>共享锁（读锁）<ul>
-<li>读锁不会阻塞同一表的其他读请求，会阻塞同一表写请求</li>
-<li>加锁：select lock in share mode</li>
-</ul>
-</li>
-<li>排他锁（写锁）<ul>
-<li>写锁会阻塞其他同一表的读和写操作</li>
-<li>insert、update、remove自动加锁</li>
-<li>加锁：select *** for update</li>
-</ul>
-</li>
-</ul>
-<h3 id="锁类型"><a href="#锁类型" class="headerlink" title="锁类型"></a>锁类型</h3><ul>
-<li><p>表锁</p>
-<p>开销小，加锁快；不会出现死锁；锁定粒度大，发生锁冲突的概率最高，并发度低</p>
-</li>
-<li><p>行锁</p>
-<p>开销大，加锁慢；会出现死锁；锁定粒度最小，发生锁冲突的概率最低，并发度最高</p>
-</li>
-<li><p>页锁</p>
-<p>开销和加锁时间介于表锁和行锁之间；会出现死锁；锁定粒度介于表锁和行锁之间，并发度一般</p>
-</li>
-<li><p>间隙锁</p>
-<p>当我们用范围条件检索数据，并请求共享和排他锁时，对于键值在条件范围内但并不存在的记录，叫做间隙，InnoDB也会对这个间隙加锁，这种锁就叫间隙锁。</p>
-<ul>
-<li>可以防止幻读</li>
-</ul>
-</li>
-<li><p>意向锁</p>
-<p>表级锁，但是却表示事务正在读或写某一行记录，而不是整个表，在给一行记录加锁前，首先要给该表加意向锁</p>
-</li>
-</ul>
-<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ul>
-<li>原子性（Atomicity）事务包含的操作要么全部成功，要么全部失败</li>
-<li>一致性（Consistency）事务必须使数据库从一个一致性状态变换成另一个一致性状态</li>
-<li>隔离性（Isolation）多个并发事务之间相互隔离</li>
-<li>持久性（Durability）一个事务一旦被提交了，那么数据库中数据的改变就是永久性的</li>
-</ul>
-<h3 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h3><ul>
-<li>读未提交（Read UnCommited）<ul>
-<li>造成脏读、不可重复读、幻读</li>
-</ul>
-</li>
-<li>读已提交（Read Commited）</li>
-<li>造成不可重复读、幻读</li>
-<li>可重复读（Repeatable Read）</li>
-<li>造成幻读</li>
-<li>串行化读（Serializable）</li>
-</ul>
-<h3 id="隔离级别问题"><a href="#隔离级别问题" class="headerlink" title="隔离级别问题"></a>隔离级别问题</h3><ul>
-<li>脏读<ul>
-<li>在一个事务处理过程中读取到了另一个未提交的事务中的数据</li>
-</ul>
-</li>
-<li>不可重复读<ul>
-<li>一个事务范围内多次查询却返回了不同的数据，这是由于查询间隔期间，其他事务修改并提交了</li>
-</ul>
-</li>
-<li>幻读<ul>
-<li>事务非独立执行时发生的一种现象<ul>
-<li>事务A查询数据没有数据1，插入数据1</li>
-<li>事务B查询数据没有数据1，插入数据1，提交事务</li>
-<li>事务A提交事务，发现提交失败，提示已经存在1</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="参数调优"><a href="#参数调优" class="headerlink" title="参数调优"></a>参数调优</h2><ul>
-<li><code>max_connections</code> 最大连接数</li>
-<li><code>open_files_limit</code> 打开的文件描述符限制，默认最小1024，当open_files_limit没有被配置的时候，比较max_connections*5和ulimit -n的值，哪个大用哪个</li>
-<li><code>read_buffer_size</code> 读入缓冲区大小</li>
-<li><code>read_rnd_buffer_size</code> 随机读缓冲区大小</li>
-<li><code>sort_buffer_size</code> 执行排序使用的缓冲大小</li>
-<li><code>join_buffer_size</code> 联合查询操作所能使用的缓冲区大小</li>
-<li><code>thread_cache_size</code> 表示可以重新利用保存在缓存中线程的数量</li>
-<li><code>query_cache_size</code> 查询缓冲大小</li>
-<li><code>query_cache_limit</code> 指定单个查询能够使用的缓冲区大小，默认1M</li>
-<li><code>key_buffer_size</code> 指定用于索引的缓冲区大小</li>
-<li><code>slow_query_log</code> 开启慢查询</li>
-<li><code>long_query_time</code> 慢查询时间 超过1秒则为慢查询</li>
-<li><code>lower_case_table_names</code> 不区分大小写</li>
-<li><code>innodb_open_files</code> 限制Innodb能打开的表的数据</li>
-</ul>
-<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><ul>
-<li><p>drop、truncate、delete的区别？</p>
-<ul>
-<li>truncate和delete值删除数据不删除表结构，drop将删除表结构</li>
-<li>truncate和drop是数据库定义语言，操作立即生效，delete需要事务提交之后才生效</li>
-<li>速度：drop &gt; truncate &gt; delte</li>
-</ul>
-</li>
-<li><p>数据库优化方案</p>
-<ul>
-<li>读写分离</li>
-<li>分库分表</li>
-<li>使用索引</li>
-<li>开启慢查询</li>
-</ul>
-</li>
-<li><p>什么是redo日志？什么是undo日志？</p>
-<ul>
-<li>Redo日志记录某数据块被修改后的值，可以用来恢复未写入data file的已成功事务更新的数据</li>
-<li>Undo日志记录某数据被修改前的值，可以用来在事务失败时进行rollback；</li>
-</ul>
-</li>
-<li><p>聚集索引和非聚集索引的区别</p>
-<ul>
-<li>聚集索引表记录的排列顺序和索引的排列顺序一致，并且只能有一个</li>
-<li>非聚集索引指定了表中记录的逻辑顺序，但记录的物理顺序和索引的顺序不一致；可以存在多个</li>
-</ul>
-</li>
-</ul>
-
+<li>插入缓冲（提高写性能）<br>对于非聚集类所有的插入和更新操作，不是每一次都直接插入到索引页中，而是先插入到内存中</li>
+<li>自适应哈希索引（提高查询效率）<br>监控对表上各索引页的查询，如果观察到建立哈希索引可以带来速度提升，则会建立哈希索引，称为自适应哈希索引（Adaptive Hash Index，AHI）</li>
+<li>两次写（提高可靠性）<br>当属性缓冲池脏页时，并不直接写道数据库文件中，而是先拷贝至内存中的两次写缓冲区，接着从两次写缓冲区分两次写入磁盘共享表空间中，每次写入1M，再将两次写缓冲区写入数据文件
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/08/10/mysql/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -538,7 +338,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-07-31 11:16:37" itemprop="dateModified" datetime="2024-07-31T11:16:37+08:00">2024-07-31</time>
+      <time title="修改时间：2024-07-31 19:05:36" itemprop="dateModified" datetime="2024-07-31T19:05:36+08:00">2024-07-31</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -574,299 +374,15 @@
 <li>JMS Destination 消息发送的目的地，queue或topic</li>
 <li>JMS DeliveryMode 传送模式，持久模式或非持久模式</li>
 <li>JMS Priority 消息优先级，分为10个级别，从0（最低）到9（最高），默认级别是4，不保证一定按照优先级的顺序提交消息</li>
-<li>JMS MessageID 唯一识别每个消息的标识</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>属性<ul>
-<li>应用程序自定义的属性，<code>Message.setStringProperty(key,value)</code></li>
-<li>JMS定义的属性，使用JMSX作为前缀</li>
-</ul>
-</li>
-<li>消息体<ul>
-<li>TextMessage	<code>Java.lang.String</code>对象</li>
-<li>MapMessage 键&#x2F;值对的集合，键是<code>Java.lang.String</code>对象，值可以是Java任何基本类型</li>
-<li>BytesMessage 字节流</li>
-<li>StreamMessage Java中的输入&#x2F;输出流</li>
-<li>ObjectMessage Java中的可序列化对象</li>
-<li>Message 没有消息体，只有消息头和属性</li>
-</ul>
-</li>
-</ul>
-<h3 id="消息传递域"><a href="#消息传递域" class="headerlink" title="消息传递域"></a>消息传递域</h3><ul>
-<li>点对点（point-to-point）消息传递域<ul>
-<li>每个消息只能有一个消费者</li>
-<li>生产者和消费者之间<strong>没有</strong>时间上的相关性</li>
-</ul>
-</li>
-<li>发布&#x2F;订阅（publish&#x2F;subscribe）消息传递域<ul>
-<li>每个消息可以有多个消费者</li>
-<li>生产者和消费者之间<strong>有</strong>时间上的相关性</li>
-</ul>
-</li>
-</ul>
-<h3 id="消息应答模式"><a href="#消息应答模式" class="headerlink" title="消息应答模式"></a>消息应答模式</h3><h4 id="ACK-MODE"><a href="#ACK-MODE" class="headerlink" title="ACK_MODE"></a>ACK_MODE</h4><ul>
-<li>AUTO_ACKNOWLEDGE&#x3D;1  自动确认</li>
-<li>CLIENT_ACKNOWLEDGE&#x3D;2  客户端收到确认，客户端调用消息的acknowledge方法确认消息</li>
-<li>DUPS_OF_ACKNOWLEDGE&#x3D;3  自动批量确认</li>
-<li>SESSION_TRANSACTED&#x3D;0  事务提交并确认</li>
-</ul>
-<h4 id="ACK-TYPE"><a href="#ACK-TYPE" class="headerlink" title="ACK_TYPE"></a>ACK_TYPE</h4><ul>
-<li>DELIVERED_ACK_TYPE &#x3D; 0 消息”已接收”，但尚未处理结束</li>
-<li>POSION_ACK_TYPE &#x3D; 1 消息”错误”,通常表示”抛弃”此消息，比如消息重发多次后，都无法正确处理时，消息将会被删除或者 DLQ(死信队列) </li>
-<li>STANDARD_ACK_TYPE &#x3D; 2 “标准”类型,通常表示为消息”处理成功”，broker 端 可以删除消息</li>
-<li>REDELIVERED_ACK_TYPE &#x3D; 3 消息需”重发”，比如 consumer 处理消息时抛出了异常，broker 稍后会重新发送此消息 </li>
-<li>INDIVIDUAL_ACK_TYPE &#x3D; 4 表示只确认”单条消息”,无论在任何 ACK_MODE 下</li>
-<li>UNMATCHED_ACK_TYPE &#x3D; 5 在 Topic 中，如果一条消息在转发给“订阅者”时，发现此消息不符合 Selector 过滤条件，那么此消息将不会转发给订阅者，消息将会被存储引擎删除(相当于在 Broker 上确认了消息)</li>
-</ul>
-<h3 id="MOM"><a href="#MOM" class="headerlink" title="MOM"></a>MOM</h3><p>面向消息中间件（Message Oriente Middleware）</p>
-<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ol>
-<li>消息异步接收，发送者不需要等待消息接收者响应</li>
-<li>消息可靠接收，确保消息在中间件可靠保存。只有接收者收到后才删除消息。</li>
-</ol>
-<h2 id="ActiveMQ"><a href="#ActiveMQ" class="headerlink" title="ActiveMQ"></a>ActiveMQ</h2><p>完全基于JMS规范实现的一个消息中间件，主要应用在分布式系统架构中，帮助构建高可用、高性能、可伸缩的企业级面向消息服务的系统</p>
-<p>特性</p>
-<ul>
-<li>支持多语言和协议<ul>
-<li>OpenWire</li>
-<li>Stomp</li>
-<li>AMQP</li>
-<li>MQTT</li>
-</ul>
-</li>
-<li>完全支持jms1.1和J2ee1.4规范</li>
-<li>对spring的支持</li>
-</ul>
-<h3 id="Broker"><a href="#Broker" class="headerlink" title="Broker"></a>Broker</h3><p>提供消息服务的组件</p>
-<h3 id="发布订阅"><a href="#发布订阅" class="headerlink" title="发布订阅"></a>发布订阅</h3><ul>
-<li>当broker发送消息给订阅者时，如果订阅者处于未激活状态，<ul>
-<li>持久订阅者可以收到消息</li>
-<li>非持久订阅则收不到消息</li>
-</ul>
-</li>
-</ul>
-<h3 id="消息发送策略"><a href="#消息发送策略" class="headerlink" title="消息发送策略"></a>消息发送策略</h3><ul>
-<li>同步发送<ul>
-<li>发送者发送一条消息会阻塞直到broker反馈一个确认消息，表示消息已经被broker处理</li>
-</ul>
-</li>
-<li>异步发送<ul>
-<li>发送者不需要等待broker提供反馈</li>
-</ul>
-</li>
-</ul>
-<p>默认情况下，非持久化消息是异步发送的，持久化消息并且在非事务模式下是同步发送的，开启事务的情况下，消息都是异步发送</p>
-<h3 id="持久化策略"><a href="#持久化策略" class="headerlink" title="持久化策略"></a>持久化策略</h3><h5 id="KahaDB（默认存储策略）"><a href="#KahaDB（默认存储策略）" class="headerlink" title="KahaDB（默认存储策略）"></a>KahaDB（默认存储策略）</h5><ul>
-<li><p>配置方式</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">persistenceAdapter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">kahaDB</span> <span class="attr">directory</span>=<span class="string">&quot;$&#123;activemq.data&#125;/kahadb&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">persistenceAdapter</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>存储文件</p>
-<ul>
-<li>db.data 消息的索引文件</li>
-<li>db.redo 用来进行消息恢复</li>
-<li>db-*.log 存储消息内容</li>
-<li>lock文件 锁，表示当前获得kahadb读写权限的broker</li>
-</ul>
-</li>
-</ul>
-<h5 id="JDBC"><a href="#JDBC" class="headerlink" title="JDBC"></a>JDBC</h5><ul>
-<li><p>配置方式</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">persistenceAdapter</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">jdbcPersistenceAdapter</span> <span class="attr">dataSource</span>=<span class="string">&quot;#MySQL-DS&quot;</span> <span class="attr">createTablesOnStartup</span>=<span class="string">&quot;true&quot;</span> /&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">persistenceAdapter</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;Mysql-DS&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.apache.commons.dbcp.BasicDataSource&quot;</span> <span class="attr">destroy-method</span>=<span class="string">&quot;close&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driverClassName&quot;</span> <span class="attr">value</span>=<span class="string">&quot;com.mysql.jdbc.Driver&quot;</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;url&quot;</span> <span class="attr">value</span>=<span class="string">&quot;jdbc:mysql://localhost:3306/activemq? relaxAutoCommit=true&quot;</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span> <span class="attr">value</span>=<span class="string">&quot;root&quot;</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;root&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>使用JDBC持久化方式，数据库会创建3个表：activemq_msgs，activemq_acks和activemq_lock</p>
-<ul>
-<li>ACTIVEMQ_MSGS 消息表，queue和topic都存在这个表</li>
-<li>ACTIVEMQ_ACKS 存储持久订阅的信息和最后一个持久订阅接收的消息ID</li>
-<li>ACTIVEMQ_LOCKS 锁表，用来确保某一时刻，只能有一个ActiveMQ broker实例来访问数据库</li>
-</ul>
-</li>
-</ul>
-<h5 id="Memory"><a href="#Memory" class="headerlink" title="Memory"></a>Memory</h5><ul>
-<li><p>基于内存的消息存储，内存消息存储主要是存储所有的持久化的消息在内存中，<code>persistent=&quot;false&quot;</code>表示不设置持久化存储，直接存储到内存中</p>
-</li>
-<li><p>配置方式</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">beans</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">broker</span> <span class="attr">brokerName</span>=<span class="string">&quot;test-broker&quot;</span> <span class="attr">persistent</span>=<span class="string">&quot;false&quot;</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://activemq.apache.org/schema/core&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">transportConnectors</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">transportConnector</span> <span class="attr">uri</span>=<span class="string">&quot;tcp://localhost:61635&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">transportConnectors</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">broker</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h5 id="LevelDB"><a href="#LevelDB" class="headerlink" title="LevelDB"></a>LevelDB</h5><ul>
-<li><p>配置方式</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">persistenceAdapter</span>&gt;</span></span><br><span class="line">    &lt;levelDBdirectory=&quot;activemq-data&quot;/&gt;</span><br><span class="line"><span class="tag">&lt;/<span class="name">persistenceAdapter</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h5 id="JDBC-With-ActiveMQ-Journal"><a href="#JDBC-With-ActiveMQ-Journal" class="headerlink" title="JDBC With ActiveMQ Journal"></a>JDBC With ActiveMQ Journal</h5><ul>
-<li><p>这种方式克服了JDBC Store的不足，JDBC每次消息过来，都需要写库和读库，而Journal使用了高速缓存写入技术，大大提高了性能。</p>
-</li>
-<li><p>配置方式</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">persistenceFactory</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">journalPersistenceAdapterFactory</span>  <span class="attr">dataSource</span>=<span class="string">&quot;#Mysql-DS&quot;</span> <span class="attr">dataDirectory</span>=<span class="string">&quot;activemqdata&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">persistenceFactory</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><ul>
-<li>prefetchSzie<ul>
-<li>持久化queue和非持久化queue的默认值为1000</li>
-<li>持久化topic默认值100</li>
-<li>非持久化topic默认值Short.MAX_VALUE</li>
-</ul>
-</li>
-</ul>
-<p>消费者会根据prefetchSize的大小批量获取数据，比如默认值1000，那么消费者会预先加载1000条数据到本地内存中。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Destination destination=session.createQueue(<span class="string">&quot;myQueue?consumer.prefetchSize=10&quot;</span>); </span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>optimizeAcknowledge<ul>
-<li>优化确认，表示是否开启“优化ACK”，只有在true情况下，prefetchSize和optimizeAcknowledgeTimeOut才有意义</li>
-<li>减轻客户端负担，不需要频繁的确认消息</li>
-<li>减少通信开销</li>
-<li>由于延迟了确认（默认ack 0.65*prefetchSize个消息才确认），broker再次发送消息时又可以批量发送</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ConnectionFactory</span> <span class="variable">connectionFactory</span> <span class="operator">=</span> </span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">ActiveMQConnectionFactory</span>(<span class="string">&quot;tcp://192.168.0.18:61616?jms.optimizeAcknowledge=true&amp;jms.optimizeAcknowledgeTimeOut=10000&quot;</span>); </span><br></pre></td></tr></table></figure>
-
-<p>如果optimizeAcknowledge为true，那么prefetchSize必须大于0。当prefetchSize&#x3D;0的时候，表示consumer 通过PULL方式从broker获取消息。</p>
-<h3 id="消息重发"><a href="#消息重发" class="headerlink" title="消息重发"></a>消息重发</h3><h4 id="重发时机"><a href="#重发时机" class="headerlink" title="重发时机"></a>重发时机</h4><ul>
-<li>在事务性会话中，没有调用 session.commit 确认消息或者调用session.rollback 方法回滚消息</li>
-<li>在非事务性会话中，ACK 模式为 CLIENT_ACKNOWLEDGE 的情况下，没有调用 acknowledge 或者调用了 recover 方法；</li>
-</ul>
-<p>一个消息被redelivedred超过默认的最大重发次数（默认 6 次）时，消费端会给 broker 发送一个poisonack，表示这个消息有毒，告诉 broker 不要再发了。这个时候 broker 会把这个消息放到 DLQ（<strong>死信队列</strong>）。 </p>
-<h4 id="死信队列"><a href="#死信队列" class="headerlink" title="死信队列"></a>死信队列</h4><p>死信队列可以再次消费</p>
-<p>配置策略</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">destinationPolicy</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">policyMap</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">policyEntries</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">policyEntry</span> <span class="attr">topic</span>=<span class="string">&quot;&gt;&quot;</span> &gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">pendingMessageLimitStrategy</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">constantPendingMessageLimitStrategy</span> <span class="attr">limit</span>=<span class="string">&quot;1000&quot;</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">pendingMessageLimitStrategy</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">policyEntry</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- “&gt;”表示对所有队列生效，如果需要设置指定队列，则直接写队列名称  --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">policyEntry</span> <span class="attr">queue</span>=<span class="string">&quot;&gt;&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">deadLetterStrategy</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!-- </span></span><br><span class="line"><span class="comment">						queuePrefix:设置死信队列前缀</span></span><br><span class="line"><span class="comment">						useQueueForQueueMessage 设置队列保存到死信。  </span></span><br><span class="line"><span class="comment">					--&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">individualDeadLetterStrategy</span> <span class="attr">queuePrefix</span>=<span class="string">&quot;DLQ.&quot;</span> <span class="attr">useQueueForQueueMessages</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">deadLetterStrategy</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">policyEntry</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">policyEntries</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">policyMap</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">destinationPolicy</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="自动丢弃过期消息"><a href="#自动丢弃过期消息" class="headerlink" title="自动丢弃过期消息"></a>自动丢弃过期消息</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">deadLetterStrategy</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">sharedDeadLetterStrategy</span> <span class="attr">processExpired</span>=<span class="string">&quot;false&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">deadLetterStrategy</span>&gt;</span> </span><br></pre></td></tr></table></figure>
-
-<h3 id="集群配置"><a href="#集群配置" class="headerlink" title="集群配置"></a>集群配置</h3><h4 id="静态网络"><a href="#静态网络" class="headerlink" title="静态网络"></a>静态网络</h4><p>两个 Brokers 通过一个 static 的协议来进行网络连接。一个 Consumer 连接到BrokerB 的一个地址上，当 Producer 在 BrokerA 上以相同的地址发送消息是，此时消息会被转移到 BrokerB 上，也就是说 BrokerA 会转发消息到BrokerB 上 </p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 设置activemq地址 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">networkConnectors</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">networkConnector</span> <span class="attr">uri</span>=<span class="string">&quot;static://(tcp://192.168.11.153:61616,tcp://192.168.11.154:61616)&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">networkConnectors</span>&gt;</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 消息回流 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- enableAudit=false,防止消息回流后被当作重复消息而不被分发  --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">policyEntry</span> <span class="attr">queue</span>=<span class="string">&quot;&gt;&quot;</span> <span class="attr">enableAudit</span>=<span class="string">&quot;false&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">networkBridgeFilterFactory</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- replayWhenNoConsumers=true, 当broker1上有需要转发的消息但是没有消费者时，把消息回流到它原始的broke  --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">conditionalNetworkBridgeFilterFactory</span> <span class="attr">replayWhenNoConsumers</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">networkBridgeFilterFactory</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">policyEntry</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="动态网络"><a href="#动态网络" class="headerlink" title="动态网络"></a>动态网络</h4><p>ActiveMQ 使用 Multicast 协议将一个 Service 和其他的 Broker 的 Service 连接起来。Multicast 能够自动的发现其他 broker，从而替代了使用 static 功能列表 broker。</p>
-<h3 id="ActiveMQ优缺点"><a href="#ActiveMQ优缺点" class="headerlink" title="ActiveMQ优缺点"></a>ActiveMQ优缺点</h3><p>ActiveMQ 采用消息推送方式，所以最适合的场景是默认消息都可在短时间内被消费。数据量越大，查找和消费消息就越慢，消息积压程度与消息速度成反 比。 </p>
-<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ol>
-<li><strong>吞吐量低</strong>，由于 ActiveMQ 需要建立索引，导致吞吐量下降。这是无法克服的缺点，只要使用完全符合 JMS 规范的消息中间件，就要接受这个级别的TPS</li>
-<li><strong>无分片功能</strong>，这是一个功能缺失，JMS 并没有规定消息中间件的集群、分片机制。而由于 ActiveMQ 是伟企业级开发设计的消息中间件，初衷并不是为了处理海量消息和高并发请求。如果一台服务器不能承受更多消息，则需要横向拆分。ActiveMQ 官方不提供分片机制，需要自己实现</li>
-</ol>
-<h4 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h4><p>对 TPS 要求比较低的系统，可以使用 ActiveMQ 来实现，一方面比较简单，能够快速上手开发，另一方面可控性也比较好，还有比较好的监控机制和界面 </p>
-<h4 id="不适应场景"><a href="#不适应场景" class="headerlink" title="不适应场景"></a>不适应场景</h4><p>消息量巨大的场景。ActiveMQ 不支持消息自动分片机制，如果消息量巨大， 导致一台服务器不能处理全部消息，就需要自己开发消息分片功能</p>
-<h2 id="Kafka（未完待续）"><a href="#Kafka（未完待续）" class="headerlink" title="Kafka（未完待续）"></a>Kafka（未完待续）</h2><p>分布式消息和订阅系统，高性能、高吞吐量</p>
-<h3 id="适用场景-1"><a href="#适用场景-1" class="headerlink" title="适用场景"></a>适用场景</h3><ul>
-<li>行为跟踪</li>
-<li>日志收集</li>
-</ul>
-<h3 id="Topic"><a href="#Topic" class="headerlink" title="Topic"></a>Topic</h3><p>topic是一个存储消息的逻辑概念，可以认为是一个消息集合。每条消息发送到 kafka 集群的消息都有一个类别。物理上来说，不同的 topic 的消息是分开存储的。</p>
-<h3 id="Partition（分区）"><a href="#Partition（分区）" class="headerlink" title="Partition（分区）"></a>Partition（分区）</h3><p>每个 topic 可以划分多个分区（每个 Topic 至少有一个分区），同一topic下的不同分区包含的消息是不同的。每个消息在被添加到分区时，都会被分配一个offset（称之为偏移量），它是消息在此分区中的唯一编号，kafka通过offset保证消息在分区内的顺序，offset的顺序不跨分区，即<strong>kafka只保证在同一个分区内的消息是有序的</strong>。</p>
-<ul>
-<li><p>消费者比Partition多，会造成资源浪费</p>
-</li>
-<li><p>Partition比消费者多，消费者会消费多个Partition</p>
-</li>
-<li><p>只能保证单个Partition的消息顺序，不能保证多个Partition的顺序</p>
-</li>
-</ul>
-<h4 id="分发机制"><a href="#分发机制" class="headerlink" title="分发机制"></a>分发机制</h4><p>默认情况，kafka采用的是hash取模的分区算法。如果key为null，则会在<code>metadata.max.age.ms</code>时间范围内随机分配一个分区。<code>”metadata.max.age.ms</code>默认情况下10分钟更新一次。也可以自定义key的分区分配。</p>
-<h4 id="好处"><a href="#好处" class="headerlink" title="好处"></a>好处</h4><ul>
-<li>对broker上的数据进行分片有效的减少了消息的容量，从而提升了io性能</li>
-<li>提高消费端的消费能力（消费端可以采用负载均衡的方式消费不同分区消息）</li>
-</ul>
-<h4 id="分配策略"><a href="#分配策略" class="headerlink" title="分配策略"></a>分配策略</h4><ul>
-<li>Range（范围分区，默认）<ul>
-<li>首先按照分区序号进行排序，并对消费者按照字典顺序进行排序。</li>
-<li>按照消费者总数和分区总数进行整除运算来获得一个跨度，然后将分区按照跨度进行平均分配，以保证分区尽可能均匀地分配给所有的消费者。如果不够平均分配，那么字典序靠前的消费者会被多分配一个分区。</li>
-</ul>
-</li>
-<li>RoundRobin（轮询）<ul>
-<li>轮询分区策略是把所有partition和所有consumer线程都列出来，然后按照 hashcode 进行排序。最后通过轮询算法分配partition给消费线程。如果所有consumer实例的订阅是相同的，那么partition会均匀分布。</li>
-</ul>
-</li>
-<li>自定义策略<ul>
-<li>继承AbstractPartitionAssignor，实现对应的方法即可。</li>
-</ul>
-</li>
-</ul>
-<h4 id="分配策略触发时机"><a href="#分配策略触发时机" class="headerlink" title="分配策略触发时机"></a>分配策略触发时机</h4><ol>
-<li>同一个consumer group内新增了消费者 </li>
-<li>消费者离开当前所属的 consumer group，比如主动停机或者宕机</li>
-<li>topic新增了分区（也就是分区数量发生了变化）</li>
-</ol>
-<h4 id="高可用副本机制"><a href="#高可用副本机制" class="headerlink" title="高可用副本机制"></a>高可用副本机制</h4><p>为了提高partition的可靠性而提供了副本的概念（Replica） ,通过副本机制来实现冗余备份。每个分区可以有多个副本，并且在副本集合中会存在一个 leader的副本，所有的读写请求都是由leader副本来进行 处理。剩余的其他副本都做为 follower 副本，follower 副 本会从 leader 副本同步消息日志。一般情况下，同一个分区的多个副本会被均匀分配到集群中的不同broker上，当leader副本所在的broker出现故障后，可以重新选举新的 leader 副本继续对外提供服务。 通过这样的副本机制来提高kafka集群的可用性</p>
-<h5 id="副本分配算法"><a href="#副本分配算法" class="headerlink" title="副本分配算法"></a>副本分配算法</h5><ol>
-<li><p>将所有N Broker和待分配的i个Partition排序。</p>
-</li>
-<li><p>将第i个Partition分配到第(i mod n)个Broker上。</p>
-</li>
-<li><p>将第i个Partition的第j个副本分配到第((i + j) mod n)个 Broker上。</p>
-</li>
-</ol>
-<h5 id="副本角色"><a href="#副本角色" class="headerlink" title="副本角色"></a>副本角色</h5><ul>
-<li><p>leader副本：响应clients端读写请求的副本 </p>
-</li>
-<li><p>follower副本：被动地备份leader副本中的数据，不能响 应clients端读写请求。 </p>
-</li>
-<li><p>ISR副本：包含了leader副本和所有与leader副本保持同步的 follower 副本。表示目前“可用且消息量与 leader 相差不多的副本集合， 这是整个副本集合的一个子集”。ISR集合中的副本必须满足两个条件：</p>
-<ol>
-<li><p>副本所在节点必须维持着与zookeeper的连接 </p>
-</li>
-<li><p>副本最后一条消息的 offset 与 leader 副本的最后一条消息的 offset 之间的差值不能超过指定的阈值 (replica.lag.time.max.ms) 。如果该 follower 在此时间间隔内一直没有追上过leader的所有消息，则该follower就会被剔除isr列表</p>
-</li>
-</ol>
-</li>
-</ul>
-<p>——如何判定是否与 leader 同步后面会提到每个 Kafka 副本对象都有两个重要的属性：LEO 和 HW。注意是所有的副本，而不只是leader副本。 </p>
-<h6 id="副本对象属性"><a href="#副本对象属性" class="headerlink" title="副本对象属性"></a>副本对象属性</h6><ul>
-<li>LEO：日志末端位移（log end offset），记录了该副本底层日志(log)中下一条消息的位移值。</li>
-<li>HW：水位值（HighWatermark），HW标记了一个特殊的offset，当消费者处理消息的时候，只能拉取到HW之前的消息，HW之后的消息对消费者来说是不可见的。对于同一个副本对象而言，其HW值不会大于LEO值。小于等于HW值的所有消息都被认为是“已备份”的（replicated）</li>
-</ul>
-<p>Kafka 提供了数据复制算法保证，如果 leader 发生故障或挂掉，一个新leader被选举并被接受客户端的消息成功写 入。Kafka确保从同步副本列表中选举一个副本为leader； leader 负责维护和跟踪 ISR(in-Sync replicas ， 副本同步 队列)中所有 follower 滞后的状态。当 producer 发送一条 消息到broker后，leader写入消息并复制到所有follower。 消息提交之后才被成功复制到所有的同步副本。 </p>
-<h4 id="多个分区在集群的中的分配"><a href="#多个分区在集群的中的分配" class="headerlink" title="多个分区在集群的中的分配"></a>多个分区在集群的中的分配</h4><ol>
-<li><p>将所有N Broker和待分配的i个Partition排序</p>
-</li>
-<li><p>将第i个Partition分配到第(i mod n)个Broker上</p>
-</li>
-</ol>
-<h3 id="消息写入性能"><a href="#消息写入性能" class="headerlink" title="消息写入性能"></a>消息写入性能</h3><h4 id="零拷贝"><a href="#零拷贝" class="headerlink" title="零拷贝"></a>零拷贝</h4><h3 id="常用配置解析"><a href="#常用配置解析" class="headerlink" title="常用配置解析"></a>常用配置解析</h3><h4 id="提供者端"><a href="#提供者端" class="headerlink" title="提供者端"></a>提供者端</h4><ul>
-<li><code>acks</code> 表示producer发送消息到broker的确认机制<ul>
-<li>0：表示producer不需要等待broker的消息确认，时延最小但风险最大（server宕机时，数据会丢失）</li>
-<li>1：表示producer只需要获得kafka集群中的leader节点确认即可，时延较小同时保证了leader节点确认接收成功</li>
-<li>-1：需要ISR中所有的Replica给予接收确认，速度最慢，安全性最高，不能避免数据丢失</li>
-</ul>
-</li>
-<li><code>batch.size</code> 控制批量提交的字节数大小，默认16384byte，也就是16kb，可以减少网络请求带来的性能开销</li>
-<li><code>linger.ms</code> producer发送消息到broker的时间间隔，producer会把两次发送时间间隔内收集到的request进行一次聚合 然后再发送，以此提高吞吐量。<ul>
-<li>batch.size和linger.ms这个两个参数是kafka性能优化的关键参数，当两者都配置时，只有满足一个条件，就会发送请求到broker</li>
-</ul>
-</li>
-<li><code>max.request.size</code> 设置请求的数据最大字节数，默认值为1MB</li>
-</ul>
-<h4 id="消费者端"><a href="#消费者端" class="headerlink" title="消费者端"></a>消费者端</h4><ul>
-<li><code>group.id</code> consumer group是kafka提供的可扩展且具有容错性的消费者机制。一个gourp中可以又多个consumer，它们共享一个groupd.id。每个分区只能由同一个消费组内的一个 consumer 来消费。<ul>
-<li>同一个topic<ul>
-<li>相同分区<ul>
-<li>相同group，只能有一个consumer消费消息</li>
-<li>不同group，每个group只能有一个consumer消费消息</li>
-</ul>
-</li>
-<li>不同分区<ul>
-<li>相同gorup，每个consumer根据<strong>策略</strong>消费不同分区的消息</li>
-<li>不同group，每个group都可以消费不同分区所有的消息</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><code>enable.auto.commit</code> 消费者消费消息后是否自动提交，可以配合 auto.commit.interval.ms 控制自动提交的频率<ul>
-<li><code>true </code> 自动提交</li>
-<li><code>false</code> 手动提交，需调用consumer的commitSync()方法来提交</li>
-</ul>
-</li>
-<li><code>auto.offset.rest</code> <ul>
-<li><code>latest</code> 新的消费者将会从其他消费者最后消费的offset 处开始消费 Topic 下的消息 </li>
-<li><code>earliest</code> 新的消费者会从该 topic 最早的消息开始 </li>
-<li><code>none</code> 新的消费者加入以后，由于之前不存在offset，则会直接抛出异常。</li>
-</ul>
-</li>
-<li><code>max.poll.records</code> 设置限制每次调用 poll 返回的消息数，这样可以更容易的预测每次 poll 间隔要处理的最大值，通过调整此值，可以减少 poll 间隔</li>
-<li><code>partition.assignment.strategy</code> 分区分配策略，客户端使用该配置策略在消费者之间分配分区使用权</li>
-</ul>
-<h3 id="AMQP"><a href="#AMQP" class="headerlink" title="AMQP"></a>AMQP</h3><p>Advanced Message Queuing Protocol</p>
-<p>跨语言</p>
-<h3 id="MQTT"><a href="#MQTT" class="headerlink" title="MQTT"></a>MQTT</h3><p>Message Queuing Telemetry Transport</p>
-
+<li>JMS MessageID 唯一识别每个消息的标识
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/08/03/mq/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -928,7 +444,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-07-31 11:16:37" itemprop="dateModified" datetime="2024-07-31T11:16:37+08:00">2024-07-31</time>
+      <time title="修改时间：2024-07-31 19:05:52" itemprop="dateModified" datetime="2024-07-31T19:05:52+08:00">2024-07-31</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -960,160 +476,15 @@
           <p>Redis本质上是一个Key-Value类型的内存数据库，很像Memcached，整个数据库统统加载在内存当中进行操作，定期通过异步操作把数据库数据flush到硬盘上进行保存。因为是纯内存操作，Redis的性能非常出色，每秒可以处理超过10万次读写操作，是已知性能最快的Key-Value DB。Redis的出色之处不仅仅是性能，Redis最大的魅力是支持保存多种数据结构，此外单个value的最大限制是1GB，不行Memcached只能保存1MB的数据，因此Redis可以用来实现很多有用的功能，比如说用他的List来做FIFO双向链表，实现一个轻量级的高性能消息队列服务，用它的Set可以做高性能的tag系统等待。另外Redis也可以对存入的Key-Value设置expire时间，因此可以被当作一个功能加强版的Memcached来用。<br>Redis的主要缺点是数据库容量收到物理内存的限制，不能用作海量数据的高性能读写，因此Redis时候的场景主要局限在较小数据量的高性能操作和运算上。</p>
 <h3 id="Redis单线程为什么性能很高"><a href="#Redis单线程为什么性能很高" class="headerlink" title="Redis单线程为什么性能很高"></a>Redis单线程为什么性能很高</h3><p>性能瓶颈不在CPU，在内存和网络带宽</p>
 <p>IO多路复用</p>
-<h3 id="数据结构类型"><a href="#数据结构类型" class="headerlink" title="数据结构类型"></a>数据结构类型</h3><h4 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h4><ul>
-<li>sds（simple dynamic string）简单动态字符串</li>
-<li>dict 维护key-value映射关系</li>
-<li>quicklist</li>
-<li>ziplist</li>
-<li>skiplist</li>
-<li>robj</li>
-<li>intset</li>
-</ul>
-<h4 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h4><ul>
-<li><code>String</code>最大支持512M<ul>
-<li>字符串、浮点（set&#x2F;get）<ul>
-<li>数据结构sds</li>
-</ul>
-</li>
-<li>整数（incr&#x2F;decr）<ul>
-<li>数据结构int</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Hash<ul>
-<li>hset&#x2F;hget&#x2F;hexists</li>
-<li>数据结构<ul>
-<li><code>ziplist</code>个数少或单个元素长度小</li>
-<li>hash</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>List<ul>
-<li>lpush&#x2F;rpush&#x2F;lpop&#x2F;rpop&#x2F;llen</li>
-<li>数据结构，在3.2版本<ul>
-<li>之前<ul>
-<li><code>linkedlist</code>双向链表，个数多或单个元素长度长</li>
-<li><code>ziplist</code> 压缩列表，个数少或单个元素长度小</li>
-</ul>
-</li>
-<li>之后<ul>
-<li><code>quicklist</code>基于<code>ziplist</code>的双向链表</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>场景<ul>
-<li>栈：后进先出 lpush lpop</li>
-<li>队列：先进先出 lpush rpop</li>
-<li>消息队列：lpush brpop</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Set<ul>
-<li>sadd&#x2F;srem&#x2F;scard&#x2F;sismember<ul>
-<li>数据结构<ul>
-<li><code>intset</code>当set中只包含整数型的元素时，采用intset来存储</li>
-<li>hash</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Sort Set<ul>
-<li>zadd&#x2F;zcard&#x2F;zcount&#x2F;zrange&#x2F;zrem&#x2F;zscore</li>
-<li>数据结构<ul>
-<li>ziplist</li>
-<li>skiplist+hash</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>transaction<ul>
-<li>multi&#x2F;exec&#x2F;discard&#x2F;watch</li>
-<li>Redis Cluster不支持</li>
-</ul>
-</li>
-<li>pipeline<ul>
-<li>JedisClusterConnection不支持</li>
-<li>LettuceClusterConnection支持</li>
-<li>openPipeline&#x2F;closePipeline</li>
-<li>需注意批量命令大小，防止返回值超出内存</li>
-<li>节省网络延迟的时间，非线程安全</li>
-</ul>
-</li>
-</ul>
-<h3 id="过期时间清除key原理"><a href="#过期时间清除key原理" class="headerlink" title="过期时间清除key原理"></a>过期时间清除key原理</h3><ul>
-<li>消极方法<ul>
-<li>每次访问的时候删除</li>
-</ul>
-</li>
-<li>积极方法<ul>
-<li>周期性的从设置了过期时间的key中选择一部分key进行删除<ul>
-<li>随机测试20个带有timeout信息的key</li>
-<li>如果超过了25%的key被删除，则重复执行整个流程</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><ul>
-<li>持久化类型<ul>
-<li>RDB<ul>
-<li>快照，Redis支持将当前数据的快照存成一个数据文件的持久化机制</li>
-<li>在第一次快照完成之后，第二次快照之前的数据会丢失</li>
-<li>全量</li>
-</ul>
-</li>
-<li>AOF<ul>
-<li>日志，append only file，追加写入的日志文件，可识别的纯文本，它的内容就是一个redis标准命令</li>
-<li>aof记录增删改的命令</li>
-<li>当操作多了之后，日志文件会越来越大，可设置重写aof文件</li>
-<li>重写aof文件，不是修改之前的aof文件，是从内存中读取数据重新生成一份aof文件</li>
-<li>重写aof文件时，新增命令会存储在重写缓存中，然后拼接在新的aof文件中</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>开启持久化性能会有一定的损失，可同时支持两种方式，如果两种同时存在，默认以aof的数据为准。</li>
-<li>比较<ul>
-<li>RDB恢复速度和备份速度比AOF快</li>
-<li>AOF数据安全性比RDB高</li>
-</ul>
-</li>
-<li><code>save</code>阻塞所有客户端请求</li>
-<li><code>bgsave</code>backgroudsave</li>
-</ul>
-<h3 id="过期回收策略"><a href="#过期回收策略" class="headerlink" title="过期回收策略"></a>过期回收策略</h3><ul>
-<li><code>noeviction</code>不回收（默认）</li>
-<li><code>allkeys-lru</code>从所有键中删除最近最少使用的键</li>
-<li><code>allkeys-random</code>从所有键中随机删除</li>
-<li><code>volatile-lru</code>从设置了过期时间的键中删除最近最少使用的键</li>
-<li><code>volatile-random</code>从设置了过期时间的键中随机删除</li>
-<li><code>volatile-ttl</code>从设置了过期时间的键中选中存活时间最短的键删除</li>
-</ul>
-<h3 id="集群方案"><a href="#集群方案" class="headerlink" title="集群方案"></a>集群方案</h3><ul>
-<li>Redis Cluster（官方）<ul>
-<li>客户端直连Redis，免去了proxy代理的损耗</li>
-<li>去中心化，最大可增加1000个节点，性能随节点增加而线性扩展</li>
-<li>使用hash slot方式 将16384个hash slot 覆盖到所有节点上</li>
-<li>简单易上手，管理方便，可自行增加或摘除节点，移动分槽等</li>
-<li>一致性hash思想</li>
-<li>不支持事务，不支持数据库切换，不支持mget，单个数据库</li>
-</ul>
-</li>
-<li>codis（豌豆荚）<ul>
-<li>多了一层代理</li>
-<li>支持透明的扩&#x2F;缩容</li>
-<li>具有图形化管理和监控工具，运维方便</li>
-<li>数据根据key分布到1024个slot内</li>
-</ul>
-</li>
-</ul>
-
+<h3 id="数据结构类型"><a href="#数据结构类型" class="headerlink" title="数据结构类型"></a>数据结构类型</h3>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/07/27/redis/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1175,7 +546,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-07-31 11:16:37" itemprop="dateModified" datetime="2024-07-31T11:16:37+08:00">2024-07-31</time>
+      <time title="修改时间：2024-07-31 19:06:45" itemprop="dateModified" datetime="2024-07-31T19:06:45+08:00">2024-07-31</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1205,198 +576,27 @@
     
     <div class="post-body" itemprop="articleBody">
           <h3 id="Spring-Cloud-Config"><a href="#Spring-Cloud-Config" class="headerlink" title="Spring Cloud Config"></a>Spring Cloud Config</h3><h4 id="PropertySource-配置源"><a href="#PropertySource-配置源" class="headerlink" title="PropertySource 配置源"></a><code>PropertySource</code> 配置源</h4><ul>
-<li><p><code>MapPropertySource</code></p>
-<ul>
+<li><code>MapPropertySource</code><ul>
 <li><code>PropertiesPropertySource</code></li>
 </ul>
 </li>
-<li><p><code>CompositePropertySource</code> 组合</p>
-</li>
-<li><p><code>SystemEnvironmentPropertySource</code> 环境变量</p>
-</li>
-<li><p><code>PropertySourceLocator</code> Spring Cloud 客户端配置定位扩展，</p>
-<ul>
-<li><p>实现该接口</p>
-</li>
-<li><p>暴露该实现作为一个Spring Bean</p>
-</li>
-<li><p>定义并且配置 &#x2F;META-INF&#x2F;spring.factories:</p>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">org.springframework.cloud.bootstrap.BootstrapConfiguration</span>=<span class="string">\</span></span><br><span class="line"><span class="string">com.gupao.springcloudconfigclient.SpringCloudConfigClientApplication.MyPropertySourceLocator</span></span><br></pre></td></tr></table></figure></li>
+<li><code>CompositePropertySource</code> 组合</li>
+<li><code>SystemEnvironmentPropertySource</code> 环境变量</li>
+<li><code>PropertySourceLocator</code> Spring Cloud 客户端配置定位扩展，<ul>
+<li>实现该接口</li>
+<li>暴露该实现作为一个Spring Bean</li>
+<li>定义并且配置 &#x2F;META-INF&#x2F;spring.factories:<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">org.springframework.cloud.bootstrap.BootstrapConfiguration</span>=<span class="string">\</span></span><br><span class="line"><span class="string">com.gupao.springcloudconfigclient.SpringCloudConfigClientApplication.MyPropertySourceLocator</span></span><br></pre></td></tr></table></figure></li>
 </ul>
 </li>
 </ul>
-<h4 id="EnableConfigServer"><a href="#EnableConfigServer" class="headerlink" title="@EnableConfigServer"></a><code>@EnableConfigServer</code></h4><ul>
-<li><p><code>@EnableConfigServer</code> 启动配置中心，默认<code>DefaultRepositoryConfiguration</code>（Git实现）</p>
-</li>
-<li><p>自定义实现所需<code>EnvironmentRepository</code>  核心接口，</p>
-<ul>
-<li>注入一个<code>EnvironmentRepository</code>  即可</li>
-</ul>
-</li>
-</ul>
-<h4 id="健康检查"><a href="#健康检查" class="headerlink" title="健康检查"></a>健康检查</h4><p>端点URI：&#x2F;health</p>
-<p>实现类：<code>HealthEndpoint</code></p>
-<p>健康指示器：<code>HealthIndicator</code>，</p>
-<p><code>HealthEndpoint</code>：<code>HealthIndicator</code> ，一对多</p>
-<p>自定义实现<code>HealthIndicator</code></p>
-<ul>
-<li><p>实现<code>AbstractHealthIndicator</code></p>
-</li>
-<li><p>暴露实现为<code>Bean</code></p>
-</li>
-<li><p>关闭安全控制</p>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">management.security.enabled</span> = <span class="string">false</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="Spring-Cloud-Netflix-Eureka"><a href="#Spring-Cloud-Netflix-Eureka" class="headerlink" title="Spring Cloud Netflix Eureka"></a>Spring Cloud Netflix Eureka</h3><p><code>@EnableDiscoveryClient</code></p>
-<p><code>@EnableEurekaServer</code></p>
-<h3 id="Spring-Cloud-Zookeeper"><a href="#Spring-Cloud-Zookeeper" class="headerlink" title="Spring Cloud Zookeeper"></a>Spring Cloud Zookeeper</h3><h3 id="Spring-Cloud-Consul"><a href="#Spring-Cloud-Consul" class="headerlink" title="Spring Cloud Consul"></a>Spring Cloud Consul</h3><h3 id="Spring-Cloud-Netflix-Zuul"><a href="#Spring-Cloud-Netflix-Zuul" class="headerlink" title="Spring Cloud Netflix Zuul"></a>Spring Cloud Netflix Zuul</h3><p><code>@EnableZuulServer</code></p>
-<p><code>@EnableZuulProxy</code></p>
-<p>基于Servlet和Filter实现</p>
-<ul>
-<li><code>ZuulHandlerMapping</code></li>
-<li><code>ZuulController</code></li>
-<li><code>ZuulServlet</code></li>
-<li><code>ZuulRunner</code></li>
-<li><code>FilterProcessor</code> -&gt; <code>FilterLoader</code> -&gt; <code>List&lt;ZuulFilter&gt;</code></li>
-<li>Filter执行顺序<ul>
-<li>pre，权限校验、限流、选取路由机器<ul>
-<li><code>ServletDetectionFilter</code>检测请求是用DispatcherServlet还是 ZuulServlet</li>
-<li><code>Servlet30WrapperFilter</code>在Servlet 3.0 下，包装 requests</li>
-<li><code>FormBodyWrapperFilter</code>解析表单数据</li>
-<li><code>DebugFilter</code>设置请求过程是否开启debug</li>
-<li><code>PreDecorationFilter</code>根据uri决定调用哪一个route过滤器</li>
-</ul>
-</li>
-<li>route，向选举出来的server发送请求<ul>
-<li><code>RibbonRoutingFilter</code>如果写配置的时候用ServiceId则用这个route过滤器，该过滤器可以用Ribbon 做负载均衡，用hystrix做熔断</li>
-<li><code>SimpleHostRoutingFilter</code>如果写配置的时候用url则用这个route过滤</li>
-<li><code>SendForwardFilter</code>用RequestDispatcher请求转发</li>
-</ul>
-</li>
-<li>post，收集统计数据<ul>
-<li><code>SendResponseFilter</code>用HttpServletResponse响应</li>
-<li><code>SendErrorFilter</code> 任意阶段出错</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="Spring-Cloud-Gateway"><a href="#Spring-Cloud-Gateway" class="headerlink" title="Spring Cloud Gateway"></a>Spring Cloud Gateway</h3><p>基于webflux的实现</p>
-<ul>
-<li><p><code>DispatcherHandler</code></p>
-</li>
-<li><p><code>RoutePredicateHandlerMapping</code></p>
-</li>
-<li><p><code>FilteringWebHandler</code></p>
-</li>
-<li><p><code>DefaultGatewayFilterChain</code></p>
-<ul>
-<li><code>AdaptCachedBodyGlobalFilter</code></li>
-<li><code>NettyWriteResponseFilter</code></li>
-<li><code>ForwardPathFilter</code></li>
-<li><code>GatewayMetricsFilter</code></li>
-<li><code>RouteToRequestUrlFilter</code></li>
-<li><code>LoadBalancerClientFilter</code></li>
-<li><code>WebsocketRoutingFilter</code></li>
-<li><code>NettyRoutingFilter</code></li>
-<li><code>ForwardRoutingFilter</code></li>
-</ul>
-</li>
-</ul>
-<h3 id="Spring-Cloud-Netflix-Hystrix"><a href="#Spring-Cloud-Netflix-Hystrix" class="headerlink" title="Spring Cloud Netflix Hystrix"></a>Spring Cloud Netflix Hystrix</h3><h4 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h4><ul>
-<li><p>@EnableHystrix</p>
-</li>
-<li><p>@EnableCircuitBreaker</p>
-</li>
-<li><p>@HystrixCommand</p>
-</li>
-</ul>
-<p>基于AOP的实现</p>
-<p>容器启动注入一个HystrixCommandAspect的Bean</p>
-<h3 id="Spring-Cloud-Netflix-Ribbon"><a href="#Spring-Cloud-Netflix-Ribbon" class="headerlink" title="Spring Cloud Netflix Ribbon"></a>Spring Cloud Netflix Ribbon</h3><p>@LoadBalance</p>
-<h4 id="负载均衡器"><a href="#负载均衡器" class="headerlink" title="负载均衡器"></a>负载均衡器</h4><ul>
-<li>ILoadBalancer<ul>
-<li>BaseLoadBalancer</li>
-<li>DynamicServerListLoadBalancer</li>
-<li>ZoneAwareLoadBalancer</li>
-<li>NoOpLoadBalancer</li>
-</ul>
-</li>
-</ul>
-<h4 id="负载均衡规则"><a href="#负载均衡规则" class="headerlink" title="负载均衡规则"></a>负载均衡规则</h4><ul>
-<li>IRule<ul>
-<li>RandomRule：随机规则</li>
-<li>BestAvailableRule：最可用规则</li>
-<li>RoundRobinRule：轮询规则</li>
-<li>RetryRule：重试实现</li>
-</ul>
-</li>
-</ul>
-<h4 id="负载均衡客户端"><a href="#负载均衡客户端" class="headerlink" title="负载均衡客户端"></a>负载均衡客户端</h4><p><code>ServiceInstanceChooser</code></p>
-<p><code>LoadBalancerClient</code></p>
-<h4 id="负载均衡上下文"><a href="#负载均衡上下文" class="headerlink" title="负载均衡上下文"></a>负载均衡上下文</h4><p><code>LoadBalancerContext</code></p>
-<h3 id="Spring-Cloud-Netflix-Feign"><a href="#Spring-Cloud-Netflix-Feign" class="headerlink" title="Spring Cloud Netflix Feign"></a>Spring Cloud Netflix Feign</h3><p>@EnableFeignClients</p>
-<p>@FeignClient</p>
-<ol>
-<li>容器启动时，注入包含@FeignClient注解的所有接口</li>
-<li>接口通用实现类FeignClientFactoryBean</li>
-<li>在FeignClientFactoryBean中的getObject方法中<ol>
-<li>设置Http请求相关参数，编码、解码、获取HttpClient类型</li>
-<li>通过URL判断请求类型，如果是LoadBalancerFeignClient，则通过Ribbon进行负载，通过对应的负载算法获取HttpClient</li>
-<li>通过JDK动态代理为目标接口生成一个动态代理类，代理类会生成一个方法拦截器SynchronousMethodHandler</li>
-</ol>
-</li>
-<li>当发起方法调用时，SynchronousMethodHandler根据请求参数，获取RestTemplate，然后进行调用<ol>
-<li>通过Ribbon进行负载</li>
-</ol>
-</li>
-</ol>
-<h3 id="Spring-Cloud-Stream"><a href="#Spring-Cloud-Stream" class="headerlink" title="Spring Cloud Stream"></a>Spring Cloud Stream</h3><p><code>@Output</code></p>
-<p><code>@Input</code></p>
-<p><code>MessageChannel</code></p>
-<h4 id="自定义实现"><a href="#自定义实现" class="headerlink" title="自定义实现"></a>自定义实现</h4><p><code>Binder</code></p>
-<h3 id="Spring-Cloud-Seluth"><a href="#Spring-Cloud-Seluth" class="headerlink" title="Spring Cloud Seluth"></a>Spring Cloud Seluth</h3><h4 id="追踪类型"><a href="#追踪类型" class="headerlink" title="追踪类型"></a>追踪类型</h4><ul>
-<li><p>@Scheduled</p>
-<ul>
-<li>TraceSchedulingAspect处理</li>
-</ul>
-</li>
-<li><p>Messaging</p>
-<ul>
-<li>基于spring messaging的ChannelInterceptor</li>
-</ul>
-</li>
-<li><p>Hystrix</p>
-<ul>
-<li>基于HystrixPlugins添加trace相关的plugin，自定义了一个HystrixConcurrencyStrategy的实现SleuthHystrixConcurrencyStrategy</li>
-</ul>
-</li>
-<li><p>Feign</p>
-<ul>
-<li>TraceFeignAspect</li>
-<li>TracingFeignClient</li>
-<li>TraceLoadBalancerFeignClient</li>
-</ul>
-</li>
-<li><p>Async</p>
-<ul>
-<li><p>基于AOP的实现TraceAsyncAspect</p>
-<p>@Async注解和ThreadPoolTaskExecutor下面的类</p>
-</li>
-</ul>
-</li>
-<li><p>Http Web</p>
-<ul>
-<li>TracingClientHttpRequestInterceptor</li>
-</ul>
-</li>
-<li><p>Zuul</p>
-<ul>
-<li>Zuul的Filter机制，实现了TracePostZuulFilter</li>
-</ul>
-</li>
-</ul>
-<h3 id="Spring-Cloud-Bus"><a href="#Spring-Cloud-Bus" class="headerlink" title="Spring Cloud Bus"></a>Spring Cloud Bus</h3><h3 id="Spring-Security-OAuth2"><a href="#Spring-Security-OAuth2" class="headerlink" title="Spring Security OAuth2"></a>Spring Security OAuth2</h3><h3 id="Spring-Session-Redis"><a href="#Spring-Session-Redis" class="headerlink" title="Spring Session + Redis"></a>Spring Session + Redis</h3>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/04/10/springcloud/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1458,7 +658,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-07-31 11:16:37" itemprop="dateModified" datetime="2024-07-31T11:16:37+08:00">2024-07-31</time>
+      <time title="修改时间：2024-07-31 19:07:14" itemprop="dateModified" datetime="2024-07-31T19:07:14+08:00">2024-07-31</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1501,26 +701,15 @@
 <li>基于Spring5构建</li>
 <li>各种jar版本升级</li>
 <li>支持Http&#x2F;2</li>
-<li>默认数据库连接池从Tomcat改为HikariCP</li>
-</ul>
-<h3 id="SpringMVC"><a href="#SpringMVC" class="headerlink" title="SpringMVC"></a>SpringMVC</h3><h4 id="加载过程"><a href="#加载过程" class="headerlink" title="加载过程"></a>加载过程</h4><ul>
-<li>用户发起请求到前端控制器DispatcherServlet</li>
-<li>DispatcherServlet收到请求调用HandlerMapping查找Handler（注解或XML）</li>
-<li>DispatcherServlet通过HandlerAdapter去执行Handler</li>
-<li>HandlerAdapter经过适配调用具体的处理器（Controller）</li>
-<li>Controller执行完成返回ModelAndView</li>
-<li>DispatcherServlet将ModelAndView传给ViewReslover视图解析器</li>
-<li>ViewReslover解析后返回具体View</li>
-<li>DispatcherServlet根据View进行渲染视图</li>
-<li>DispatcherServlet响应用户</li>
-</ul>
-<h3 id="Struts-Struts2"><a href="#Struts-Struts2" class="headerlink" title="Struts&#x2F;Struts2"></a>Struts&#x2F;Struts2</h3><ul>
-<li>Struts1以ActionServlet作为核心控制器，Struts2以FilterDispatcher作为核心控制器；</li>
-<li>Struts1的action需要继承action类，Struts2的action不用继承任何类；</li>
-<li>Struts1是单例模式，对同一路径的所有请求共享一个实例，Struts2对同一路径的每个请求分别使用一个独立的Action对象实例，所以Struts2是线程安全的。</li>
-<li>Struts1使用formbean封装请求参数，Struts2中直接使用action的属性封装请求参数；</li>
-</ul>
-
+<li>默认数据库连接池从Tomcat改为HikariCP
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/04/08/springweb/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1582,7 +771,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-07-31 11:16:37" itemprop="dateModified" datetime="2024-07-31T11:16:37+08:00">2024-07-31</time>
+      <time title="修改时间：2024-07-31 19:07:36" itemprop="dateModified" datetime="2024-07-31T19:07:36+08:00">2024-07-31</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1620,147 +809,15 @@
 <li>可创建独立的Spring应用程序</li>
 <li>提供嵌入式Web Server（无需部署war包）</li>
 <li>无需任何代码生成技术也无任何XML配置</li>
-<li>自动化配置</li>
-<li>提供一系列生产级特性<ul>
-<li>端点(<code>endpoints.enable=true</code>开启端点)<ul>
-<li><code>autoconfig</code>获取自动配置信息</li>
-<li><code>beans</code>获取Spring Bean基本信息</li>
-<li><code>configprops</code>获取配置项信息</li>
-<li><code>dump</code>获取当前线程基本信息</li>
-<li><code>env</code>获取环境变量信息</li>
-<li><code>health</code>获取健康检查信息<ul>
-<li><code>enpoints.health.enable = true</code> 开启健康检查</li>
-<li><code>enpoints.health.sensitive = true</code> 获取敏感性，默认false，如果为true，则不返回敏感字段</li>
-<li><code>enpoints.health.time-to-live = 500</code> 设置健康检查的缓存时间，单位ms，默认1000</li>
-<li>自定义健康检查器<ul>
-<li>实现org.springframework.boot.actuate.health.HealthIndicator接口</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><code>info</code>获取应用基本信息<ul>
-<li><code>enpoints.info.enable = true</code> 开启应用信息</li>
-<li><code>info.app.name = @project.name@</code> 获取pom.xml中的name</li>
-<li><code>info.app.description = @project.description@</code> 获取pom.xml中的description</li>
-<li><code>info.app.version = @project.version@</code> 获取pom.xml中的version</li>
-<li>可通过git-commit-id-plugin插件获取Git信息<ul>
-<li><code>info.git.branch = @git.branch@</code> 获取Git版本信息</li>
-<li><code>info.git.commit.id = @git.commit.id@</code> 获取Git提交ID</li>
-<li><code>info.git.commit.time = @git.commit.time@</code> 获取Git提交时间</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><code>metrics</code>获取性能指标信息<ul>
-<li><code>enpoints.metrics.enable = true</code> 开启性能指标</li>
-<li><code>enpoints.metrics.id = performance</code> 自定义ID</li>
-<li><code>enpoints.metrics.path = /enpoints/metrices</code> 自定义请求路径</li>
-</ul>
-</li>
-<li><code>mappings</code>获取请求映射信息</li>
-<li><code>trace</code>获取请求调用信息</li>
-</ul>
-</li>
-<li>跨域（Spring4.2之后支持）<ul>
-<li>方法一<ul>
-<li><code>endpoints.cors.allowed-origins = http://www.baidu.com</code> 配置跨域域名</li>
-<li><code>endpoints.cors.allowed-methods = GET,POST,PUT,DELETE</code> 配置跨域支持方法</li>
-</ul>
-</li>
-<li>方法二<ul>
-<li>@CrossOrigin注解</li>
-</ul>
-</li>
-<li>方法三<ul>
-<li>继承org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter的addCorsMappings方法</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>外部化配置，按顺序如下<ul>
-<li>Java命令行参数</li>
-<li>JNDI属性</li>
-<li>Java系统属性</li>
-<li>操作系统环境变量</li>
-<li>Jar包外的application.properties配置</li>
-<li>Jar包内的application.properties配置</li>
-<li>@PropertySource注解</li>
-<li>SpringApplication.setDefaultProperties默认值</li>
-</ul>
-</li>
-<li>远程监控<ul>
-<li>ssh方式<ul>
-<li>引入spring-boot-starter-remote-shell</li>
-<li>配置<ul>
-<li>shell.ssh.port &#x3D; 2000</li>
-<li>shell.auth.simple.user.name &#x3D; admin</li>
-<li>shell.auth.simple.user.password &#x3D; 123456</li>
-</ul>
-</li>
-<li>ssh -p 2000 <span class="exturl" data-url="bWFpbHRvOiYjOTc7JiMxMDA7JiMxMDk7JiMxMDU7JiN4NmU7JiN4NDA7JiM0OTsmI3gzMjsmI3gzNzsmI3gyZTsmI3gzMDsmIzQ2OyYjNDg7JiN4MmU7JiN4MzE7">&#97;&#100;&#109;&#105;&#x6e;&#x40;&#49;&#x32;&#x37;&#x2e;&#x30;&#46;&#48;&#x2e;&#x31;<i class="fa fa-external-link-alt"></i></span></li>
-</ul>
-</li>
-<li>telnet方式<ul>
-<li>引入crsh.shell.telnet</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>提供开箱即用的Spring插件</li>
-</ul>
-<p>@EnableWebMvc&#96;</p>
-<p><code>@EnableAsync</code></p>
-<p><code>@EnableAspectJAutoProxy</code></p>
-<ul>
-<li><p>处理类 <code>ConfigurationClassParser</code></p>
-</li>
-<li><p>扫描类 <code>ClassPathBeanDefinitionScanner</code></p>
-<ul>
-<li><code>ClassPathScanningCandidateComponentProvider</code></li>
-</ul>
-</li>
-<li><p>注解驱动上下文 <code>AnnotationConfigApplicationContext</code></p>
-</li>
-</ul>
-<p>Spring 事件</p>
-<ul>
-<li><code>ContextRefreshedEvent</code><ul>
-<li><code>ApplicationContextEvent</code></li>
-<li><code>ApplicationEvent</code></li>
-</ul>
-</li>
-<li><code>ContextClosedEvent</code></li>
-</ul>
-<p>自定义事件</p>
-<ul>
-<li><code>PayloadApplicationEvent</code></li>
-</ul>
-<p>Spring 事件的类型 <code>ApplicationEvent</code></p>
-<p>Spring 事件监听器 <code>ApplicationListener</code></p>
-<p>Spring 事件广播器 <code>ApplicationEventMulticaster</code></p>
-<ul>
-<li>实现类：<code>SimpleApplicationEventMulticaster</code></li>
-</ul>
-<p>Spring事件执行顺序</p>
-<ol>
-<li>ApplicationStartingEvent（1）</li>
-<li>ApplicationEnvironmentPreparedEvent（2）</li>
-<li>ApplicationPreparedEvent（3）</li>
-<li>ContextRefreshedEvent</li>
-<li>ServletWebServerInitializedEvent</li>
-<li>ApplicationStartedEvent（4）</li>
-<li>ApplicationReadyEvent（5）</li>
-<li>ContextClosedEvent</li>
-<li>ApplicationFailedEvent (特殊情况)（6）</li>
-</ol>
-<p>优化</p>
-<ul>
-<li>移除JspServlet（Jsp页面编译）</li>
-<li>移除DefaultServlet（静态资源解析）</li>
-</ul>
-
+<li>自动化配置
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/04/06/springboot/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1822,7 +879,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-07-31 11:16:37" itemprop="dateModified" datetime="2024-07-31T11:16:37+08:00">2024-07-31</time>
+      <time title="修改时间：2024-07-31 19:08:13" itemprop="dateModified" datetime="2024-07-31T19:08:13+08:00">2024-07-31</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1852,214 +909,21 @@
     
     <div class="post-body" itemprop="articleBody">
           <h2 id="IOC"><a href="#IOC" class="headerlink" title="IOC"></a>IOC</h2><h3 id="Spring-Bean作用域"><a href="#Spring-Bean作用域" class="headerlink" title="Spring Bean作用域"></a>Spring Bean作用域</h3><ul>
-<li><p><code>singleton</code></p>
-<p>单例注册表的单例模式实现，每个<code>Bean</code>在SpringIOC容器中只存在一个实例，会缓存<code>Bean</code>实例。</p>
-<p>默认启动容器就创建了对象，如果设置<code>lazy-init=true</code>，则在调用<code>getBean</code>方法的时候创建。</p>
+<li><p><code>singleton</code><br>单例注册表的单例模式实现，每个<code>Bean</code>在SpringIOC容器中只存在一个实例，会缓存<code>Bean</code>实例。<br>默认启动容器就创建了对象，如果设置<code>lazy-init=true</code>，则在调用<code>getBean</code>方法的时候创建。</p>
 </li>
-<li><p><code>prototype</code></p>
-<p>每次<code>getBean</code>的时候都返回一个全新的<code>Bean</code>，不缓存<code>Bean</code>实例</p>
+<li><p><code>prototype</code><br>每次<code>getBean</code>的时候都返回一个全新的<code>Bean</code>，不缓存<code>Bean</code>实例</p>
 </li>
-<li><p><code>request</code></p>
-<p>每个<code>Http</code>请求创建一个<code>Bean</code>实例</p>
+<li><p><code>request</code><br>每个<code>Http</code>请求创建一个<code>Bean</code>实例</p>
 </li>
-<li><p><code>session</code></p>
-<p>每个<code>Session</code>创建一个<code>Bean</code>实例</p>
-</li>
-<li><p>自定义作用域</p>
-<ol>
-<li>实现<code>org.springframework.beans.factory.config.Scope</code>接口</li>
-<li>向Spring容器注册新的作用域<ul>
-<li><code>ConfigurableBeanFactory.registerScope(String scopeName, Scope scope)</code></li>
-</ul>
-</li>
-</ol>
-</li>
-</ul>
-<h3 id="Spring-Bean的生命周期"><a href="#Spring-Bean的生命周期" class="headerlink" title="Spring Bean的生命周期"></a>Spring Bean的生命周期</h3><ol>
-<li><strong>BeanFactoryPostProcessor</strong>#postProcessBeanFactory</li>
-<li><strong>InstantiationAwareBeanPostProcessor</strong>#postProcessBeforeInstantiation</li>
-<li>执行Bean的构造函数</li>
-<li><strong>InstantiationAwareBeanPostProcessor</strong>#postProcessAfterInstantiation</li>
-<li><strong>InstantiationAwareBeanPostProcessor</strong>#postProcessPropertyValues</li>
-<li>Bean属性注入</li>
-<li>org.springframework.beans.factory.<strong>BeanNameAware</strong>#setBeanName</li>
-<li>org.springframework.beans.factory.<strong>BeanClassLoaderAware</strong>#setBeanClassLoader</li>
-<li>org.springframework.beans.factory.<strong>BeanFactoryAware</strong>#setBeanFactory</li>
-<li>org.springframework.beans.factory.config.<strong>BeanPostProcessor</strong>#postProcessBeforeInitialization<ol>
-<li><strong>ApplicationContextAwareProcessor</strong>#postProcessBeforeInitialization<ol>
-<li>org.springframework.context.<strong>EnvironmentAware</strong>#setEnvironment</li>
-<li>org.springframework.context.<strong>EmbeddedValueResolverAware</strong>#setEmbeddedValueResolver</li>
-<li>org.springframework.context.<strong>ResourceLoaderAware</strong>#setResourceLoader</li>
-<li>org.springframework.context.<strong>ApplicationEventPublisherAware</strong>#setApplicationEventPublisher</li>
-<li>org.springframework.context.<strong>MessageSourceAware</strong>#setMessageSource</li>
-<li>org.springframework.context.<strong>ApplicationContextAware</strong>#setApplicationContext</li>
-</ol>
-</li>
-<li>ConfigurationClassPostProcessor.<strong>ImportAwareBeanPostProcessor</strong>#postProcessBeforeInitialization<ol>
-<li>org.springframework.context.annotation.<strong>ImportAware</strong>#setImportMetadata</li>
-</ol>
-</li>
-</ol>
-</li>
-<li>org.springframework.beans.factory.<strong>InitializingBean</strong>#afterPropertiesSet</li>
-<li>调用bean的init-method方法</li>
-<li>org.springframework.beans.factory.config.<strong>BeanPostProcessor</strong>#postProcessAfterInitialization</li>
-<li>初始化完成</li>
-<li>调用DisposableBean的destory方法</li>
-<li>调用bean的destory-method方法</li>
-</ol>
-<h3 id="Spring-Bean注入方式"><a href="#Spring-Bean注入方式" class="headerlink" title="Spring Bean注入方式"></a>Spring Bean注入方式</h3><ul>
-<li><p>注解注入</p>
-</li>
-<li><p>构造方法注入</p>
-</li>
-<li><p>setter注入</p>
-</li>
-</ul>
-<h3 id="BeanFactory和FactoryBean、ApplicationContext-的区别"><a href="#BeanFactory和FactoryBean、ApplicationContext-的区别" class="headerlink" title="BeanFactory和FactoryBean、ApplicationContext 的区别"></a>BeanFactory和FactoryBean、ApplicationContext 的区别</h3><ul>
-<li><p><code>BeanFactory</code></p>
-<p>IOC容器的最基本形式；对象工厂；获取spring中注入的bean都需要继承此接口；<code>XmlWebApplicationContext</code>实现了此接口</p>
-</li>
-<li><p><code>FactoryBean</code></p>
-<p>IOC容器中的一个Bean</p>
-<p>框架中的实现类</p>
-<ul>
-<li><p><code>Mybatis</code></p>
-<ul>
-<li><code>SqlSessionFactoryBean</code></li>
-<li><code>MapperFactoryBean</code></li>
-</ul>
-</li>
-<li><p><code>Dubbo</code></p>
-<ul>
-<li><code>ReferenceBean</code></li>
-</ul>
-</li>
-<li><p><code>Spring Cloud OpenFeign</code></p>
-<ul>
-<li><code>FeignClientFactoryBean</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><code>ApplicationContext</code></p>
-<p><code>ApplicationContext</code>接口对<code>BeanFactory</code>进行了扩展</p>
-<ul>
-<li>支持信息源，可以实现国际化（实现 <code>MessageSource</code> 接口）</li>
-<li>访问资源(实现 <code>ResourcePatternResolver</code> 接口)</li>
-<li>支持应用事件(实现 <code>ApplicationEventPublisher</code> 接口)</li>
-</ul>
-</li>
-</ul>
-<h3 id="Autowired和-Resource的区别"><a href="#Autowired和-Resource的区别" class="headerlink" title="@Autowired和@Resource的区别"></a>@Autowired和@Resource的区别</h3><ul>
-<li><p><code>@Autowired</code>和<code>@Inject</code></p>
-<p>默认按照类型装配，如果想按照名称来装配，则需要结合<code>@Qualifier</code>才能使用名称</p>
-</li>
-<li><p><code>@Resource</code></p>
-<p>默认按照名称装配，如果找不到与名称匹配的bean才会按照类型来装配；</p>
-</li>
-</ul>
-<h3 id="Bean循环注入"><a href="#Bean循环注入" class="headerlink" title="Bean循环注入"></a>Bean循环注入</h3><h4 id="出现循环注入的方式"><a href="#出现循环注入的方式" class="headerlink" title="出现循环注入的方式"></a>出现循环注入的方式</h4><ul>
-<li>原型模式（prototype）的setter方式注入</li>
-<li>构造函数参数循环依赖</li>
-</ul>
-<h4 id="解决循环注入的方式"><a href="#解决循环注入的方式" class="headerlink" title="解决循环注入的方式"></a>解决循环注入的方式</h4><ul>
-<li>setter单例模式</li>
-</ul>
-<h2 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h2><h3 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h3><h4 id="JDK动态代理"><a href="#JDK动态代理" class="headerlink" title="JDK动态代理"></a>JDK动态代理</h4><p>基于接口的动态代理</p>
-<h4 id="CGLIB动态代理"><a href="#CGLIB动态代理" class="headerlink" title="CGLIB动态代理"></a>CGLIB动态代理</h4><p>基于类的动态代理，采用的继承的方式，覆盖父类方法，所以不能对final类生成代理</p>
-<h4 id="相关术语"><a href="#相关术语" class="headerlink" title="相关术语"></a>相关术语</h4><ul>
-<li>连接点（Joinpoint）被拦截到的点，具体方法</li>
-<li>切点（Pointcut）指定对哪些Joinpoint进行拦截，可以同时指定多个函数，一般使用正则表达式</li>
-<li>通知（Advice）<ul>
-<li>前置通知（Before）</li>
-<li>后置通知（AfterReturning）</li>
-<li>异常通知（AfterRThrowing）</li>
-<li>最终通知（After）</li>
-<li>环绕通知（Around）</li>
-</ul>
-</li>
-<li>引介（Introduction）</li>
-<li>织入（Weaving）<ul>
-<li>编译期织入（AspectJ采用的方式）需要特殊的Java编译期（例如AspectJ的ajc）</li>
-<li>装载期织入（AspectJ采用的方式）要求使用特殊的类加载器，在装载类的时候对类进行增强</li>
-<li>运行时织入（Spring采用的方式）在运行时为目标类生成代理实现增强</li>
-</ul>
-</li>
-<li>切面（Aspect）切入点和通知的结合</li>
-</ul>
-<h3 id="事务管理"><a href="#事务管理" class="headerlink" title="事务管理"></a>事务管理</h3><h4 id="传播机制"><a href="#传播机制" class="headerlink" title="传播机制"></a>传播机制</h4><ul>
-<li><p>propagation_required</p>
-<p>（默认）支持当前事务，如果没有就新建一个</p>
-</li>
-<li><p>propagation_supports</p>
-<p>支持当前事务，如果当前没有事务，就以非事务执行；</p>
-</li>
-<li><p>propagation_mandatory</p>
-<p>支持当前事务，如果当前没有事务，就抛出异常；</p>
-</li>
-<li><p>propagation_not_supported</p>
-<p>以非事务方式执行操作，如果当前存在事务，就把当前事务挂起；</p>
-</li>
-<li><p>propagation_never</p>
-<p>以非事务方式执行，如果当前存在事务，则抛出异常；</p>
-</li>
-<li><p>propagation_requires_new</p>
-<p>新建事务，如果当前存在，把当前事务挂起；外层事务失败回滚，不能回滚内层事务；内层事务失败抛出异常，外层事务可以不处理回滚操作；</p>
-</li>
-<li><p>propagation_nested</p>
-<p>如果一个活动的事务存在，则运行在一个嵌套的事务中；如果没有活动事务，则按required执行；内部事务回滚不会对外部事务造成影响；</p>
-</li>
-</ul>
-<h4 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h4><ul>
-<li><p>读未提交（ISOLATION_READ_UNCOMMITTED）</p>
-<p>这种隔离级别会产生脏读， 不可重复读和幻读 </p>
-</li>
-<li><p>读已提交（ISOLATION_READ_COMMITTED）</p>
-<p>这种隔离级别会产生不可重复读和幻读</p>
-</li>
-<li><p>可重复读（ISOLATION_REPEATABLE_READ）</p>
-<p>这种隔离级别会产生幻读</p>
-</li>
-<li><p>串行化读（ISOLATION_SERIALIZABLE）</p>
-</li>
-</ul>
-<h3 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h3><ul>
-<li>单例模式（IOC）</li>
-<li>代理模式（AOP）</li>
-<li>工厂方法模式<ul>
-<li>工厂方法模式</li>
-</ul>
-</li>
-<li>简单工厂模式<ul>
-<li>BeanFactory</li>
-</ul>
-</li>
-<li>策略模式<ul>
-<li>DefaultAopProxyFactory<ul>
-<li>JdkDynamicAopProxy</li>
-<li>ObjenesisCglibAopProxy</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>模板方法模式<ul>
-<li>JdbcTemplate</li>
-<li>RestTemplate</li>
-</ul>
-</li>
-</ul>
-<h2 id="Spring-5-新特性"><a href="#Spring-5-新特性" class="headerlink" title="Spring 5 新特性"></a>Spring 5 新特性</h2><ul>
-<li><p>支持Java9，Spring5框架基于Java8开发</p>
-</li>
-<li><p>支持响应式编程</p>
-</li>
-<li><p>函数式Web框架</p>
-</li>
-<li><p>支持Kotlin</p>
-</li>
-</ul>
-
+<li><p><code>session</code><br>每个<code>Session</code>创建一个<code>Bean</code>实例</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/03/30/spring/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -2121,7 +985,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-07-31 11:16:37" itemprop="dateModified" datetime="2024-07-31T11:16:37+08:00">2024-07-31</time>
+      <time title="修改时间：2024-07-31 19:08:41" itemprop="dateModified" datetime="2024-07-31T19:08:41+08:00">2024-07-31</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -2151,147 +1015,19 @@
     
     <div class="post-body" itemprop="articleBody">
           <h2 id="Mybatis"><a href="#Mybatis" class="headerlink" title="Mybatis"></a>Mybatis</h2><h3 id="加载过程"><a href="#加载过程" class="headerlink" title="加载过程"></a>加载过程</h3><ul>
-<li><p>通过<code>SqlSessionFactoryBuilder</code>解析XML文件，得到<code>SqlSessionFactory</code></p>
-<ul>
-<li><p><code>XMLConfigBuilder</code></p>
-<p>解析mybatis中configLocation属性中的全局xml文件</p>
-</li>
-<li><p><code>XMLMapperBuilder</code></p>
-<p>遍历mybatis中mapperLocations属性中的xml文件中的每个节点的Builder</p>
-</li>
-<li><p><code>XMLStatementBuilder</code></p>
-<p>解析xml文件中的各个节点，如select&#x2F;insert&#x2F;update&#x2F;delete节点，遍历产生的数据会被放到<code>Configuration</code>的mappedStatements中</p>
-</li>
-<li><p><code>XMLScriptBuilder</code></p>
-<p>解析xml中各个节点sql部分的Builder</p>
-</li>
-</ul>
-</li>
-<li><p>通过<code>SqlSessionFactory</code>获取SqlSession</p>
-</li>
-<li><p>通过<code>Executor</code>执行select&#x2F;insert&#x2F;update&#x2F;delete方法</p>
-</li>
-<li><p>关闭<code>SqlSession</code></p>
-</li>
-</ul>
-<h3 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h3><h4 id="一级缓存"><a href="#一级缓存" class="headerlink" title="一级缓存"></a>一级缓存</h4><ul>
-<li>作用域<ul>
-<li><code>Session</code>（默认）同一个session中缓存，不同session中会出现脏读</li>
-<li><code>Statement</code> 同一个statement中缓存</li>
-</ul>
-</li>
-</ul>
-<h4 id="二级缓存"><a href="#二级缓存" class="headerlink" title="二级缓存"></a>二级缓存</h4><p>实现了SqlSession之间的缓存数据共享，同时粒度更细，可以到namespace，多表查询可能会出现脏读</p>
-<h3 id="拦截器"><a href="#拦截器" class="headerlink" title="拦截器"></a>拦截器</h3><h4 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h4><ul>
-<li>统计sql执行时间</li>
-<li>读写分离，sql执行前检查sql是不是查询方法，根据这个控制访问的数据源</li>
-</ul>
-<h4 id="拦截方法"><a href="#拦截方法" class="headerlink" title="拦截方法"></a>拦截方法</h4><ul>
-<li><code>Executor</code><ul>
-<li>update</li>
-<li>query</li>
-<li>flushStatements</li>
-<li>commit</li>
-<li>rollback</li>
-<li>getTrahsaction</li>
-<li>close</li>
-<li>isClosed</li>
-</ul>
-</li>
-<li><code>ParameterHandler</code><ul>
-<li>getParameterObject</li>
-<li>setParameters</li>
-</ul>
-</li>
-<li><code>ResultSetHandler</code><ul>
-<li>handlerResultSets</li>
-<li>HandlerOutputParameters</li>
-</ul>
-</li>
-<li><code>StatementHandler</code><ul>
-<li>prepare</li>
-<li>parameterize</li>
-<li>batch</li>
-<li>update</li>
-<li>query</li>
-</ul>
-</li>
-</ul>
-<h3 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h3><ul>
-<li>工厂方法模式<ul>
-<li><code>SqlSessionFactory</code></li>
-<li><code>MapperProxyFactory</code></li>
-</ul>
-</li>
-<li>代理模式<ul>
-<li><code>MapperProxy</code></li>
-</ul>
-</li>
-<li>建造者模式<ul>
-<li><code>SqlSessionFactoryBuilder</code><ul>
-<li><code>XMLConfigBuilder</code></li>
-<li><code>XMLMapperBuilder</code></li>
-<li><code>XMLStatementBuilder</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>模板方法模式<ul>
-<li><code>BaseExecutor</code><ul>
-<li><code>SimpleExecutor</code></li>
-<li><code>ResumeExecutor</code></li>
-<li><code>BatchExecutor</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>适配器模式<ul>
-<li>logging包统一了各大日志框架的接口，比如LogFactory</li>
-</ul>
-</li>
-<li>责任链模式<ul>
-<li>plugins插件处理<ul>
-<li><code>Interceptor</code></li>
-<li><code>InterceptorChain</code></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="Hibernate"><a href="#Hibernate" class="headerlink" title="Hibernate"></a>Hibernate</h2><h3 id="加载过程-1"><a href="#加载过程-1" class="headerlink" title="加载过程"></a>加载过程</h3><ul>
-<li>通过<code>org.hibernate.cfg.Configuration</code>读取并解析配置文件</li>
-<li>通过Configuration创建SessionFactory</li>
-<li>打开Session</li>
-<li>创建事务Transaction</li>
-<li>持久化操作</li>
-<li>提交事务</li>
-<li>关闭session</li>
-<li>关闭SessionFactory</li>
-</ul>
-<h3 id="对象状态"><a href="#对象状态" class="headerlink" title="对象状态"></a>对象状态</h3><ul>
-<li>临时状态（new出来的对象）</li>
-<li>持久状态（数据库存在对应的记录）</li>
-<li>游离状态（session关闭后，持久化对象变成游离对象）</li>
-</ul>
-<h3 id="Session方法"><a href="#Session方法" class="headerlink" title="Session方法"></a>Session方法</h3><ul>
-<li><code>session.lock()</code>把没有更改过的托管状态的对象转换成持久态</li>
-<li><code>session.merge()</code>将新的状态合并到已有的持久化对象上或创建新的持久化对象</li>
-<li><code>session.saveOrUpdate()</code>如果对象不存在，瞬时状态变成持久态；如果存在，则游离状态转换成持久态</li>
-</ul>
-<h2 id="Mybatis和Hibernate区别"><a href="#Mybatis和Hibernate区别" class="headerlink" title="Mybatis和Hibernate区别"></a>Mybatis和Hibernate区别</h2><ul>
-<li>Mybatis<ul>
-<li>解耦（解除sql与程序代码的耦合）</li>
-<li>提供映射标签，支持对象与数据库的字段关系映射</li>
-<li>提供xml标签，支持编写动态sql</li>
-</ul>
-</li>
-<li>Hibernate<ul>
-<li>Dao层开发简单</li>
-<li>数据库移植性好</li>
-</ul>
-</li>
-</ul>
-
+<li>通过<code>SqlSessionFactoryBuilder</code>解析XML文件，得到<code>SqlSessionFactory</code><ul>
+<li><code>XMLConfigBuilder</code><br>解析mybatis中configLocation属性中的全局xml文件</li>
+<li><code>XMLMapperBuilder</code><br>遍历mybatis中mapperLocations属性中的xml文件中的每个节点的Builder</li>
+<li><code>XMLStatementBuilder</code><br>解析xml文件中的各个节点，如select&#x2F;insert&#x2F;update&#x2F;delete节点，遍历产生的数据会被放到<code>Configuration</code>的mappedStatements中</li>
+<li><code>XMLScriptBuilder</code><br>解析xml中各个节点sql部分的Builder
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/03/23/orm/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -2353,7 +1089,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-07-31 11:16:37" itemprop="dateModified" datetime="2024-07-31T11:16:37+08:00">2024-07-31</time>
+      <time title="修改时间：2024-07-31 19:09:24" itemprop="dateModified" datetime="2024-07-31T19:09:24+08:00">2024-07-31</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -2382,84 +1118,19 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="Tomcat-架构"><a href="#Tomcat-架构" class="headerlink" title="Tomcat 架构"></a>Tomcat 架构</h1><h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><h3 id="conf-目录"><a href="#conf-目录" class="headerlink" title="conf 目录"></a>conf 目录</h3><p><code>catalina.policy</code> :  Tomcat 安全策略文件，控制 JVM 相关权限，具体可以参考<code>java.security.Permission</code></p>
-<p><code>catalina.properties</code> : Tomcat Catalina 行为控制配置文件，比如 Common ClassLoader</p>
-<p><code>logging.properties</code>  : Tomcat 日志配置文件，JDK Logging</p>
-<p><code>server.xml</code>  :  Tomcat Server 配置文件</p>
+          <h1 id="Tomcat-架构"><a href="#Tomcat-架构" class="headerlink" title="Tomcat 架构"></a>Tomcat 架构</h1><h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><h3 id="conf-目录"><a href="#conf-目录" class="headerlink" title="conf 目录"></a>conf 目录</h3><p><code>catalina.policy</code> :  Tomcat 安全策略文件，控制 JVM 相关权限，具体可以参考<code>java.security.Permission</code><br><code>catalina.properties</code> : Tomcat Catalina 行为控制配置文件，比如 Common ClassLoader<br><code>logging.properties</code>  : Tomcat 日志配置文件，JDK Logging<br><code>server.xml</code>  :  Tomcat Server 配置文件</p>
 <ul>
-<li><code>GlobalNamingResources</code> : 全局 JNDI 资源</li>
-</ul>
-<p><code>context.xml</code> : 全局 Context 配置文件</p>
-<p><code>tomcat-users.xml</code> : Tomcat 角色配置文件，（Realm 文件实现方式）、</p>
-<p><code>web.xml</code> : Servlet 标准的 web.xml 部署文件，Tomcat 默认实现部分配置入内：</p>
-<ul>
+<li><code>GlobalNamingResources</code> : 全局 JNDI 资源<br><code>context.xml</code> : 全局 Context 配置文件<br><code>tomcat-users.xml</code> : Tomcat 角色配置文件，（Realm 文件实现方式）、<br><code>web.xml</code> : Servlet 标准的 web.xml 部署文件，Tomcat 默认实现部分配置入内：</li>
 <li><code>org.apache.catalina.servlets.DefaultServlet</code></li>
-<li><code>org.apache.jasper.servlet.JspServlet</code></li>
-</ul>
-<h3 id="lib-目录"><a href="#lib-目录" class="headerlink" title="lib 目录"></a>lib 目录</h3><p>Tomcat 存放公用类库</p>
-<p><code>ecj-*.jar</code>  : Eclipse Java 编译器</p>
-<p><code>jasper.jar</code> : JSP 编译器</p>
-<h3 id="logs-目录"><a href="#logs-目录" class="headerlink" title="logs 目录"></a>logs 目录</h3><p><code>localhost.$&#123;date&#125;.log</code> :  当 Tomcat 应用起不来的时候，多看该文件，比如：类冲突</p>
-<ul>
-<li><code>NoClassDefFoundError</code></li>
-<li><code>ClassNotFoundException</code></li>
-</ul>
-<p><code>catalina.$&#123;date&#125;.log</code> : 控制台输出，<code>System.out</code> 外置</p>
-<h2 id="webapps-目录"><a href="#webapps-目录" class="headerlink" title="webapps 目录"></a>webapps 目录</h2><p>简化 web 应用部署的方式</p>
-<h2 id="部署-Web-应用"><a href="#部署-Web-应用" class="headerlink" title="部署 Web 应用"></a>部署 Web 应用</h2><h3 id="方法一：放置在-webapps-目录"><a href="#方法一：放置在-webapps-目录" class="headerlink" title="方法一：放置在 webapps 目录"></a>方法一：放置在 <code>webapps </code>目录</h3><p>直接拖过去</p>
-<h3 id="方法二：-修改-confi-server-xml"><a href="#方法二：-修改-confi-server-xml" class="headerlink" title="方法二： 修改 confi/server.xml"></a>方法二： 修改 <code>confi/server.xml</code></h3><p>添加<code>Context</code> 元素：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Context</span> <span class="attr">docBase</span>=<span class="string">&quot;$&#123;webAppAbsolutePath&#125;&quot;</span> <span class="attr">path</span>=<span class="string">&quot;/&quot;</span> <span class="attr">reloadable</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Context</span> <span class="attr">docBase</span>=<span class="string">&quot;$&#123;webAppAbsolutePath&#125;&quot;</span> <span class="attr">path</span>=<span class="string">&quot;/tomcat&quot;</span> <span class="attr">reloadable</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>熟悉配置元素可以参考<code>org.apache.catalina.core.StandardContext</code> setter 方法</p>
-<p><code>Container</code></p>
-<ul>
-<li><code>Context</code></li>
-</ul>
-<p>该方式不支持动态部署，建议考虑在生产环境使用。</p>
-<h3 id="方法三：独立-context-xml-配置文件"><a href="#方法三：独立-context-xml-配置文件" class="headerlink" title="方法三：独立 context xml 配置文件"></a>方法三：独立 <code>context</code> xml 配置文件</h3><p>首先注意 <code>conf\Catalina\localhost</code></p>
-<p>独立 context XML 配置文件路径：<code>$&#123;TOMCAT_HOME&#125;/conf/Catalina/localhost</code> + <code>$&#123;ContextPath&#125;</code> .xml</p>
-<p>注意：该方式可以实现热部署，因此建议在开发环境使用。</p>
-<h3 id="I-O-连接器"><a href="#I-O-连接器" class="headerlink" title="I&#x2F;O 连接器"></a>I&#x2F;O 连接器</h3><p>参考文件：<span class="exturl" data-url="aHR0cHM6Ly90b21jYXQuYXBhY2hlLm9yZy90b21jYXQtNy4wLWRvYy9jb25maWcvaHR0cC5odG1s">https://tomcat.apache.org/tomcat-7.0-doc/config/http.html<i class="fa fa-external-link-alt"></i></span></p>
-<p>实现类：<code>org.apache.catalina.connector.Connector</code></p>
-<p>注意实现：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setProtocol</span><span class="params">(String protocol)</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (AprLifecycleListener.isAprAvailable()) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;HTTP/1.1&quot;</span>.equals(protocol)) &#123;</span><br><span class="line">            setProtocolHandlerClassName</span><br><span class="line">                (<span class="string">&quot;org.apache.coyote.http11.Http11AprProtocol&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">&quot;AJP/1.3&quot;</span>.equals(protocol)) &#123;</span><br><span class="line">            setProtocolHandlerClassName</span><br><span class="line">                (<span class="string">&quot;org.apache.coyote.ajp.AjpAprProtocol&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (protocol != <span class="literal">null</span>) &#123;</span><br><span class="line">            setProtocolHandlerClassName(protocol);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            setProtocolHandlerClassName</span><br><span class="line">                (<span class="string">&quot;org.apache.coyote.http11.Http11AprProtocol&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;HTTP/1.1&quot;</span>.equals(protocol)) &#123;</span><br><span class="line">            setProtocolHandlerClassName</span><br><span class="line">                (<span class="string">&quot;org.apache.coyote.http11.Http11Protocol&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">&quot;AJP/1.3&quot;</span>.equals(protocol)) &#123;</span><br><span class="line">            setProtocolHandlerClassName</span><br><span class="line">                (<span class="string">&quot;org.apache.coyote.ajp.AjpProtocol&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (protocol != <span class="literal">null</span>) &#123;</span><br><span class="line">            setProtocolHandlerClassName(protocol);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-<h2 id="问答互动"><a href="#问答互动" class="headerlink" title="问答互动"></a>问答互动</h2><h3 id="问题一：如果配置path的话-是以文件名为主-还是-以配置的为主"><a href="#问题一：如果配置path的话-是以文件名为主-还是-以配置的为主" class="headerlink" title="问题一：如果配置path的话 是以文件名为主 还是 以配置的为主"></a>问题一：如果配置path的话 是以文件名为主 还是 以配置的为主</h3><p>独立 context XML 配置文件时，设置 <code>path</code> 属性是无效的。</p>
-<h3 id="问题二：根独立-context-XML-配置文件路径"><a href="#问题二：根独立-context-XML-配置文件路径" class="headerlink" title="问题二：根独立 context XML 配置文件路径"></a>问题二：根独立 context XML 配置文件路径</h3><p><code>$&#123;TOMCAT_HOME&#125;/conf/$&#123;Engine.name&#125;/$&#123;HOST.name&#125;/ROOT.xml</code></p>
-<h3 id="问题三：如果实现热部署"><a href="#问题三：如果实现热部署" class="headerlink" title="问题三：如果实现热部署"></a>问题三：如果实现热部署</h3><p>调整 <code>&lt;context&gt;</code> 元素中的属性<code>reloadable=&quot;true&quot; </code></p>
-<h3 id="问题四：连接器里面的线程池-是用的哪个线程池"><a href="#问题四：连接器里面的线程池-是用的哪个线程池" class="headerlink" title="问题四：连接器里面的线程池 是用的哪个线程池"></a>问题四：连接器里面的线程池 是用的哪个线程池</h3><p>注意<code>conf/server.xml</code> 文件中的一段注释：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Connector</span> <span class="attr">executor</span>=<span class="string">&quot;tomcatThreadPool&quot;</span></span></span><br><span class="line"><span class="tag">               <span class="attr">port</span>=<span class="string">&quot;8080&quot;</span> <span class="attr">protocol</span>=<span class="string">&quot;HTTP/1.1&quot;</span></span></span><br><span class="line"><span class="tag">               <span class="attr">connectionTimeout</span>=<span class="string">&quot;20000&quot;</span></span></span><br><span class="line"><span class="tag">               <span class="attr">redirectPort</span>=<span class="string">&quot;8443&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<p><code>org.apache.catalina.Executor</code>:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Executor</span> <span class="keyword">extends</span> <span class="title class_">java</span>.util.concurrent.Executor, Lifecycle &#123;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Executes the given command at some time in the future.  The command</span></span><br><span class="line"><span class="comment">     * may execute in a new thread, in a pooled thread, or in the calling</span></span><br><span class="line"><span class="comment">     * thread, at the discretion of the &lt;tt&gt;Executor&lt;/tt&gt; implementation.</span></span><br><span class="line"><span class="comment">     * If no threads are available, it will be added to the work queue.</span></span><br><span class="line"><span class="comment">     * If the work queue is full, the system will wait for the specified</span></span><br><span class="line"><span class="comment">     * time until it throws a RejectedExecutionException</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> command the runnable task</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> java.util.concurrent.RejectedExecutionException if this task</span></span><br><span class="line"><span class="comment">     * cannot be accepted for execution - the queue is full</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> NullPointerException if command or unit is null</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">execute</span><span class="params">(Runnable command, <span class="type">long</span> timeout, TimeUnit unit)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>标准实现：<code>org.apache.catalina.core.StandardThreadExecutor</code> 将连接处理交付给 Java 标准线程池：</p>
-<p><code>org.apache.tomcat.util.threads.ThreadPoolExecutor</code>。</p>
-<h3 id="问题五：JNDI-能不能稍微说下-之前只是在数据源的时候用过，但是不是太理解"><a href="#问题五：JNDI-能不能稍微说下-之前只是在数据源的时候用过，但是不是太理解" class="headerlink" title="问题五：JNDI 能不能稍微说下 之前只是在数据源的时候用过，但是不是太理解"></a>问题五：JNDI 能不能稍微说下 之前只是在数据源的时候用过，但是不是太理解</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Context</span> <span class="attr">...</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">Resource</span> <span class="attr">name</span>=<span class="string">&quot;mail/Session&quot;</span> <span class="attr">auth</span>=<span class="string">&quot;Container&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">type</span>=<span class="string">&quot;javax.mail.Session&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">mail.smtp.host</span>=<span class="string">&quot;localhost&quot;</span>/&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">Context</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Context</span> <span class="variable">initCtx</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">InitialContext</span>();</span><br><span class="line"><span class="type">Context</span> <span class="variable">envCtx</span> <span class="operator">=</span> (Context) initCtx.lookup(<span class="string">&quot;java:comp/env&quot;</span>);</span><br><span class="line"><span class="type">Session</span> <span class="variable">session</span> <span class="operator">=</span> (Session) envCtx.lookup(<span class="string">&quot;mail/Session&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">Message</span> <span class="variable">message</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MimeMessage</span>(session);</span><br><span class="line">message.setFrom(<span class="keyword">new</span> <span class="title class_">InternetAddress</span>(request.getParameter(<span class="string">&quot;from&quot;</span>)));</span><br><span class="line">InternetAddress to[] = <span class="keyword">new</span> <span class="title class_">InternetAddress</span>[<span class="number">1</span>];</span><br><span class="line">to[<span class="number">0</span>] = <span class="keyword">new</span> <span class="title class_">InternetAddress</span>(request.getParameter(<span class="string">&quot;to&quot;</span>));</span><br><span class="line">message.setRecipients(Message.RecipientType.TO, to);</span><br><span class="line">message.setSubject(request.getParameter(<span class="string">&quot;subject&quot;</span>));</span><br><span class="line">message.setContent(request.getParameter(<span class="string">&quot;content&quot;</span>), <span class="string">&quot;text/plain&quot;</span>);</span><br><span class="line">Transport.send(message);</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
+<li><code>org.apache.jasper.servlet.JspServlet</code>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/01/23/tomcat/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -2521,7 +1192,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-07-31 11:16:37" itemprop="dateModified" datetime="2024-07-31T11:16:37+08:00">2024-07-31</time>
+      <time title="修改时间：2024-07-31 19:09:44" itemprop="dateModified" datetime="2024-07-31T19:09:44+08:00">2024-07-31</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -2556,42 +1227,15 @@
 </ul>
 <h3 id="Java序列化机制存在问题"><a href="#Java序列化机制存在问题" class="headerlink" title="Java序列化机制存在问题"></a>Java序列化机制存在问题</h3><ul>
 <li>序列化的数据比较大，传输效率低</li>
-<li>其他语言无法识别和对接</li>
-</ul>
-<h3 id="常见序列化技术"><a href="#常见序列化技术" class="headerlink" title="常见序列化技术"></a>常见序列化技术</h3><ul>
-<li>json、jackson、fastjson、gson</li>
-<li>xml</li>
-<li>webservice</li>
-<li>hessian2</li>
-<li>protobuf</li>
-<li>thrift</li>
-<li>avro</li>
-<li>messagepack</li>
-<li>fst</li>
-</ul>
-<p>序列化性能比较：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2Vpc2hheS9qdm0tc2VyaWFsaXplcnMvd2lraQ==">https://github.com/eishay/jvm-serializers/wiki<i class="fa fa-external-link-alt"></i></span></p>
-<h3 id="序列化技术的选型"><a href="#序列化技术的选型" class="headerlink" title="序列化技术的选型"></a>序列化技术的选型</h3><h4 id="技术层面"><a href="#技术层面" class="headerlink" title="技术层面"></a>技术层面</h4><ol>
-<li>序列化空间开销，也就是序列化产生的结果大小，这个影响到传输的<br> 性能 </li>
-<li>序列化过程中消耗的时长，序列化消耗时间过长影响到业务的响应<br> 时间 </li>
-<li>序列化协议是否支持跨平台，跨语言。因为现在的架构更加灵活，如<br> 果存在异构系统通信需求，那么这个是必须要考虑的 </li>
-<li>可扩展性&#x2F;兼容性，在实际业务开发中，系统往往需要随着需求的快<br> 速迭代来实现快速更新，这就要求我们采用的序列化协议基于良好<br> 做技术人的之路明灯，做职场生涯的精神导师<br> 的可扩展性&#x2F;兼容性，比如在现有的序列化数据结构中新增一个业务<br> 字段，不会影响到现有的服务 </li>
-<li>技术的流行程度，越流行的技术意味着使用的公司多，那么很多坑都<br> 已经淌过并且得到了解决，技术解决方案也相对成熟 </li>
-<li>学习难度和易用性</li>
-</ol>
-<h4 id="选型建议"><a href="#选型建议" class="headerlink" title="选型建议"></a>选型建议</h4><ol>
-<li>对性能要求不高的场景，可以采用基于XML的SOAP协议 </li>
-<li>对性能和间接性有比较高要求的场景，那么Hessian、Protobuf、Thrift、</li>
-</ol>
-<p>Avro都可以。 </p>
-<ol start="3">
-<li>基于前后端分离，或者独立的对外的api服务，选用JSON是比较好</li>
-</ol>
-<p>的，对于调试、可读性都很不错 </p>
-<ol start="4">
-<li>Avro 设计理念偏于动态类型语言，那么这类的场景使用 Avro 是可</li>
-</ol>
-<p>以的 </p>
-
+<li>其他语言无法识别和对接
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/01/13/%E5%BA%8F%E5%88%97%E5%8C%96/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
