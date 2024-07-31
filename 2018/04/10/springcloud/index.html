@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"always","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Spring Cloud ConfigPropertySource 配置源 MapPropertySource  PropertiesPropertySource   CompositePropertySource 组合  SystemEnvironmentPropertySource 环境变量  PropertySourceLocator Spring Cloud 客户端配置定位扩展，  实现该">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="SpringCloud">
+<meta property="og:url" content="http://yoursite.com/2018/04/10/springcloud/index.html">
+<meta property="og:site_name" content="李波的博客">
+<meta property="og:description" content="Spring Cloud ConfigPropertySource 配置源 MapPropertySource  PropertiesPropertySource   CompositePropertySource 组合  SystemEnvironmentPropertySource 环境变量  PropertySourceLocator Spring Cloud 客户端配置定位扩展，  实现该">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-04-10T12:58:54.000Z">
+<meta property="article:modified_time" content="2024-07-31T03:16:37.261Z">
+<meta property="article:author" content="李波">
+<meta property="article:tag" content="Spring">
+<meta property="article:tag" content="SpringCloud">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/2018/04/10/springcloud/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2018/04/10/springcloud/","path":"2018/04/10/springcloud/","title":"SpringCloud"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>SpringCloud | 李波的博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="李波的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">李波的博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-commonweal"><a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Cloud-Config"><span class="nav-number">1.</span> <span class="nav-text">Spring Cloud Config</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#PropertySource-%E9%85%8D%E7%BD%AE%E6%BA%90"><span class="nav-number">1.1.</span> <span class="nav-text">PropertySource 配置源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#EnableConfigServer"><span class="nav-number">1.2.</span> <span class="nav-text">@EnableConfigServer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%81%A5%E5%BA%B7%E6%A3%80%E6%9F%A5"><span class="nav-number">1.3.</span> <span class="nav-text">健康检查</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Cloud-Netflix-Eureka"><span class="nav-number">2.</span> <span class="nav-text">Spring Cloud Netflix Eureka</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Cloud-Zookeeper"><span class="nav-number">3.</span> <span class="nav-text">Spring Cloud Zookeeper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Cloud-Consul"><span class="nav-number">4.</span> <span class="nav-text">Spring Cloud Consul</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Cloud-Netflix-Zuul"><span class="nav-number">5.</span> <span class="nav-text">Spring Cloud Netflix Zuul</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Cloud-Gateway"><span class="nav-number">6.</span> <span class="nav-text">Spring Cloud Gateway</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Cloud-Netflix-Hystrix"><span class="nav-number">7.</span> <span class="nav-text">Spring Cloud Netflix Hystrix</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E8%A7%A3"><span class="nav-number">7.1.</span> <span class="nav-text">注解</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Cloud-Netflix-Ribbon"><span class="nav-number">8.</span> <span class="nav-text">Spring Cloud Netflix Ribbon</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%99%A8"><span class="nav-number">8.1.</span> <span class="nav-text">负载均衡器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E8%A7%84%E5%88%99"><span class="nav-number">8.2.</span> <span class="nav-text">负载均衡规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">8.3.</span> <span class="nav-text">负载均衡客户端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="nav-number">8.4.</span> <span class="nav-text">负载均衡上下文</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Cloud-Netflix-Feign"><span class="nav-number">9.</span> <span class="nav-text">Spring Cloud Netflix Feign</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Cloud-Stream"><span class="nav-number">10.</span> <span class="nav-text">Spring Cloud Stream</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AE%9E%E7%8E%B0"><span class="nav-number">10.1.</span> <span class="nav-text">自定义实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Cloud-Seluth"><span class="nav-number">11.</span> <span class="nav-text">Spring Cloud Seluth</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%BD%E8%B8%AA%E7%B1%BB%E5%9E%8B"><span class="nav-number">11.1.</span> <span class="nav-text">追踪类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Cloud-Bus"><span class="nav-number">12.</span> <span class="nav-text">Spring Cloud Bus</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Security-OAuth2"><span class="nav-number">13.</span> <span class="nav-text">Spring Security OAuth2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Session-Redis"><span class="nav-number">14.</span> <span class="nav-text">Spring Session + Redis</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="李波"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">李波</p>
+  <div class="site-description" itemprop="description">读万卷书，更要行万里路！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lee9213" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;lee9213" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:lee9213@163.com" title="E-Mail → mailto:lee9213@163.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://example.com/" title="https:&#x2F;&#x2F;example.com" rel="noopener" target="_blank">mysql1</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://example.com/" title="https:&#x2F;&#x2F;example.com" rel="noopener" target="_blank">mysql2</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://example.com/" title="https:&#x2F;&#x2F;example.com" rel="noopener" target="_blank">mysql3</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://example.com/" title="https:&#x2F;&#x2F;example.com" rel="noopener" target="_blank">mysql4</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/10/springcloud/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="李波">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李波的博客">
+      <meta itemprop="description" content="读万卷书，更要行万里路！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="SpringCloud | 李波的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SpringCloud
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-04-10 20:58:54" itemprop="dateCreated datePublished" datetime="2018-04-10T20:58:54+08:00">2018-04-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-07-31 11:16:37" itemprop="dateModified" datetime="2024-07-31T11:16:37+08:00">2024-07-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="Spring-Cloud-Config"><a href="#Spring-Cloud-Config" class="headerlink" title="Spring Cloud Config"></a>Spring Cloud Config</h3><h4 id="PropertySource-配置源"><a href="#PropertySource-配置源" class="headerlink" title="PropertySource 配置源"></a><code>PropertySource</code> 配置源</h4><ul>
+<li><p><code>MapPropertySource</code></p>
+<ul>
+<li><code>PropertiesPropertySource</code></li>
+</ul>
+</li>
+<li><p><code>CompositePropertySource</code> 组合</p>
+</li>
+<li><p><code>SystemEnvironmentPropertySource</code> 环境变量</p>
+</li>
+<li><p><code>PropertySourceLocator</code> Spring Cloud 客户端配置定位扩展，</p>
+<ul>
+<li><p>实现该接口</p>
+</li>
+<li><p>暴露该实现作为一个Spring Bean</p>
+</li>
+<li><p>定义并且配置 &#x2F;META-INF&#x2F;spring.factories:</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">org.springframework.cloud.bootstrap.BootstrapConfiguration</span>=<span class="string">\</span></span><br><span class="line"><span class="string">com.gupao.springcloudconfigclient.SpringCloudConfigClientApplication.MyPropertySourceLocator</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h4 id="EnableConfigServer"><a href="#EnableConfigServer" class="headerlink" title="@EnableConfigServer"></a><code>@EnableConfigServer</code></h4><ul>
+<li><p><code>@EnableConfigServer</code> 启动配置中心，默认<code>DefaultRepositoryConfiguration</code>（Git实现）</p>
+</li>
+<li><p>自定义实现所需<code>EnvironmentRepository</code>  核心接口，</p>
+<ul>
+<li>注入一个<code>EnvironmentRepository</code>  即可</li>
+</ul>
+</li>
+</ul>
+<h4 id="健康检查"><a href="#健康检查" class="headerlink" title="健康检查"></a>健康检查</h4><p>端点URI：&#x2F;health</p>
+<p>实现类：<code>HealthEndpoint</code></p>
+<p>健康指示器：<code>HealthIndicator</code>，</p>
+<p><code>HealthEndpoint</code>：<code>HealthIndicator</code> ，一对多</p>
+<p>自定义实现<code>HealthIndicator</code></p>
+<ul>
+<li><p>实现<code>AbstractHealthIndicator</code></p>
+</li>
+<li><p>暴露实现为<code>Bean</code></p>
+</li>
+<li><p>关闭安全控制</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">management.security.enabled</span> = <span class="string">false</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="Spring-Cloud-Netflix-Eureka"><a href="#Spring-Cloud-Netflix-Eureka" class="headerlink" title="Spring Cloud Netflix Eureka"></a>Spring Cloud Netflix Eureka</h3><p><code>@EnableDiscoveryClient</code></p>
+<p><code>@EnableEurekaServer</code></p>
+<h3 id="Spring-Cloud-Zookeeper"><a href="#Spring-Cloud-Zookeeper" class="headerlink" title="Spring Cloud Zookeeper"></a>Spring Cloud Zookeeper</h3><h3 id="Spring-Cloud-Consul"><a href="#Spring-Cloud-Consul" class="headerlink" title="Spring Cloud Consul"></a>Spring Cloud Consul</h3><h3 id="Spring-Cloud-Netflix-Zuul"><a href="#Spring-Cloud-Netflix-Zuul" class="headerlink" title="Spring Cloud Netflix Zuul"></a>Spring Cloud Netflix Zuul</h3><p><code>@EnableZuulServer</code></p>
+<p><code>@EnableZuulProxy</code></p>
+<p>基于Servlet和Filter实现</p>
+<ul>
+<li><code>ZuulHandlerMapping</code></li>
+<li><code>ZuulController</code></li>
+<li><code>ZuulServlet</code></li>
+<li><code>ZuulRunner</code></li>
+<li><code>FilterProcessor</code> -&gt; <code>FilterLoader</code> -&gt; <code>List&lt;ZuulFilter&gt;</code></li>
+<li>Filter执行顺序<ul>
+<li>pre，权限校验、限流、选取路由机器<ul>
+<li><code>ServletDetectionFilter</code>检测请求是用DispatcherServlet还是 ZuulServlet</li>
+<li><code>Servlet30WrapperFilter</code>在Servlet 3.0 下，包装 requests</li>
+<li><code>FormBodyWrapperFilter</code>解析表单数据</li>
+<li><code>DebugFilter</code>设置请求过程是否开启debug</li>
+<li><code>PreDecorationFilter</code>根据uri决定调用哪一个route过滤器</li>
+</ul>
+</li>
+<li>route，向选举出来的server发送请求<ul>
+<li><code>RibbonRoutingFilter</code>如果写配置的时候用ServiceId则用这个route过滤器，该过滤器可以用Ribbon 做负载均衡，用hystrix做熔断</li>
+<li><code>SimpleHostRoutingFilter</code>如果写配置的时候用url则用这个route过滤</li>
+<li><code>SendForwardFilter</code>用RequestDispatcher请求转发</li>
+</ul>
+</li>
+<li>post，收集统计数据<ul>
+<li><code>SendResponseFilter</code>用HttpServletResponse响应</li>
+<li><code>SendErrorFilter</code> 任意阶段出错</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Spring-Cloud-Gateway"><a href="#Spring-Cloud-Gateway" class="headerlink" title="Spring Cloud Gateway"></a>Spring Cloud Gateway</h3><p>基于webflux的实现</p>
+<ul>
+<li><p><code>DispatcherHandler</code></p>
+</li>
+<li><p><code>RoutePredicateHandlerMapping</code></p>
+</li>
+<li><p><code>FilteringWebHandler</code></p>
+</li>
+<li><p><code>DefaultGatewayFilterChain</code></p>
+<ul>
+<li><code>AdaptCachedBodyGlobalFilter</code></li>
+<li><code>NettyWriteResponseFilter</code></li>
+<li><code>ForwardPathFilter</code></li>
+<li><code>GatewayMetricsFilter</code></li>
+<li><code>RouteToRequestUrlFilter</code></li>
+<li><code>LoadBalancerClientFilter</code></li>
+<li><code>WebsocketRoutingFilter</code></li>
+<li><code>NettyRoutingFilter</code></li>
+<li><code>ForwardRoutingFilter</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="Spring-Cloud-Netflix-Hystrix"><a href="#Spring-Cloud-Netflix-Hystrix" class="headerlink" title="Spring Cloud Netflix Hystrix"></a>Spring Cloud Netflix Hystrix</h3><h4 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h4><ul>
+<li><p>@EnableHystrix</p>
+</li>
+<li><p>@EnableCircuitBreaker</p>
+</li>
+<li><p>@HystrixCommand</p>
+</li>
+</ul>
+<p>基于AOP的实现</p>
+<p>容器启动注入一个HystrixCommandAspect的Bean</p>
+<h3 id="Spring-Cloud-Netflix-Ribbon"><a href="#Spring-Cloud-Netflix-Ribbon" class="headerlink" title="Spring Cloud Netflix Ribbon"></a>Spring Cloud Netflix Ribbon</h3><p>@LoadBalance</p>
+<h4 id="负载均衡器"><a href="#负载均衡器" class="headerlink" title="负载均衡器"></a>负载均衡器</h4><ul>
+<li>ILoadBalancer<ul>
+<li>BaseLoadBalancer</li>
+<li>DynamicServerListLoadBalancer</li>
+<li>ZoneAwareLoadBalancer</li>
+<li>NoOpLoadBalancer</li>
+</ul>
+</li>
+</ul>
+<h4 id="负载均衡规则"><a href="#负载均衡规则" class="headerlink" title="负载均衡规则"></a>负载均衡规则</h4><ul>
+<li>IRule<ul>
+<li>RandomRule：随机规则</li>
+<li>BestAvailableRule：最可用规则</li>
+<li>RoundRobinRule：轮询规则</li>
+<li>RetryRule：重试实现</li>
+</ul>
+</li>
+</ul>
+<h4 id="负载均衡客户端"><a href="#负载均衡客户端" class="headerlink" title="负载均衡客户端"></a>负载均衡客户端</h4><p><code>ServiceInstanceChooser</code></p>
+<p><code>LoadBalancerClient</code></p>
+<h4 id="负载均衡上下文"><a href="#负载均衡上下文" class="headerlink" title="负载均衡上下文"></a>负载均衡上下文</h4><p><code>LoadBalancerContext</code></p>
+<h3 id="Spring-Cloud-Netflix-Feign"><a href="#Spring-Cloud-Netflix-Feign" class="headerlink" title="Spring Cloud Netflix Feign"></a>Spring Cloud Netflix Feign</h3><p>@EnableFeignClients</p>
+<p>@FeignClient</p>
+<ol>
+<li>容器启动时，注入包含@FeignClient注解的所有接口</li>
+<li>接口通用实现类FeignClientFactoryBean</li>
+<li>在FeignClientFactoryBean中的getObject方法中<ol>
+<li>设置Http请求相关参数，编码、解码、获取HttpClient类型</li>
+<li>通过URL判断请求类型，如果是LoadBalancerFeignClient，则通过Ribbon进行负载，通过对应的负载算法获取HttpClient</li>
+<li>通过JDK动态代理为目标接口生成一个动态代理类，代理类会生成一个方法拦截器SynchronousMethodHandler</li>
+</ol>
+</li>
+<li>当发起方法调用时，SynchronousMethodHandler根据请求参数，获取RestTemplate，然后进行调用<ol>
+<li>通过Ribbon进行负载</li>
+</ol>
+</li>
+</ol>
+<h3 id="Spring-Cloud-Stream"><a href="#Spring-Cloud-Stream" class="headerlink" title="Spring Cloud Stream"></a>Spring Cloud Stream</h3><p><code>@Output</code></p>
+<p><code>@Input</code></p>
+<p><code>MessageChannel</code></p>
+<h4 id="自定义实现"><a href="#自定义实现" class="headerlink" title="自定义实现"></a>自定义实现</h4><p><code>Binder</code></p>
+<h3 id="Spring-Cloud-Seluth"><a href="#Spring-Cloud-Seluth" class="headerlink" title="Spring Cloud Seluth"></a>Spring Cloud Seluth</h3><h4 id="追踪类型"><a href="#追踪类型" class="headerlink" title="追踪类型"></a>追踪类型</h4><ul>
+<li><p>@Scheduled</p>
+<ul>
+<li>TraceSchedulingAspect处理</li>
+</ul>
+</li>
+<li><p>Messaging</p>
+<ul>
+<li>基于spring messaging的ChannelInterceptor</li>
+</ul>
+</li>
+<li><p>Hystrix</p>
+<ul>
+<li>基于HystrixPlugins添加trace相关的plugin，自定义了一个HystrixConcurrencyStrategy的实现SleuthHystrixConcurrencyStrategy</li>
+</ul>
+</li>
+<li><p>Feign</p>
+<ul>
+<li>TraceFeignAspect</li>
+<li>TracingFeignClient</li>
+<li>TraceLoadBalancerFeignClient</li>
+</ul>
+</li>
+<li><p>Async</p>
+<ul>
+<li><p>基于AOP的实现TraceAsyncAspect</p>
+<p>@Async注解和ThreadPoolTaskExecutor下面的类</p>
+</li>
+</ul>
+</li>
+<li><p>Http Web</p>
+<ul>
+<li>TracingClientHttpRequestInterceptor</li>
+</ul>
+</li>
+<li><p>Zuul</p>
+<ul>
+<li>Zuul的Filter机制，实现了TracePostZuulFilter</li>
+</ul>
+</li>
+</ul>
+<h3 id="Spring-Cloud-Bus"><a href="#Spring-Cloud-Bus" class="headerlink" title="Spring Cloud Bus"></a>Spring Cloud Bus</h3><h3 id="Spring-Security-OAuth2"><a href="#Spring-Security-OAuth2" class="headerlink" title="Spring Security OAuth2"></a>Spring Security OAuth2</h3><h3 id="Spring-Session-Redis"><a href="#Spring-Session-Redis" class="headerlink" title="Spring Session + Redis"></a>Spring Session + Redis</h3>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="李波 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="李波 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>李波
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://yoursite.com/2018/04/10/springcloud/" title="SpringCloud">http://yoursite.com/2018/04/10/springcloud/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Spring/" rel="tag"><i class="fa fa-tag"></i> Spring</a>
+              <a href="/tags/SpringCloud/" rel="tag"><i class="fa fa-tag"></i> SpringCloud</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/04/08/springweb/" rel="prev" title="SpringWeb">
+                  <i class="fa fa-angle-left"></i> SpringWeb
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/07/26/classloader/" rel="next" title="JVM之类加载器">
+                  JVM之类加载器 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      <div class="tabs tabs-comment">
+        <ul class="nav-tabs">
+            <li class="tab"><a href="#comment-gitalk">gitalk</a></li>
+            <li class="tab"><a href="#comment-utterances">utterances</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane gitalk" id="comment-gitalk">
+              <div class="comments gitalk-container"></div>
+            </div>
+            <div class="tab-pane utterances" id="comment-utterances">
+              <div class="comments utterances-container"></div>
+            </div>
+        </div>
+      </div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">李波</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/lee9213" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://yoursite.com/2018/04/10/springcloud/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"lee9213","repo":"blog-common-log","client_id":"Ov23liRhRq195JbLB8GO","client_secret":"d8f3efcc7511d7aad6941e8cda1d1d764c1a6d56","admin_user":"lee9213","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"e2e5b522b124f168ba8f3a7a4a7b87a5"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"lee9213/blog-common-log","issue_term":"pathname","theme":"github-light"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>
