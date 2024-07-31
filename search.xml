@@ -3004,8 +3004,8 @@
       </categories>
       <tags>
         <tag>Spring</tag>
-        <tag>SpringMVC</tag>
         <tag>SpringBoot</tag>
+        <tag>SpringMVC</tag>
       </tags>
   </entry>
   <entry>
@@ -3097,7 +3097,7 @@
 <li>shell.auth.simple.user.password &#x3D; 123456</li>
 </ul>
 </li>
-<li>ssh -p 2000 <a href="mailto:&#x61;&#100;&#109;&#x69;&#110;&#x40;&#49;&#x32;&#x37;&#46;&#x30;&#x2e;&#x30;&#x2e;&#x31;">&#x61;&#100;&#109;&#x69;&#110;&#x40;&#49;&#x32;&#x37;&#46;&#x30;&#x2e;&#x30;&#x2e;&#x31;</a></li>
+<li>ssh -p 2000 <a href="mailto:&#97;&#x64;&#109;&#x69;&#110;&#64;&#x31;&#x32;&#x37;&#46;&#48;&#x2e;&#48;&#46;&#49;">&#97;&#x64;&#109;&#x69;&#110;&#64;&#x31;&#x32;&#x37;&#46;&#48;&#x2e;&#48;&#46;&#49;</a></li>
 </ul>
 </li>
 <li>telnet方式<ul>
