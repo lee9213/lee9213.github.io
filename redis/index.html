@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="QzC4gqNx1vAo_VxH0sQdkAvL5X7d_WsC8VNpcpEBfIE">
+  <meta name="msvalidate.01" content="F9B7AE033F8B45BAE6C0FCF06DD118A5">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"always","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"disqusjs","storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Redis本质上是一个Key-Value类型的内存数据库，很像Memcached，整个数据库统统加载在内存当中进行操作，定期通过异步操作把数据库数据flush到硬盘上进行保存。因为是纯内存操作，Redis的性能非常出色，每秒可以处理超过10万次读写操作，是已知性能最快的Key-Value DB。Redis的出色之处不仅仅是性能，Redis最大的魅力是支持保存多种数据结构，此外单个value的最大限">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="缓存之Redis详解">
+<meta property="og:url" content="http://yoursite.com/redis/index.html">
+<meta property="og:site_name" content="快递小哥的博客">
+<meta property="og:description" content="Redis本质上是一个Key-Value类型的内存数据库，很像Memcached，整个数据库统统加载在内存当中进行操作，定期通过异步操作把数据库数据flush到硬盘上进行保存。因为是纯内存操作，Redis的性能非常出色，每秒可以处理超过10万次读写操作，是已知性能最快的Key-Value DB。Redis的出色之处不仅仅是性能，Redis最大的魅力是支持保存多种数据结构，此外单个value的最大限">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-07-27T07:23:52.000Z">
+<meta property="article:modified_time" content="2024-07-31T11:05:52.315Z">
+<meta property="article:author" content="快递小哥">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/redis/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/redis/","path":"redis/","title":"缓存之Redis详解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>缓存之Redis详解 | 快递小哥的博客</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?a306ba7f95495f3af39fa0d1cfcc50ed"></script>
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="快递小哥的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">快递小哥的博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-commonweal"><a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis%E5%8D%95%E7%BA%BF%E7%A8%8B%E4%B8%BA%E4%BB%80%E4%B9%88%E6%80%A7%E8%83%BD%E5%BE%88%E9%AB%98"><span class="nav-number">1.</span> <span class="nav-text">Redis单线程为什么性能很高</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">数据结构类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">2.1.</span> <span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.2.</span> <span class="nav-text">数据类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4%E6%B8%85%E9%99%A4key%E5%8E%9F%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">过期时间清除key原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-number">4.</span> <span class="nav-text">持久化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E6%9C%9F%E5%9B%9E%E6%94%B6%E7%AD%96%E7%95%A5"><span class="nav-number">5.</span> <span class="nav-text">过期回收策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E6%96%B9%E6%A1%88"><span class="nav-number">6.</span> <span class="nav-text">集群方案</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="快递小哥"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">快递小哥</p>
+  <div class="site-description" itemprop="description">读万卷书，更要行万里路！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xlZTkyMTM=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;lee9213"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmxlZTkyMTNAMTYzLmNvbQ==" title="E-Mail → mailto:lee9213@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <span class="exturl" data-url="aHR0cHM6Ly9leGFtcGxlLmNvbQ==" title="https:&#x2F;&#x2F;example.com">mysql1</span>
+            </li>
+            <li class="links-of-blogroll-item">
+              <span class="exturl" data-url="aHR0cHM6Ly9leGFtcGxlLmNvbQ==" title="https:&#x2F;&#x2F;example.com">mysql2</span>
+            </li>
+            <li class="links-of-blogroll-item">
+              <span class="exturl" data-url="aHR0cHM6Ly9leGFtcGxlLmNvbQ==" title="https:&#x2F;&#x2F;example.com">mysql3</span>
+            </li>
+            <li class="links-of-blogroll-item">
+              <span class="exturl" data-url="aHR0cHM6Ly9leGFtcGxlLmNvbQ==" title="https:&#x2F;&#x2F;example.com">mysql4</span>
+            </li>
+        </ul>
+      </div>
+    </div>
+        <div class="pjax">
+        <div class="sidebar-inner sidebar-post-related">
+          <div class="animated">
+              <div class="links-of-blogroll-title"><i class="fa fa-signs-post fa-fw"></i>
+    相关文章
+  </div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <a class="popular-posts-link" href="/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="bookmark">
+        <time class="popular-posts-time">2018-08-26</time>
+        <br>
+      分布式
+      </a>
+    </li>
+  </ul>
+
+          </div>
+        </div>
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/redis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="快递小哥">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="快递小哥的博客">
+      <meta itemprop="description" content="读万卷书，更要行万里路！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="缓存之Redis详解 | 快递小哥的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          缓存之Redis详解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-07-27 15:23:52" itemprop="dateCreated datePublished" datetime="2018-07-27T15:23:52+08:00">2018-07-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-07-31 19:05:52" itemprop="dateModified" datetime="2024-07-31T19:05:52+08:00">2024-07-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">分布式</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>Redis本质上是一个Key-Value类型的内存数据库，很像Memcached，整个数据库统统加载在内存当中进行操作，定期通过异步操作把数据库数据flush到硬盘上进行保存。因为是纯内存操作，Redis的性能非常出色，每秒可以处理超过10万次读写操作，是已知性能最快的Key-Value DB。Redis的出色之处不仅仅是性能，Redis最大的魅力是支持保存多种数据结构，此外单个value的最大限制是1GB，不行Memcached只能保存1MB的数据，因此Redis可以用来实现很多有用的功能，比如说用他的List来做FIFO双向链表，实现一个轻量级的高性能消息队列服务，用它的Set可以做高性能的tag系统等待。另外Redis也可以对存入的Key-Value设置expire时间，因此可以被当作一个功能加强版的Memcached来用。<br>Redis的主要缺点是数据库容量收到物理内存的限制，不能用作海量数据的高性能读写，因此Redis时候的场景主要局限在较小数据量的高性能操作和运算上。</p>
+<h3 id="Redis单线程为什么性能很高"><a href="#Redis单线程为什么性能很高" class="headerlink" title="Redis单线程为什么性能很高"></a>Redis单线程为什么性能很高</h3><p>性能瓶颈不在CPU，在内存和网络带宽</p>
+<p>IO多路复用</p>
+<h3 id="数据结构类型"><a href="#数据结构类型" class="headerlink" title="数据结构类型"></a>数据结构类型</h3><span id="more"></span>
+<h4 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h4><ul>
+<li>sds（simple dynamic string）简单动态字符串</li>
+<li>dict 维护key-value映射关系</li>
+<li>quicklist</li>
+<li>ziplist</li>
+<li>skiplist</li>
+<li>robj</li>
+<li>intset</li>
+</ul>
+<h4 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h4><ul>
+<li><code>String</code>最大支持512M<ul>
+<li>字符串、浮点（set&#x2F;get）<ul>
+<li>数据结构sds</li>
+</ul>
+</li>
+<li>整数（incr&#x2F;decr）<ul>
+<li>数据结构int</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Hash<ul>
+<li>hset&#x2F;hget&#x2F;hexists</li>
+<li>数据结构<ul>
+<li><code>ziplist</code>个数少或单个元素长度小</li>
+<li>hash</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>List<ul>
+<li>lpush&#x2F;rpush&#x2F;lpop&#x2F;rpop&#x2F;llen</li>
+<li>数据结构，在3.2版本<ul>
+<li>之前<ul>
+<li><code>linkedlist</code>双向链表，个数多或单个元素长度长</li>
+<li><code>ziplist</code> 压缩列表，个数少或单个元素长度小</li>
+</ul>
+</li>
+<li>之后<ul>
+<li><code>quicklist</code>基于<code>ziplist</code>的双向链表</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>场景<ul>
+<li>栈：后进先出 lpush lpop</li>
+<li>队列：先进先出 lpush rpop</li>
+<li>消息队列：lpush brpop</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Set<ul>
+<li>sadd&#x2F;srem&#x2F;scard&#x2F;sismember<ul>
+<li>数据结构<ul>
+<li><code>intset</code>当set中只包含整数型的元素时，采用intset来存储</li>
+<li>hash</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Sort Set<ul>
+<li>zadd&#x2F;zcard&#x2F;zcount&#x2F;zrange&#x2F;zrem&#x2F;zscore</li>
+<li>数据结构<ul>
+<li>ziplist</li>
+<li>skiplist+hash</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>transaction<ul>
+<li>multi&#x2F;exec&#x2F;discard&#x2F;watch</li>
+<li>Redis Cluster不支持</li>
+</ul>
+</li>
+<li>pipeline<ul>
+<li>JedisClusterConnection不支持</li>
+<li>LettuceClusterConnection支持</li>
+<li>openPipeline&#x2F;closePipeline</li>
+<li>需注意批量命令大小，防止返回值超出内存</li>
+<li>节省网络延迟的时间，非线程安全</li>
+</ul>
+</li>
+</ul>
+<h3 id="过期时间清除key原理"><a href="#过期时间清除key原理" class="headerlink" title="过期时间清除key原理"></a>过期时间清除key原理</h3><ul>
+<li>消极方法<ul>
+<li>每次访问的时候删除</li>
+</ul>
+</li>
+<li>积极方法<ul>
+<li>周期性的从设置了过期时间的key中选择一部分key进行删除<ul>
+<li>随机测试20个带有timeout信息的key</li>
+<li>如果超过了25%的key被删除，则重复执行整个流程</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><ul>
+<li>持久化类型<ul>
+<li>RDB<ul>
+<li>快照，Redis支持将当前数据的快照存成一个数据文件的持久化机制</li>
+<li>在第一次快照完成之后，第二次快照之前的数据会丢失</li>
+<li>全量</li>
+</ul>
+</li>
+<li>AOF<ul>
+<li>日志，append only file，追加写入的日志文件，可识别的纯文本，它的内容就是一个redis标准命令</li>
+<li>aof记录增删改的命令</li>
+<li>当操作多了之后，日志文件会越来越大，可设置重写aof文件</li>
+<li>重写aof文件，不是修改之前的aof文件，是从内存中读取数据重新生成一份aof文件</li>
+<li>重写aof文件时，新增命令会存储在重写缓存中，然后拼接在新的aof文件中</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>开启持久化性能会有一定的损失，可同时支持两种方式，如果两种同时存在，默认以aof的数据为准。</li>
+<li>比较<ul>
+<li>RDB恢复速度和备份速度比AOF快</li>
+<li>AOF数据安全性比RDB高</li>
+</ul>
+</li>
+<li><code>save</code>阻塞所有客户端请求</li>
+<li><code>bgsave</code>backgroudsave</li>
+</ul>
+<h3 id="过期回收策略"><a href="#过期回收策略" class="headerlink" title="过期回收策略"></a>过期回收策略</h3><ul>
+<li><code>noeviction</code>不回收（默认）</li>
+<li><code>allkeys-lru</code>从所有键中删除最近最少使用的键</li>
+<li><code>allkeys-random</code>从所有键中随机删除</li>
+<li><code>volatile-lru</code>从设置了过期时间的键中删除最近最少使用的键</li>
+<li><code>volatile-random</code>从设置了过期时间的键中随机删除</li>
+<li><code>volatile-ttl</code>从设置了过期时间的键中选中存活时间最短的键删除</li>
+</ul>
+<h3 id="集群方案"><a href="#集群方案" class="headerlink" title="集群方案"></a>集群方案</h3><ul>
+<li>Redis Cluster（官方）<ul>
+<li>客户端直连Redis，免去了proxy代理的损耗</li>
+<li>去中心化，最大可增加1000个节点，性能随节点增加而线性扩展</li>
+<li>使用hash slot方式 将16384个hash slot 覆盖到所有节点上</li>
+<li>简单易上手，管理方便，可自行增加或摘除节点，移动分槽等</li>
+<li>一致性hash思想</li>
+<li>不支持事务，不支持数据库切换，不支持mget，单个数据库</li>
+</ul>
+</li>
+<li>codis（豌豆荚）<ul>
+<li>多了一层代理</li>
+<li>支持透明的扩&#x2F;缩容</li>
+<li>具有图形化管理和监控工具，运维方便</li>
+<li>数据根据key分布到1024个slot内</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="快递小哥 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="快递小哥 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>快递小哥
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://yoursite.com/redis/" title="缓存之Redis详解">http://yoursite.com/redis/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Redis/" rel="tag"><i class="fa fa-tag"></i> Redis</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/classloader/" rel="prev" title="JVM之类加载器">
+                  <i class="fa fa-angle-left"></i> JVM之类加载器
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/mq/" rel="next" title="MQ">
+                  MQ <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">快递小哥</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xlZTkyMTM=" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://yoursite.com/redis/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"lee9213","repo":"blog-common-log","client_id":"Ov23liRhRq195JbLB8GO","client_secret":"d8f3efcc7511d7aad6941e8cda1d1d764c1a6d56","admin_user":"lee9213","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"cc5f531aa0a9a90b4fdc07521e3f593e"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

@@ -4,10 +4,6 @@ Allow: /archives/
 Allow: /tags/
 Allow: /categories
 Allow: /about/
-Allow: /2017/
-Allow: /2018/
-Allow: /2024/
-Allow: /page/
 
 
 Disallow: /vendors/

@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://yoursite.com/2024/07/31/mysql%E6%80%BB%E7%BB%93/</loc>
+    <loc>http://yoursite.com/mysql%E6%80%BB%E7%BB%93/</loc>
     
     <lastmod>2024-08-01</lastmod>
     
@@ -11,7 +11,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2024/07/12/mashibin/</loc>
+    <loc>http://yoursite.com/mashibin/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -29,7 +29,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/08/20/dubbo/</loc>
+    <loc>http://yoursite.com/dubbo/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -38,7 +38,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2017/04/23/DesignPatterns/</loc>
+    <loc>http://yoursite.com/DesignPatterns/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -47,7 +47,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2017/05/10/Collections/</loc>
+    <loc>http://yoursite.com/Collections/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -56,7 +56,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2017/06/23/%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1/</loc>
+    <loc>http://yoursite.com/%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -65,7 +65,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/01/13/%E5%BA%8F%E5%88%97%E5%8C%96/</loc>
+    <loc>http://yoursite.com/%E5%BA%8F%E5%88%97%E5%8C%96/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -74,7 +74,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/01/23/tomcat/</loc>
+    <loc>http://yoursite.com/tomcat/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -83,7 +83,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/03/23/orm/</loc>
+    <loc>http://yoursite.com/orm/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -92,7 +92,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/03/30/spring/</loc>
+    <loc>http://yoursite.com/spring/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -101,7 +101,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/04/06/springboot/</loc>
+    <loc>http://yoursite.com/springboot/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -110,7 +110,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/04/08/springweb/</loc>
+    <loc>http://yoursite.com/springweb/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -119,7 +119,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/04/10/springcloud/</loc>
+    <loc>http://yoursite.com/springcloud/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -128,7 +128,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/07/27/redis/</loc>
+    <loc>http://yoursite.com/redis/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -137,7 +137,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/08/03/mq/</loc>
+    <loc>http://yoursite.com/mq/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -146,7 +146,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/08/10/mysql/</loc>
+    <loc>http://yoursite.com/mysql/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -155,7 +155,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/08/12/zookeeper/</loc>
+    <loc>http://yoursite.com/zookeeper/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -164,7 +164,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/08/16/juc/</loc>
+    <loc>http://yoursite.com/juc/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -173,7 +173,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/08/23/jvm/</loc>
+    <loc>http://yoursite.com/jvm/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -182,7 +182,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/08/26/%E5%88%86%E5%B8%83%E5%BC%8F/</loc>
+    <loc>http://yoursite.com/%E5%88%86%E5%B8%83%E5%BC%8F/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -191,7 +191,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/08/28/%E5%88%86%E5%B8%83%E5%BC%8F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/</loc>
+    <loc>http://yoursite.com/%E5%88%86%E5%B8%83%E5%BC%8F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -200,7 +200,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/09/01/thread/</loc>
+    <loc>http://yoursite.com/thread/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -209,7 +209,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/09/05/%E5%BE%AE%E6%9C%8D%E5%8A%A1/</loc>
+    <loc>http://yoursite.com/%E5%BE%AE%E6%9C%8D%E5%8A%A1/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -218,7 +218,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/09/10/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/</loc>
+    <loc>http://yoursite.com/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -227,16 +227,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/07/26/classloader/</loc>
-    
-    <lastmod>2024-07-31</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/tags/index.html</loc>
+    <loc>http://yoursite.com/classloader/</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -246,6 +237,15 @@
   
   <url>
     <loc>http://yoursite.com/categories/index.html</loc>
+    
+    <lastmod>2024-07-31</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/index.html</loc>
     
     <lastmod>2024-07-31</lastmod>
     
@@ -291,6 +291,13 @@
   </url>
   
   <url>
+    <loc>http://yoursite.com/tags/JUC/</loc>
+    <lastmod>2024-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/tags/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/</loc>
     <lastmod>2024-08-02</lastmod>
     <changefreq>weekly</changefreq>
@@ -298,7 +305,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/JUC/</loc>
+    <loc>http://yoursite.com/tags/MQ/</loc>
+    <lastmod>2024-08-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/Mysql/</loc>
     <lastmod>2024-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -313,20 +327,6 @@
   
   <url>
     <loc>http://yoursite.com/tags/MCA%E9%AB%98%E7%BA%A7%E6%9E%B6%E6%9E%84%E5%B8%88/</loc>
-    <lastmod>2024-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/tags/Mysql/</loc>
-    <lastmod>2024-08-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/tags/MQ/</loc>
     <lastmod>2024-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -410,14 +410,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/%E5%BA%8F%E5%88%97%E5%8C%96/</loc>
+    <loc>http://yoursite.com/tags/%E5%88%86%E5%B8%83%E5%BC%8F/</loc>
     <lastmod>2024-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/%E5%88%86%E5%B8%83%E5%BC%8F/</loc>
+    <loc>http://yoursite.com/tags/%E5%BA%8F%E5%88%97%E5%8C%96/</loc>
     <lastmod>2024-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -468,14 +468,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/categories/%E9%A9%AC%E5%A3%AB%E5%85%B5MCA%E9%AB%98%E7%BA%A7%E6%9E%B6%E6%9E%84%E5%B8%88/</loc>
+    <loc>http://yoursite.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
     <lastmod>2024-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://yoursite.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
+    <loc>http://yoursite.com/categories/%E9%A9%AC%E5%A3%AB%E5%85%B5MCA%E9%AB%98%E7%BA%A7%E6%9E%B6%E6%9E%84%E5%B8%88/</loc>
     <lastmod>2024-08-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

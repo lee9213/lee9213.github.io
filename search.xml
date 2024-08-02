@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>mysql</title>
-    <url>/2024/07/31/mysql%E6%80%BB%E7%BB%93/</url>
+    <url>/mysql%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<h2 id="数据库的几大范式"><a href="#数据库的几大范式" class="headerlink" title="数据库的几大范式"></a>数据库的几大范式</h2><ul>
 <li>第一范式：原子性，如果数据库表中所有字段值都是不可分解的原子值，那么该数据库表满足了第一范式。</li>
 <li>第二范式：唯一性，第二范式需要确保数据库表中的每一列都和主键相关，而不能只与主键的某一部分相关</li>
@@ -295,7 +295,7 @@
   </entry>
   <entry>
     <title>Dubbo</title>
-    <url>/2018/08/20/dubbo/</url>
+    <url>/dubbo/</url>
     <content><![CDATA[<p>高性能RPC框架，主要用于服务治理。包括功能：</p>
 <ul>
 <li>负载均衡（默认加权随机）</li>
@@ -521,7 +521,7 @@
   </entry>
   <entry>
     <title>JVM之类加载器</title>
-    <url>/2018/07/26/classloader/</url>
+    <url>/classloader/</url>
     <content><![CDATA[<p>Java类加载器是Java运行时环境（Java Runtime Environment）的一部分，负责动态加载Java类到Java虚拟机的内存空间中。</p>
 <h1 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h1><h2 id="BootStrap-ClassLoader（启动类加载器）"><a href="#BootStrap-ClassLoader（启动类加载器）" class="headerlink" title="BootStrap ClassLoader（启动类加载器）"></a>BootStrap ClassLoader（启动类加载器）</h2><ul>
 <li>负责加载<JAVA_HOME>&#x2F;jre&#x2F;lib目录下的jar包和Class文件。可以通过System.getProperty(“sun.boot.class.path”)获取加载的路径。</li>
@@ -603,7 +603,7 @@
   </entry>
   <entry>
     <title>马士兵MCA高级架构师网盘下载</title>
-    <url>/2024/07/12/mashibin/</url>
+    <url>/mashibin/</url>
     <content><![CDATA[<p>本套课程马士兵MCA高级架构师2024版课程和2023版课程，官方售价万元以上，内容共包含30个大章节，从P6到P8级别架构课程，是JAVA进阶提升优质课程，包含视频以及相关资料，本课程共1.47T。<br>全套视频不加密，通过百度网盘下载即可享受。文章最后附获取方式。</p>
 <span id="more"></span>
 <p>以下是百度网盘截图，绝对真实。<br><img data-src="/images/mashibing2023-1.png" alt="马士兵MCA高级架构师2023版"><br><img data-src="/images/mashibing2023-2.png" alt="马士兵MCA高级架构师2023版"><br><img data-src="/images/mashibing2024-1.png" alt="马士兵MCA高级架构师2024版"><br><img data-src="/images/mashibing2024-2.png" alt="马士兵MCA高级架构师2024版"><br><img data-src="/images/mashibing2024-3.png" alt="马士兵MCA高级架构师2024版"><br>加zhazhahui2013即可获得百度网盘连接。<br>加zhazhahui2013即可获得百度网盘连接。<br>加zhazhahui2013即可获得百度网盘连接。</p>
@@ -618,7 +618,7 @@
   </entry>
   <entry>
     <title>性能调优</title>
-    <url>/2018/09/10/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/</url>
+    <url>/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/</url>
     <content><![CDATA[<h2 id="top"><a href="#top" class="headerlink" title="top"></a>top</h2><h3 id="常用参数"><a href="#常用参数" class="headerlink" title="常用参数"></a>常用参数</h3><ul>
 <li><code>P</code> 按照CPU占用降序排序</li>
 <li><code>M</code> 按照内存占用降序排序</li>
@@ -661,7 +661,7 @@
   </entry>
   <entry>
     <title>微服务</title>
-    <url>/2018/09/05/%E5%BE%AE%E6%9C%8D%E5%8A%A1/</url>
+    <url>/%E5%BE%AE%E6%9C%8D%E5%8A%A1/</url>
     <content><![CDATA[<h3 id="传统架构问题"><a href="#传统架构问题" class="headerlink" title="传统架构问题"></a>传统架构问题</h3><ul>
 <li>系统资源浪费（水平扩展需要扩展整个应用，不能扩展单个模块）</li>
 <li>部署效率低（修改了一行代码，需要部署整个应用）</li>
@@ -776,7 +776,7 @@
   </entry>
   <entry>
     <title>多线程</title>
-    <url>/2018/09/01/thread/</url>
+    <url>/thread/</url>
     <content><![CDATA[<h3 id="多线程使用场景"><a href="#多线程使用场景" class="headerlink" title="多线程使用场景"></a>多线程使用场景</h3><ul>
 <li>通过并行计算提高程序执行性能</li>
 <li>需要等待网络、I&#x2F;O响应导致耗费大量的执行时间，可以采用异步线程的方式来减少阻塞</li>
@@ -969,7 +969,7 @@
   </entry>
   <entry>
     <title>分布式架构设计</title>
-    <url>/2018/08/28/%E5%88%86%E5%B8%83%E5%BC%8F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/</url>
+    <url>/%E5%88%86%E5%B8%83%E5%BC%8F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/</url>
     <content><![CDATA[<h3 id="分布式系统的意义"><a href="#分布式系统的意义" class="headerlink" title="分布式系统的意义"></a>分布式系统的意义</h3><ul>
 <li>升级单机处理能力的性价比越来越低</li>
 <li>单机处理能力存在瓶颈</li>
@@ -1075,7 +1075,7 @@
   </entry>
   <entry>
     <title>分布式</title>
-    <url>/2018/08/26/%E5%88%86%E5%B8%83%E5%BC%8F/</url>
+    <url>/%E5%88%86%E5%B8%83%E5%BC%8F/</url>
     <content><![CDATA[<h2 id="分布式理论"><a href="#分布式理论" class="headerlink" title="分布式理论"></a>分布式理论</h2><h3 id="CAP"><a href="#CAP" class="headerlink" title="CAP"></a>CAP</h3><ul>
 <li><p>Consistency（一致性）</p>
 <p>所有节点同一时间的数据完全一致</p>
@@ -1459,7 +1459,7 @@
   </entry>
   <entry>
     <title>jvm</title>
-    <url>/2018/08/23/jvm/</url>
+    <url>/jvm/</url>
     <content><![CDATA[<h2 id="JDK版本"><a href="#JDK版本" class="headerlink" title="JDK版本"></a>JDK版本</h2><h3 id="JDK1-7"><a href="#JDK1-7" class="headerlink" title="JDK1.7"></a>JDK1.7</h3><ul>
 <li>swich可以支持字符串</li>
 <li>创建泛型时类型自动推断</li>
@@ -2077,7 +2077,7 @@
   </entry>
   <entry>
     <title>juc并发包</title>
-    <url>/2018/08/16/juc/</url>
+    <url>/juc/</url>
     <content><![CDATA[<h3 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h3><h4 id="ReentrantLock"><a href="#ReentrantLock" class="headerlink" title="ReentrantLock"></a>ReentrantLock</h4><ul>
 <li>基于AQS实现</li>
 <li>乐观锁</li>
@@ -2248,7 +2248,7 @@
   </entry>
   <entry>
     <title>zookeeper（分布式协调服务）</title>
-    <url>/2018/08/12/zookeeper/</url>
+    <url>/zookeeper/</url>
     <content><![CDATA[<h3 id="设计思想"><a href="#设计思想" class="headerlink" title="设计思想"></a>设计思想</h3><ul>
 <li>防止单点故障</li>
 <li>节点数据一致性</li>
@@ -2369,7 +2369,7 @@
   </entry>
   <entry>
     <title>mysql</title>
-    <url>/2018/08/10/mysql/</url>
+    <url>/mysql/</url>
     <content><![CDATA[<h2 id="存储引擎"><a href="#存储引擎" class="headerlink" title="存储引擎"></a>存储引擎</h2><h3 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h3><h4 id="三大特性"><a href="#三大特性" class="headerlink" title="三大特性"></a>三大特性</h4><ul>
 <li>插入缓冲（提高写性能）<br>对于非聚集类所有的插入和更新操作，不是每一次都直接插入到索引页中，而是先插入到内存中</li>
 <li>自适应哈希索引（提高查询效率）<br>监控对表上各索引页的查询，如果观察到建立哈希索引可以带来速度提升，则会建立哈希索引，称为自适应哈希索引（Adaptive Hash Index，AHI）</li>
@@ -2585,7 +2585,7 @@
   </entry>
   <entry>
     <title>MQ</title>
-    <url>/2018/08/03/mq/</url>
+    <url>/mq/</url>
     <content><![CDATA[<h2 id="JMS"><a href="#JMS" class="headerlink" title="JMS"></a>JMS</h2><p>Java消息服务（Java Message Service）是Java平台中关于面向消息中间件的API。JMS是一个与平台无关的API，绝大多数<strong>MOM</strong>提供商都对JMS提供了支持。</p>
 <h3 id="消息组成"><a href="#消息组成" class="headerlink" title="消息组成"></a>消息组成</h3><ul>
 <li>消息头<ul>
@@ -2895,7 +2895,7 @@
   </entry>
   <entry>
     <title>缓存之Redis详解</title>
-    <url>/2018/07/27/redis/</url>
+    <url>/redis/</url>
     <content><![CDATA[<p>Redis本质上是一个Key-Value类型的内存数据库，很像Memcached，整个数据库统统加载在内存当中进行操作，定期通过异步操作把数据库数据flush到硬盘上进行保存。因为是纯内存操作，Redis的性能非常出色，每秒可以处理超过10万次读写操作，是已知性能最快的Key-Value DB。Redis的出色之处不仅仅是性能，Redis最大的魅力是支持保存多种数据结构，此外单个value的最大限制是1GB，不行Memcached只能保存1MB的数据，因此Redis可以用来实现很多有用的功能，比如说用他的List来做FIFO双向链表，实现一个轻量级的高性能消息队列服务，用它的Set可以做高性能的tag系统等待。另外Redis也可以对存入的Key-Value设置expire时间，因此可以被当作一个功能加强版的Memcached来用。<br>Redis的主要缺点是数据库容量收到物理内存的限制，不能用作海量数据的高性能读写，因此Redis时候的场景主要局限在较小数据量的高性能操作和运算上。</p>
 <h3 id="Redis单线程为什么性能很高"><a href="#Redis单线程为什么性能很高" class="headerlink" title="Redis单线程为什么性能很高"></a>Redis单线程为什么性能很高</h3><p>性能瓶颈不在CPU，在内存和网络带宽</p>
 <p>IO多路复用</p>
@@ -3063,7 +3063,7 @@
   </entry>
   <entry>
     <title>SpringCloud</title>
-    <url>/2018/04/10/springcloud/</url>
+    <url>/springcloud/</url>
     <content><![CDATA[<h3 id="Spring-Cloud-Config"><a href="#Spring-Cloud-Config" class="headerlink" title="Spring Cloud Config"></a>Spring Cloud Config</h3><h4 id="PropertySource-配置源"><a href="#PropertySource-配置源" class="headerlink" title="PropertySource 配置源"></a><code>PropertySource</code> 配置源</h4><ul>
 <li><code>MapPropertySource</code><ul>
 <li><code>PropertiesPropertySource</code></li>
@@ -3261,7 +3261,7 @@
   </entry>
   <entry>
     <title>SpringWeb</title>
-    <url>/2018/04/08/springweb/</url>
+    <url>/springweb/</url>
     <content><![CDATA[<h3 id="SpringBoot"><a href="#SpringBoot" class="headerlink" title="SpringBoot"></a>SpringBoot</h3><ul>
 <li>优点<ul>
 <li>简化依赖管理</li>
@@ -3307,7 +3307,7 @@
   </entry>
   <entry>
     <title>SpringBoot</title>
-    <url>/2018/04/06/springboot/</url>
+    <url>/springboot/</url>
     <content><![CDATA[<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><ul>
 <li>传统Web MVC架构</li>
 <li>前后端分离架构</li>
@@ -3394,7 +3394,7 @@
 <li>shell.auth.simple.user.password &#x3D; 123456</li>
 </ul>
 </li>
-<li>ssh -p 2000 <span class="exturl" data-url="bWFpbHRvOiYjeDYxOyYjMTAwOyYjeDZkOyYjeDY5OyYjeDZlOyYjNjQ7JiN4MzE7JiM1MDsmI3gzNzsmIzQ2OyYjNDg7JiM0NjsmIzQ4OyYjNDY7JiM0OTs=">&#x61;&#100;&#x6d;&#x69;&#x6e;&#64;&#x31;&#50;&#x37;&#46;&#48;&#46;&#48;&#46;&#49;<i class="fa fa-external-link-alt"></i></span></li>
+<li>ssh -p 2000 <span class="exturl" data-url="bWFpbHRvOiYjeDYxOyYjMTAwOyYjeDZkOyYjeDY5OyYjMTEwOyYjNjQ7JiM0OTsmIzUwOyYjNTU7JiM0NjsmI3gzMDsmIzQ2OyYjNDg7JiM0NjsmIzQ5Ow==">&#x61;&#100;&#x6d;&#x69;&#110;&#64;&#49;&#50;&#55;&#46;&#x30;&#46;&#48;&#46;&#49;<i class="fa fa-external-link-alt"></i></span></li>
 </ul>
 </li>
 <li>telnet方式<ul>
@@ -3468,7 +3468,7 @@
   </entry>
   <entry>
     <title>Spring</title>
-    <url>/2018/03/30/spring/</url>
+    <url>/spring/</url>
     <content><![CDATA[<h2 id="IOC"><a href="#IOC" class="headerlink" title="IOC"></a>IOC</h2><h3 id="Spring-Bean作用域"><a href="#Spring-Bean作用域" class="headerlink" title="Spring Bean作用域"></a>Spring Bean作用域</h3><ul>
 <li><p><code>singleton</code><br>单例注册表的单例模式实现，每个<code>Bean</code>在SpringIOC容器中只存在一个实例，会缓存<code>Bean</code>实例。<br>默认启动容器就创建了对象，如果设置<code>lazy-init=true</code>，则在调用<code>getBean</code>方法的时候创建。</p>
 </li>
@@ -3682,7 +3682,7 @@
   </entry>
   <entry>
     <title>ORM</title>
-    <url>/2018/03/23/orm/</url>
+    <url>/orm/</url>
     <content><![CDATA[<h2 id="Mybatis"><a href="#Mybatis" class="headerlink" title="Mybatis"></a>Mybatis</h2><h3 id="加载过程"><a href="#加载过程" class="headerlink" title="加载过程"></a>加载过程</h3><ul>
 <li>通过<code>SqlSessionFactoryBuilder</code>解析XML文件，得到<code>SqlSessionFactory</code><ul>
 <li><code>XMLConfigBuilder</code><br>解析mybatis中configLocation属性中的全局xml文件</li>
@@ -3824,7 +3824,7 @@
   </entry>
   <entry>
     <title>Tomcat</title>
-    <url>/2018/01/23/tomcat/</url>
+    <url>/tomcat/</url>
     <content><![CDATA[<h1 id="Tomcat-架构"><a href="#Tomcat-架构" class="headerlink" title="Tomcat 架构"></a>Tomcat 架构</h1><h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><h3 id="conf-目录"><a href="#conf-目录" class="headerlink" title="conf 目录"></a>conf 目录</h3><p><code>catalina.policy</code> :  Tomcat 安全策略文件，控制 JVM 相关权限，具体可以参考<code>java.security.Permission</code><br><code>catalina.properties</code> : Tomcat Catalina 行为控制配置文件，比如 Common ClassLoader<br><code>logging.properties</code>  : Tomcat 日志配置文件，JDK Logging<br><code>server.xml</code>  :  Tomcat Server 配置文件</p>
 <ul>
 <li><code>GlobalNamingResources</code> : 全局 JNDI 资源<br><code>context.xml</code> : 全局 Context 配置文件<br><code>tomcat-users.xml</code> : Tomcat 角色配置文件，（Realm 文件实现方式）、<br><code>web.xml</code> : Servlet 标准的 web.xml 部署文件，Tomcat 默认实现部分配置入内：</li>
@@ -3904,7 +3904,7 @@
   </entry>
   <entry>
     <title>序列化</title>
-    <url>/2018/01/13/%E5%BA%8F%E5%88%97%E5%8C%96/</url>
+    <url>/%E5%BA%8F%E5%88%97%E5%8C%96/</url>
     <content><![CDATA[<h3 id="评价序列化算法优劣的指标"><a href="#评价序列化算法优劣的指标" class="headerlink" title="评价序列化算法优劣的指标"></a>评价序列化算法优劣的指标</h3><ul>
 <li>序列化后的数据的大小</li>
 <li>序列化操作本身的速度及系统资源开销（CPU&#x2F;内存）</li>
@@ -3956,7 +3956,7 @@
   </entry>
   <entry>
     <title>网络通信</title>
-    <url>/2017/06/23/%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1/</url>
+    <url>/%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1/</url>
     <content><![CDATA[<h1 id="TCP-IP协议"><a href="#TCP-IP协议" class="headerlink" title="TCP&#x2F;IP协议"></a>TCP&#x2F;IP协议</h1><h3 id="网络领域的知识"><a href="#网络领域的知识" class="headerlink" title="网络领域的知识"></a>网络领域的知识</h3><ul>
 <li>协议：tcp、udp、multicast</li>
 <li>IO（BIO、NIO、AIO）</li>
@@ -4015,7 +4015,7 @@
   </entry>
   <entry>
     <title>Collections</title>
-    <url>/2017/05/10/Collections/</url>
+    <url>/Collections/</url>
     <content><![CDATA[<h3 id="List"><a href="#List" class="headerlink" title="List"></a>List</h3><ul>
 <li>ArrayList<ul>
 <li>动态数组实现，可重复，默认容量10，可以存储null，按照1.5倍扩容，非同步</li>
@@ -4149,7 +4149,7 @@
   </entry>
   <entry>
     <title>设计模式</title>
-    <url>/2017/04/23/DesignPatterns/</url>
+    <url>/DesignPatterns/</url>
     <content><![CDATA[<h2 id="六大原则"><a href="#六大原则" class="headerlink" title="六大原则"></a>六大原则</h2><h3 id="单一职责原则（SRP）"><a href="#单一职责原则（SRP）" class="headerlink" title="单一职责原则（SRP）"></a>单一职责原则（SRP）</h3><ul>
 <li><strong>Single Responsibility Principle</strong></li>
 <li>职责单一</li>

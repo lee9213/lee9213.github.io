@@ -18,8 +18,8 @@
   
   <entry>
     <title>mysql</title>
-    <link href="http://yoursite.com/2024/07/31/mysql%E6%80%BB%E7%BB%93/"/>
-    <id>http://yoursite.com/2024/07/31/mysql%E6%80%BB%E7%BB%93/</id>
+    <link href="http://yoursite.com/mysql%E6%80%BB%E7%BB%93/"/>
+    <id>http://yoursite.com/mysql%E6%80%BB%E7%BB%93/</id>
     <published>2024-07-31T12:50:34.000Z</published>
     <updated>2024-08-01T06:56:34.308Z</updated>
     
@@ -53,8 +53,8 @@
   
   <entry>
     <title>马士兵MCA高级架构师网盘下载</title>
-    <link href="http://yoursite.com/2024/07/12/mashibin/"/>
-    <id>http://yoursite.com/2024/07/12/mashibin/</id>
+    <link href="http://yoursite.com/mashibin/"/>
+    <id>http://yoursite.com/mashibin/</id>
     <published>2024-07-12T08:06:30.000Z</published>
     <updated>2024-07-31T13:50:57.828Z</updated>
     
@@ -76,8 +76,8 @@
   
   <entry>
     <title>性能调优</title>
-    <link href="http://yoursite.com/2018/09/10/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/"/>
-    <id>http://yoursite.com/2018/09/10/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/</id>
+    <link href="http://yoursite.com/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/"/>
+    <id>http://yoursite.com/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/</id>
     <published>2018-09-10T13:07:37.000Z</published>
     <updated>2024-07-31T11:02:38.076Z</updated>
     
@@ -102,8 +102,8 @@
   
   <entry>
     <title>微服务</title>
-    <link href="http://yoursite.com/2018/09/05/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
-    <id>http://yoursite.com/2018/09/05/%E5%BE%AE%E6%9C%8D%E5%8A%A1/</id>
+    <link href="http://yoursite.com/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+    <id>http://yoursite.com/%E5%BE%AE%E6%9C%8D%E5%8A%A1/</id>
     <published>2018-09-05T13:06:40.000Z</published>
     <updated>2024-07-31T11:02:57.110Z</updated>
     
@@ -134,8 +134,8 @@
   
   <entry>
     <title>多线程</title>
-    <link href="http://yoursite.com/2018/09/01/thread/"/>
-    <id>http://yoursite.com/2018/09/01/thread/</id>
+    <link href="http://yoursite.com/thread/"/>
+    <id>http://yoursite.com/thread/</id>
     <published>2018-09-01T13:04:48.000Z</published>
     <updated>2024-07-31T11:03:16.045Z</updated>
     
@@ -162,8 +162,8 @@
   
   <entry>
     <title>分布式架构设计</title>
-    <link href="http://yoursite.com/2018/08/28/%E5%88%86%E5%B8%83%E5%BC%8F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/"/>
-    <id>http://yoursite.com/2018/08/28/%E5%88%86%E5%B8%83%E5%BC%8F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/</id>
+    <link href="http://yoursite.com/%E5%88%86%E5%B8%83%E5%BC%8F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/"/>
+    <id>http://yoursite.com/%E5%88%86%E5%B8%83%E5%BC%8F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/</id>
     <published>2018-08-28T13:04:00.000Z</published>
     <updated>2024-07-31T11:03:29.272Z</updated>
     
@@ -198,8 +198,8 @@
   
   <entry>
     <title>分布式</title>
-    <link href="http://yoursite.com/2018/08/26/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
-    <id>http://yoursite.com/2018/08/26/%E5%88%86%E5%B8%83%E5%BC%8F/</id>
+    <link href="http://yoursite.com/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
+    <id>http://yoursite.com/%E5%88%86%E5%B8%83%E5%BC%8F/</id>
     <published>2018-08-26T13:01:56.000Z</published>
     <updated>2024-07-31T11:03:46.881Z</updated>
     
@@ -229,8 +229,8 @@
   
   <entry>
     <title>jvm</title>
-    <link href="http://yoursite.com/2018/08/23/jvm/"/>
-    <id>http://yoursite.com/2018/08/23/jvm/</id>
+    <link href="http://yoursite.com/jvm/"/>
+    <id>http://yoursite.com/jvm/</id>
     <published>2018-08-23T12:54:31.000Z</published>
     <updated>2024-07-31T11:04:04.421Z</updated>
     
@@ -268,8 +268,8 @@
   
   <entry>
     <title>Dubbo</title>
-    <link href="http://yoursite.com/2018/08/20/dubbo/"/>
-    <id>http://yoursite.com/2018/08/20/dubbo/</id>
+    <link href="http://yoursite.com/dubbo/"/>
+    <id>http://yoursite.com/dubbo/</id>
     <published>2018-08-20T15:25:52.000Z</published>
     <updated>2024-07-31T13:26:44.719Z</updated>
     
@@ -298,8 +298,8 @@
   
   <entry>
     <title>juc并发包</title>
-    <link href="http://yoursite.com/2018/08/16/juc/"/>
-    <id>http://yoursite.com/2018/08/16/juc/</id>
+    <link href="http://yoursite.com/juc/"/>
+    <id>http://yoursite.com/juc/</id>
     <published>2018-08-16T12:52:41.000Z</published>
     <updated>2024-07-31T11:04:21.720Z</updated>
     
@@ -324,8 +324,8 @@
   
   <entry>
     <title>zookeeper（分布式协调服务）</title>
-    <link href="http://yoursite.com/2018/08/12/zookeeper/"/>
-    <id>http://yoursite.com/2018/08/12/zookeeper/</id>
+    <link href="http://yoursite.com/zookeeper/"/>
+    <id>http://yoursite.com/zookeeper/</id>
     <published>2018-08-12T08:06:30.000Z</published>
     <updated>2024-07-31T11:04:40.664Z</updated>
     
@@ -353,8 +353,8 @@
   
   <entry>
     <title>mysql</title>
-    <link href="http://yoursite.com/2018/08/10/mysql/"/>
-    <id>http://yoursite.com/2018/08/10/mysql/</id>
+    <link href="http://yoursite.com/mysql/"/>
+    <id>http://yoursite.com/mysql/</id>
     <published>2018-08-10T12:50:34.000Z</published>
     <updated>2024-07-31T11:05:13.348Z</updated>
     
@@ -377,8 +377,8 @@
   
   <entry>
     <title>MQ</title>
-    <link href="http://yoursite.com/2018/08/03/mq/"/>
-    <id>http://yoursite.com/2018/08/03/mq/</id>
+    <link href="http://yoursite.com/mq/"/>
+    <id>http://yoursite.com/mq/</id>
     <published>2018-08-03T12:23:52.000Z</published>
     <updated>2024-07-31T11:05:36.816Z</updated>
     
@@ -405,8 +405,8 @@
   
   <entry>
     <title>缓存之Redis详解</title>
-    <link href="http://yoursite.com/2018/07/27/redis/"/>
-    <id>http://yoursite.com/2018/07/27/redis/</id>
+    <link href="http://yoursite.com/redis/"/>
+    <id>http://yoursite.com/redis/</id>
     <published>2018-07-27T07:23:52.000Z</published>
     <updated>2024-07-31T11:05:52.315Z</updated>
     
@@ -429,8 +429,8 @@
   
   <entry>
     <title>JVM之类加载器</title>
-    <link href="http://yoursite.com/2018/07/26/classloader/"/>
-    <id>http://yoursite.com/2018/07/26/classloader/</id>
+    <link href="http://yoursite.com/classloader/"/>
+    <id>http://yoursite.com/classloader/</id>
     <published>2018-07-26T04:05:40.000Z</published>
     <updated>2024-07-31T11:02:06.718Z</updated>
     
@@ -459,8 +459,8 @@
   
   <entry>
     <title>SpringCloud</title>
-    <link href="http://yoursite.com/2018/04/10/springcloud/"/>
-    <id>http://yoursite.com/2018/04/10/springcloud/</id>
+    <link href="http://yoursite.com/springcloud/"/>
+    <id>http://yoursite.com/springcloud/</id>
     <published>2018-04-10T12:58:54.000Z</published>
     <updated>2024-07-31T11:06:45.259Z</updated>
     
@@ -495,8 +495,8 @@
   
   <entry>
     <title>SpringWeb</title>
-    <link href="http://yoursite.com/2018/04/08/springweb/"/>
-    <id>http://yoursite.com/2018/04/08/springweb/</id>
+    <link href="http://yoursite.com/springweb/"/>
+    <id>http://yoursite.com/springweb/</id>
     <published>2018-04-08T12:59:40.000Z</published>
     <updated>2024-07-31T11:07:14.654Z</updated>
     
@@ -534,12 +534,12 @@
   
   <entry>
     <title>SpringBoot</title>
-    <link href="http://yoursite.com/2018/04/06/springboot/"/>
-    <id>http://yoursite.com/2018/04/06/springboot/</id>
+    <link href="http://yoursite.com/springboot/"/>
+    <id>http://yoursite.com/springboot/</id>
     <published>2018-04-06T12:58:02.000Z</published>
     <updated>2024-07-31T11:07:36.444Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><ul><li>传统Web MVC架构</li><li>前后端分离架构</li><li>微服务架构</li></ul><h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ul><li>可创建独立的Spring应用程序</li><li>提供嵌入式Web Server（无需部署war包）</li><li>无需任何代码生成技术也无任何XML配置</li><li>自动化配置<span id="more"></span></li><li>提供一系列生产级特性<ul><li>端点(<code>endpoints.enable=true</code>开启端点)<ul><li><code>autoconfig</code>获取自动配置信息</li><li><code>beans</code>获取Spring Bean基本信息</li><li><code>configprops</code>获取配置项信息</li><li><code>dump</code>获取当前线程基本信息</li><li><code>env</code>获取环境变量信息</li><li><code>health</code>获取健康检查信息<ul><li><code>enpoints.health.enable = true</code> 开启健康检查</li><li><code>enpoints.health.sensitive = true</code> 获取敏感性，默认false，如果为true，则不返回敏感字段</li><li><code>enpoints.health.time-to-live = 500</code> 设置健康检查的缓存时间，单位ms，默认1000</li><li>自定义健康检查器<ul><li>实现org.springframework.boot.actuate.health.HealthIndicator接口</li></ul></li></ul></li><li><code>info</code>获取应用基本信息<ul><li><code>enpoints.info.enable = true</code> 开启应用信息</li><li><code>info.app.name = @project.name@</code> 获取pom.xml中的name</li><li><code>info.app.description = @project.description@</code> 获取pom.xml中的description</li><li><code>info.app.version = @project.version@</code> 获取pom.xml中的version</li><li>可通过git-commit-id-plugin插件获取Git信息<ul><li><code>info.git.branch = @git.branch@</code> 获取Git版本信息</li><li><code>info.git.commit.id = @git.commit.id@</code> 获取Git提交ID</li><li><code>info.git.commit.time = @git.commit.time@</code> 获取Git提交时间</li></ul></li></ul></li><li><code>metrics</code>获取性能指标信息<ul><li><code>enpoints.metrics.enable = true</code> 开启性能指标</li><li><code>enpoints.metrics.id = performance</code> 自定义ID</li><li><code>enpoints.metrics.path = /enpoints/metrices</code> 自定义请求路径</li></ul></li><li><code>mappings</code>获取请求映射信息</li><li><code>trace</code>获取请求调用信息</li></ul></li><li>跨域（Spring4.2之后支持）<ul><li>方法一<ul><li><code>endpoints.cors.allowed-origins = http://www.baidu.com</code> 配置跨域域名</li><li><code>endpoints.cors.allowed-methods = GET,POST,PUT,DELETE</code> 配置跨域支持方法</li></ul></li><li>方法二<ul><li>@CrossOrigin注解</li></ul></li><li>方法三<ul><li>继承org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter的addCorsMappings方法</li></ul></li></ul></li><li>外部化配置，按顺序如下<ul><li>Java命令行参数</li><li>JNDI属性</li><li>Java系统属性</li><li>操作系统环境变量</li><li>Jar包外的application.properties配置</li><li>Jar包内的application.properties配置</li><li>@PropertySource注解</li><li>SpringApplication.setDefaultProperties默认值</li></ul></li><li>远程监控<ul><li>ssh方式<ul><li>引入spring-boot-starter-remote-shell</li><li>配置<ul><li>shell.ssh.port &#x3D; 2000</li><li>shell.auth.simple.user.name &#x3D; admin</li><li>shell.auth.simple.user.password &#x3D; 123456</li></ul></li><li>ssh -p 2000 <span class="exturl" data-url="bWFpbHRvOiYjeDYxOyYjMTAwOyYjeDZkOyYjeDY5OyYjeDZlOyYjNjQ7JiN4MzE7JiM1MDsmI3gzNzsmIzQ2OyYjNDg7JiM0NjsmIzQ4OyYjNDY7JiM0OTs=">&#x61;&#100;&#x6d;&#x69;&#x6e;&#64;&#x31;&#50;&#x37;&#46;&#48;&#46;&#48;&#46;&#49;<i class="fa fa-external-link-alt"></i></span></li></ul></li><li>telnet方式<ul><li>引入crsh.shell.telnet</li></ul></li></ul></li></ul></li><li>提供开箱即用的Spring插件</li></ul><p>@EnableWebMvc&#96;</p><p><code>@EnableAsync</code></p><p><code>@EnableAspectJAutoProxy</code></p><ul><li><p>处理类 <code>ConfigurationClassParser</code></p></li><li><p>扫描类 <code>ClassPathBeanDefinitionScanner</code></p><ul><li><code>ClassPathScanningCandidateComponentProvider</code></li></ul></li><li><p>注解驱动上下文 <code>AnnotationConfigApplicationContext</code></p></li></ul><p>Spring 事件</p><ul><li><code>ContextRefreshedEvent</code><ul><li><code>ApplicationContextEvent</code></li><li><code>ApplicationEvent</code></li></ul></li><li><code>ContextClosedEvent</code></li></ul><p>自定义事件</p><ul><li><code>PayloadApplicationEvent</code></li></ul><p>Spring 事件的类型 <code>ApplicationEvent</code></p><p>Spring 事件监听器 <code>ApplicationListener</code></p><p>Spring 事件广播器 <code>ApplicationEventMulticaster</code></p><ul><li>实现类：<code>SimpleApplicationEventMulticaster</code></li></ul><p>Spring事件执行顺序</p><ol><li>ApplicationStartingEvent（1）</li><li>ApplicationEnvironmentPreparedEvent（2）</li><li>ApplicationPreparedEvent（3）</li><li>ContextRefreshedEvent</li><li>ServletWebServerInitializedEvent</li><li>ApplicationStartedEvent（4）</li><li>ApplicationReadyEvent（5）</li><li>ContextClosedEvent</li><li>ApplicationFailedEvent (特殊情况)（6）</li></ol><p>优化</p><ul><li>移除JspServlet（Jsp页面编译）</li><li>移除DefaultServlet（静态资源解析）</li></ul>]]></content>
+    <content type="html"><![CDATA[<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><ul><li>传统Web MVC架构</li><li>前后端分离架构</li><li>微服务架构</li></ul><h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ul><li>可创建独立的Spring应用程序</li><li>提供嵌入式Web Server（无需部署war包）</li><li>无需任何代码生成技术也无任何XML配置</li><li>自动化配置<span id="more"></span></li><li>提供一系列生产级特性<ul><li>端点(<code>endpoints.enable=true</code>开启端点)<ul><li><code>autoconfig</code>获取自动配置信息</li><li><code>beans</code>获取Spring Bean基本信息</li><li><code>configprops</code>获取配置项信息</li><li><code>dump</code>获取当前线程基本信息</li><li><code>env</code>获取环境变量信息</li><li><code>health</code>获取健康检查信息<ul><li><code>enpoints.health.enable = true</code> 开启健康检查</li><li><code>enpoints.health.sensitive = true</code> 获取敏感性，默认false，如果为true，则不返回敏感字段</li><li><code>enpoints.health.time-to-live = 500</code> 设置健康检查的缓存时间，单位ms，默认1000</li><li>自定义健康检查器<ul><li>实现org.springframework.boot.actuate.health.HealthIndicator接口</li></ul></li></ul></li><li><code>info</code>获取应用基本信息<ul><li><code>enpoints.info.enable = true</code> 开启应用信息</li><li><code>info.app.name = @project.name@</code> 获取pom.xml中的name</li><li><code>info.app.description = @project.description@</code> 获取pom.xml中的description</li><li><code>info.app.version = @project.version@</code> 获取pom.xml中的version</li><li>可通过git-commit-id-plugin插件获取Git信息<ul><li><code>info.git.branch = @git.branch@</code> 获取Git版本信息</li><li><code>info.git.commit.id = @git.commit.id@</code> 获取Git提交ID</li><li><code>info.git.commit.time = @git.commit.time@</code> 获取Git提交时间</li></ul></li></ul></li><li><code>metrics</code>获取性能指标信息<ul><li><code>enpoints.metrics.enable = true</code> 开启性能指标</li><li><code>enpoints.metrics.id = performance</code> 自定义ID</li><li><code>enpoints.metrics.path = /enpoints/metrices</code> 自定义请求路径</li></ul></li><li><code>mappings</code>获取请求映射信息</li><li><code>trace</code>获取请求调用信息</li></ul></li><li>跨域（Spring4.2之后支持）<ul><li>方法一<ul><li><code>endpoints.cors.allowed-origins = http://www.baidu.com</code> 配置跨域域名</li><li><code>endpoints.cors.allowed-methods = GET,POST,PUT,DELETE</code> 配置跨域支持方法</li></ul></li><li>方法二<ul><li>@CrossOrigin注解</li></ul></li><li>方法三<ul><li>继承org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter的addCorsMappings方法</li></ul></li></ul></li><li>外部化配置，按顺序如下<ul><li>Java命令行参数</li><li>JNDI属性</li><li>Java系统属性</li><li>操作系统环境变量</li><li>Jar包外的application.properties配置</li><li>Jar包内的application.properties配置</li><li>@PropertySource注解</li><li>SpringApplication.setDefaultProperties默认值</li></ul></li><li>远程监控<ul><li>ssh方式<ul><li>引入spring-boot-starter-remote-shell</li><li>配置<ul><li>shell.ssh.port &#x3D; 2000</li><li>shell.auth.simple.user.name &#x3D; admin</li><li>shell.auth.simple.user.password &#x3D; 123456</li></ul></li><li>ssh -p 2000 <span class="exturl" data-url="bWFpbHRvOiYjeDYxOyYjMTAwOyYjeDZkOyYjeDY5OyYjMTEwOyYjNjQ7JiM0OTsmIzUwOyYjNTU7JiM0NjsmI3gzMDsmIzQ2OyYjNDg7JiM0NjsmIzQ5Ow==">&#x61;&#100;&#x6d;&#x69;&#110;&#64;&#49;&#50;&#55;&#46;&#x30;&#46;&#48;&#46;&#49;<i class="fa fa-external-link-alt"></i></span></li></ul></li><li>telnet方式<ul><li>引入crsh.shell.telnet</li></ul></li></ul></li></ul></li><li>提供开箱即用的Spring插件</li></ul><p>@EnableWebMvc&#96;</p><p><code>@EnableAsync</code></p><p><code>@EnableAspectJAutoProxy</code></p><ul><li><p>处理类 <code>ConfigurationClassParser</code></p></li><li><p>扫描类 <code>ClassPathBeanDefinitionScanner</code></p><ul><li><code>ClassPathScanningCandidateComponentProvider</code></li></ul></li><li><p>注解驱动上下文 <code>AnnotationConfigApplicationContext</code></p></li></ul><p>Spring 事件</p><ul><li><code>ContextRefreshedEvent</code><ul><li><code>ApplicationContextEvent</code></li><li><code>ApplicationEvent</code></li></ul></li><li><code>ContextClosedEvent</code></li></ul><p>自定义事件</p><ul><li><code>PayloadApplicationEvent</code></li></ul><p>Spring 事件的类型 <code>ApplicationEvent</code></p><p>Spring 事件监听器 <code>ApplicationListener</code></p><p>Spring 事件广播器 <code>ApplicationEventMulticaster</code></p><ul><li>实现类：<code>SimpleApplicationEventMulticaster</code></li></ul><p>Spring事件执行顺序</p><ol><li>ApplicationStartingEvent（1）</li><li>ApplicationEnvironmentPreparedEvent（2）</li><li>ApplicationPreparedEvent（3）</li><li>ContextRefreshedEvent</li><li>ServletWebServerInitializedEvent</li><li>ApplicationStartedEvent（4）</li><li>ApplicationReadyEvent（5）</li><li>ContextClosedEvent</li><li>ApplicationFailedEvent (特殊情况)（6）</li></ol><p>优化</p><ul><li>移除JspServlet（Jsp页面编译）</li><li>移除DefaultServlet（静态资源解析）</li></ul>]]></content>
     
     
     <summary type="html">&lt;h3 id=&quot;应用场景&quot;&gt;&lt;a href=&quot;#应用场景&quot; class=&quot;headerlink&quot; title=&quot;应用场景&quot;&gt;&lt;/a&gt;应用场景&lt;/h3&gt;&lt;ul&gt;
@@ -566,8 +566,8 @@
   
   <entry>
     <title>Spring</title>
-    <link href="http://yoursite.com/2018/03/30/spring/"/>
-    <id>http://yoursite.com/2018/03/30/spring/</id>
+    <link href="http://yoursite.com/spring/"/>
+    <id>http://yoursite.com/spring/</id>
     <published>2018-03-30T12:57:06.000Z</published>
     <updated>2024-07-31T11:08:13.069Z</updated>
     
@@ -594,8 +594,8 @@
   
   <entry>
     <title>ORM</title>
-    <link href="http://yoursite.com/2018/03/23/orm/"/>
-    <id>http://yoursite.com/2018/03/23/orm/</id>
+    <link href="http://yoursite.com/orm/"/>
+    <id>http://yoursite.com/orm/</id>
     <published>2018-03-23T12:55:56.000Z</published>
     <updated>2024-07-31T11:08:41.870Z</updated>
     
