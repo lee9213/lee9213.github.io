@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://lee9213.github.io/jvm/</loc>
+    <lastmod>2024-08-02</lastmod>
+  </url>
+  <url>
     <loc>https://lee9213.github.io/mysql%E6%80%BB%E7%BB%93/</loc>
     <lastmod>2024-08-02</lastmod>
   </url>
@@ -70,10 +74,6 @@
   </url>
   <url>
     <loc>https://lee9213.github.io/juc/</loc>
-    <lastmod>2024-07-31</lastmod>
-  </url>
-  <url>
-    <loc>https://lee9213.github.io/jvm/</loc>
     <lastmod>2024-07-31</lastmod>
   </url>
   <url>
